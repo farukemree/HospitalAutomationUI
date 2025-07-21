@@ -1,0 +1,56 @@
+/* Ortala ve arkaplan */
+.login-container {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 30px;
+  background-color: #f4f4f4;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+/* Başlık */
+.login-container h2 {
+  margin-bottom: 20px;
+  font-size: 28px;
+  color: #333;
+}
+
+/* Form grubu */
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+/* Etiketler */
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+/* Inputlar */
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+/* Buton */
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}

@@ -1,0 +1,97 @@
+<div class="container">
+
+  <h2>📋 Doktor Listesi</h2>
+  <ul class="list-group mb-4">
+    <li *ngFor="let doctor of doctors" class="list-group-item d-flex justify-content-between align-items-center">
+      {{ doctor.firstName }} {{ doctor.lastName }}
+      <div>
+        <button class="btn btn-sm btn-outline-primary me-2" (click)="editDoctor(doctor)">Düzenle</button>
+        <button class="btn btn-sm btn-outline-danger" (click)="deleteDoctor(doctor.id)">Sil</button>
+      </div>
+    </li>
+  </ul>
+
+  <hr>
+
+  <h2>📆 Randevular</h2>
+
+  <!-- Randevulara ait işlemler -->
+  <div class="mb-3">
+    <button class="btn btn-primary me-2" (click)="getAllAppointments()">Tüm Randevuları Getir</button>
+    
+    <input type="number" [(ngModel)]="appointmentIdToFetch" placeholder="Randevu ID'si" class="form-control d-inline w-auto me-2">
+    <button class="btn btn-secondary" (click)="getAppointmentById()">Randevuyu Getir</button>
+  </div>
+
+  <!-- ✅ Yeni Randevu Ekleme Formu -->
+  <div class="card p-3 mb-3">
+    <h5>➕ Yeni Randevu Ekle</h5>
+    <div class="row g-2">
+      <div class="col">
+        <input type="number" [(ngModel)]="newAppointment.patientId" placeholder="Hasta ID" class="form-control">
+      </div>
+      <div class="col">
+        <input type="number" [(ngModel)]="newAppointment.doctorId" placeholder="Doktor ID" class="form-control">
+      </div>
+      <div class="col">
+        <input type="datetime-local" [(ngModel)]="newAppointment.date" class="form-control">
+      </div>
+      <div class="col">
+        <input type="text" [(ngModel)]="newAppointment.reason" placeholder="Sebep" class="form-control">
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-success" (click)="addAppointment()">Ekle</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✏️ Güncelleme Formu -->
+  <div class="card p-3 mb-3" *ngIf="isUpdateMode">
+    <h5>✏️ Randevuyu Güncelle</h5>
+    <div class="row g-2">
+      <div class="col">
+        <input type="number" [(ngModel)]="newAppointment.id" placeholder="Randevu ID" class="form-control">
+      </div>
+      <div class="col">
+        <input type="number" [(ngModel)]="newAppointment.patientId" placeholder="Hasta ID" class="form-control">
+      </div>
+      <div class="col">
+        <input type="number" [(ngModel)]="newAppointment.doctorId" placeholder="Doktor ID" class="form-control">
+      </div>
+      <div class="col">
+        <input type="datetime-local" [(ngModel)]="newAppointment.date" class="form-control">
+      </div>
+      <div class="col">
+        <input type="text" [(ngModel)]="newAppointment.reason" placeholder="Sebep" class="form-control">
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-warning me-2" (click)="updateAppointmentById()">Güncelle</button>
+        <button class="btn btn-outline-secondary" (click)="cancelUpdate()">İptal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔁 Randevular Listesi -->
+  <h4>📑 Randevu Listesi</h4>
+  <ul class="list-group">
+    <li *ngFor="let appointment of appointments" class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        <strong>ID:</strong> {{ appointment.id }} |
+        <strong>Hasta:</strong> {{ appointment.patientId }} |
+        <strong>Doktor:</strong> {{ appointment.doctorId }} |
+        <strong>Tarih:</strong> {{ appointment.date }} |
+        <strong>Sebep:</strong> {{ appointment.reason }}
+      </div>
+      <div>
+        <button class="btn btn-sm btn-outline-warning me-2" (click)="startUpdate(appointment)">Güncelle</button>
+        <button class="btn btn-sm btn-outline-danger" (click)="deleteAppointmentById(appointment.id)">Sil</button>
+      </div>
+    </li>
+  </ul>
+
+  <hr>
+
+  <!-- Ana sayfaya git -->
+  <button class="btn btn-dark mt-3" (click)="goToDoctorHome()">🏠 Ana Sayfaya Dön</button>
+
+</div>

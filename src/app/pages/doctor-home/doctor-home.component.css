@@ -1,0 +1,63 @@
+.doctor-container,
+.action-card,
+.patients-card {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
+  background-color: #fff;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.info-card p {
+  font-size: 16px;
+  margin: 8px 0;
+}
+
+.button-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.button-grid button {
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: #3498db;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-grid button:hover {
+  background-color: #2980b9;
+}
+
+.patient-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.patient-list li {
+  background-color: #f2f2f2;
+  margin-bottom: 8px;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.no-patients {
+  text-align: center;
+  font-style: italic;
+  color: #999;
+}

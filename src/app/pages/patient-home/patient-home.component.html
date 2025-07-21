@@ -1,0 +1,71 @@
+<div class="container">
+
+  <section class="doctor-list mb-5">
+    <h2 class="section-title">Doktor Listesi</h2>
+    <button class="btn btn-primary mb-3" (click)="getAllDoctors()">Tüm Doktorları Getir</button>
+
+    <ul *ngIf="doctors.length > 0; else noDoctors" class="list-group">
+      <li *ngFor="let doctor of doctors" class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <strong>{{ doctor.fullName }}</strong> <br>
+          <small class="text-muted">{{ doctor.specialization }}</small>
+        </div>
+        <span class="badge badge-info badge-pill">📞 {{ doctor.phone }}</span>
+      </li>
+    </ul>
+
+    <ng-template #noDoctors>
+      <p class="text-warning">Henüz doktor listesi yüklenmedi veya boş.</p>
+    </ng-template>
+  </section>
+
+  <hr>
+
+  <section class="appointment-create mb-5">
+    <h2 class="section-title">Randevu Oluştur</h2>
+    <form (ngSubmit)="addAppointment()" #appointmentForm="ngForm" class="form">
+
+      <div class="form-group mb-3">
+        <label for="doctor">Doktor Seç:</label>
+        <select class="form-select" [(ngModel)]="appointment.doctorId" name="doctorId" required>
+          <option [value]="0" disabled>Doktor seçin</option>
+          <option *ngFor="let doc of doctors" [value]="doc.id">{{ doc.fullName }}</option>
+        </select>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="date">Randevu Tarihi:</label>
+        <input class="form-control" type="datetime-local" [(ngModel)]="appointment.appointmentDate" name="appointmentDate" required />
+      </div>
+
+      <div class="form-group mb-4">
+        <label for="desc">Açıklama:</label>
+        <input class="form-control" type="text" [(ngModel)]="appointment.description" name="description" placeholder="Opsiyonel açıklama" />
+      </div>
+
+      <button type="submit" class="btn btn-success">Randevu Oluştur</button>
+    </form>
+  </section>
+
+  <hr>
+
+ <section class="my-appointments">
+  <h2 class="section-title">Randevularım</h2>
+  
+  <button class="btn btn-info mb-3" (click)="getMyAppointments()">Randevularımı Getir</button>
+
+  <ul *ngIf="appointments.length > 0; else noAppointments" class="list-group">
+    <li *ngFor="let app of appointments" class="list-group-item">
+      <strong>📅 Tarih:</strong> {{ app.appointmentDate | date:'short' }} <br>
+      <strong>👨‍⚕️ Doktor:</strong> {{ app.doctorName }} <br>
+      <strong>📝 Açıklama:</strong> {{ app.description || '-' }}
+    </li>
+  </ul>
+
+  <ng-template #noAppointments>
+    <p class="text-muted">Henüz randevunuz yok veya henüz getirilmedi.</p>
+  </ng-template>
+</section>
+
+
+</div>

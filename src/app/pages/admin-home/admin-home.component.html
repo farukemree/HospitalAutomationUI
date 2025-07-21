@@ -1,0 +1,105 @@
+<div class="admin-container">
+  <h2>Kullanıcı Rolleri Yönetimi</h2>
+
+  <!-- Kullanıcı Rol Güncelleme Tablosu -->
+  <table>
+    <thead>
+      <tr>
+        <th>Kullanıcı Adı</th>
+        <th>Email</th>
+        <th>Mevcut Rol</th>
+        <th>Yeni Rol</th>
+        <th>Güncelle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.role }}</td>
+        <td>
+          <select [(ngModel)]="selectedRole[user.id]">
+            <option value="" disabled selected>Rol seçin</option>
+            <option value="Admin">Admin</option>
+            <option value="Doctor">Doctor</option>
+            <option value="Patient">Patient</option>
+          </select>
+        </td>
+        <td>
+          <button (click)="updateUserRole(user.id, selectedRole[user.id])">Güncelle</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Butonlar -->
+  <div class="button-group" style="margin-top: 30px;">
+    <button (click)="getAllDoctors()">Tüm Doktorları Göster</button>
+    <button (click)="getAllPatients()">Tüm Hastaları Göster</button>
+    <button (click)="getAllDepartments()">Tüm Bölümleri Göster</button>
+  </div>
+
+  <!-- Doktorlar -->
+  <div *ngIf="doctors.length > 0" style="margin-top: 20px;">
+    <h3>Doktorlar</h3>
+    <table>
+  <thead>
+    <tr>
+      <th>İsim</th>
+      <th>Uzmanlık</th>
+      <th>Telefon</th>
+      <th>Bölüm Id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let doc of doctors">
+      <td>{{ doc.fullName }}</td>
+      <td>{{ doc.specialization }}</td>
+      <td>{{ doc.phone }}</td>
+      <td>{{ doc.departmentId }}</td>
+    </tr>
+  </tbody>
+</table>
+
+  </div>
+
+  <!-- Hastalar -->
+  <div *ngIf="patients.length > 0" style="margin-top: 20px;">
+    <<h3>Hastalar</h3>
+<table>
+  <thead>
+    <tr>
+      <th>İsim</th>
+      <th>Doğum Tarihi</th>
+      <th>Cinsiyet</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of patients">
+      <td>{{ p.fullName }}</td>
+      <td>{{ p.birthDate | date:'dd.MM.yyyy' }}</td>
+      <td>{{ p.gender }}</td>
+    </tr>
+  </tbody>
+</table>
+
+
+  </div>
+
+  <!-- Bölümler -->
+  <div *ngIf="departments.length > 0" style="margin-top: 20px;">
+    <h3>Bölümler</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Bölüm Adı</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dept of departments">
+          <td>{{ dept.name }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

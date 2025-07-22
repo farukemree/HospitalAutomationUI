@@ -1,118 +1,85 @@
 <div class="doctor-container">
-  <h2>Hoş geldiniz, Dr. {{ doctor?.fullName }}</h2>
-
-  <!-- Bilgi Kartı -->
-  <div class="info-card">
-    <p><strong>Uzmanlık:</strong> {{ doctor?.specialization }}</p>
-    <p><strong>Telefon:</strong> {{ doctor?.phone }}</p>
-    <p><strong>Bölüm ID:</strong> {{ doctor?.departmentId }}</p>
+  <div class="header-section">
+    <img
+      *ngIf="imageUrl; else noImage"
+      [src]="imageUrl"
+      alt="Doktor Fotoğrafı"
+      class="profile-img"
+    />
+    <h2 class="doctor-name">Hoş geldiniz, Dr. {{ doctor?.fullName }}</h2>
   </div>
 
-  <!-- Profil Resmi -->
-  <div class="image-section" style="margin-top: 20px;">
-    <h3>🖼️ Profil Resmi</h3>
-
-    <div *ngIf="imageUrl; else noImage">
-      <img
-        [src]="imageUrl"
-        alt="Doktor Fotoğrafı"
-        width="200"
-        height="200"
-        style="border-radius: 10px; object-fit: cover;"
-      />
+  <div class="info-and-actions">
+    <div class="info-card">
+      <p><strong>Uzmanlık:</strong> {{ doctor?.specialization }}</p>
+      <p><strong>Telefon:</strong> {{ doctor?.phone }}</p>
+      <p><strong>Bölüm ID:</strong> {{ doctor?.departmentId }}</p>
     </div>
 
-    <ng-template #noImage>
-      <p><em>Henüz profil resmi yüklenmemiş.</em></p>
-    </ng-template>
-
-    <div style="margin-top: 10px;">
-      <input type="file" (change)="onFileSelected($event)" accept="image/*" />
-      <button (click)="uploadImage()" style="margin-top: 5px;">📤 Resmi Yükle</button>
+    <div class="action-buttons">
+      <button (click)="getDoctorInfo()">🔄 Bilgileri Yeniden Yükle</button>
+      <button (click)="getAllPatients()">🧑‍🤝‍🧑 Hastaları Getir</button>
+      <button (click)="goToAppointments()">📅 Randevulara Git</button>
     </div>
   </div>
-</div>
 
-<hr />
+  <div *ngIf="editMode" class="update-form">
+    <form (ngSubmit)="updateDoctor()" #doctorForm="ngForm">
+      <label>
+        Uzmanlık:
+        <input
+          type="text"
+          [(ngModel)]="doctor.specialization"
+          name="specialization"
+          required
+        />
+      </label>
 
-<!-- İşlem Butonları -->
-<div class="action-card" style="margin-top: 30px;">
-  <h2>📌 Doktor İşlemleri</h2>
-  <div
-    class="button-grid"
-    style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;"
-  >
-    <button (click)="getDoctorInfo()">🔄 Bilgileri Yeniden Yükle</button>
-    <button (click)="toggleEditMode()">✏️ Bilgileri Güncelle</button>
-    <button (click)="deleteDoctor()">🗑️ Hesabı Sil</button>
-    <button (click)="getAllPatients()">🧑‍🤝‍🧑 Hastaları Getir</button>
-    <button (click)="goToAppointments()">📅 Randevulara Git</button>
-    <button (click)="logout()">🚪 Çıkış Yap</button>
+      <label>
+        Telefon:
+        <input
+          type="text"
+          [(ngModel)]="doctor.phone"
+          name="phone"
+          required
+        />
+      </label>
+
+      <label>
+        Bölüm ID:
+        <input
+          type="number"
+          [(ngModel)]="doctor.departmentId"
+          name="departmentId"
+        />
+      </label>
+
+      <div class="upload-section">
+        <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+        <button type="button" (click)="uploadImage()">📤 Resmi Yükle</button>
+      </div>
+
+      <button type="submit" [disabled]="doctorForm.invalid">💾 Kaydet</button>
+    </form>
+  </div>
+
+  <hr />
+
+  <div class="patients-card">
+    <h2>🩺 Hastalarım</h2>
+    <ul *ngIf="patients.length > 0" class="patient-list">
+      <li *ngFor="let patient of patients">
+        👤 <strong>{{ patient.fullName }}</strong> |
+        🎂 {{ patient.birthDate | date: 'longDate' }} |
+        ⚧️ {{ patient.gender }}
+      </li>
+    </ul>
+    <p *ngIf="patients.length === 0" class="no-patients">
+      Henüz hasta listesi yüklenmedi.
+    </p>
   </div>
 </div>
 
-<!-- Bilgi Güncelleme Formu -->
-<div
-  *ngIf="editMode"
-  class="update-form"
-  style="margin-top: 20px; border: 1px solid #ccc; padding: 15px; border-radius: 5px;"
->
-  <form (ngSubmit)="updateDoctor()" #doctorForm="ngForm">
-    <label>
-      Uzmanlık:
-      <input
-        type="text"
-        [(ngModel)]="doctor.specialization"
-        name="specialization"
-        required
-      />
-    </label>
-
-    <label>
-      Telefon:
-      <input
-        type="text"
-        [(ngModel)]="doctor.phone"
-        name="phone"
-        required
-      />
-    </label>
-
-    <label>
-      Bölüm ID:
-      <input
-        type="number"
-        [(ngModel)]="doctor.departmentId"
-        name="departmentId"
-      />
-    </label>
-
-    <button type="submit" [disabled]="doctorForm.invalid">💾 Kaydet</button>
-  </form>
-</div>
-
-<hr />
-
-<!-- Hasta Listesi -->
-<div class="patients-card" style="margin-top: 30px;">
-  <h2>🩺 Hastalarım</h2>
-
-  <ul
-    *ngIf="patients.length > 0"
-    class="patient-list"
-    style="list-style: none; padding: 0;"
-  >
-    <li
-      *ngFor="let patient of patients"
-      style="padding: 5px 0; border-bottom: 1px solid #ddd;"
-    >
-      👤 <strong>{{ patient.fullName }}</strong> |
-      🎂 {{ patient.birthDate | date: 'longDate' }} |
-      ⚧️ {{ patient.gender }}
-    </li>
-  </ul>
-
-  <p *ngIf="patients.length === 0" class="no-patients">
-    Henüz hasta listesi yüklenmedi.
-  </p>
-</div>
+<ng-template #noImage>
+  <p><em>Henüz profil resmi yüklenmemiş.</em></p>
+</ng-template>

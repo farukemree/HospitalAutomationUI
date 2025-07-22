@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpHeaders } from '@angular/common/http';
-
+import { ToggleService } from '../../Services/toggle.services';
 
 interface Patient {
   id: number;
@@ -29,7 +29,7 @@ export class DoctorHomeComponent implements OnInit {
   departments: any[] = [];
   editMode: boolean = false;
   imageUrl: string | null = null;
-  constructor(private http: HttpClient, private router: Router, private location: Location) {}
+  constructor(private http: HttpClient, private router: Router,private toggleService: ToggleService, private location: Location) {}
 
   ngOnInit(): void {
     const idFromStorage = localStorage.getItem('doctorId');
@@ -41,6 +41,9 @@ export class DoctorHomeComponent implements OnInit {
     } else {
       console.warn("localStorage'da doctorId bulunamadı.");
     }
+    this.toggleService.toggleEdit$.subscribe(() => {
+    this.toggleEditMode();
+  });
   }
    toggleEditMode() {
     this.editMode = !this.editMode;
@@ -107,21 +110,6 @@ updateDoctor() {
       });
   }
 
-  deleteDoctor(): void {
-    if (!this.doctorId) return;
-    const confirmed = confirm("Doktor hesabınızı silmek istediğinize emin misiniz?");
-    if (!confirmed) return;
-
-    this.http.delete(`http://localhost:5073/api/Doctor/DeleteDoctor/${this.doctorId}`)
-      .subscribe({
-        next: () => {
-          alert("Doktor silindi.");
-          this.doctor = null;
-        },
-        error: (err) => console.error("Silme hatası:", err)
-      });
-  }
-
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];
   }
@@ -175,11 +163,5 @@ uploadImage(): void {
 
   goBack(): void {
     this.location.back();
-  }
-
-  logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('doctorId');
-    this.router.navigate(['/login']);
   }
 }

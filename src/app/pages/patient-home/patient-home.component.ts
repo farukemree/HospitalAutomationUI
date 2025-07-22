@@ -9,6 +9,8 @@ interface Doctor {
   specialization: string;
   phone: string;
   departmentId: number;
+  imageFileKey?: string;
+  imageUrl?: string; 
 }
 
 interface Appointment {
@@ -56,15 +58,23 @@ export class PatientHomeComponent implements OnInit {
   }
 
   getAllDoctors(): void {
-    this.http.get<ApiResponse>('http://localhost:5073/api/Doctor/GetAllDoctors').subscribe({
-      next: response => {
-        this.doctors = response.data;
-      },
-      error: err => {
-        alert('Doktorlar yüklenirken hata oluştu: ' + err.message);
-      }
-    });
-  }
+  this.http.get<ApiResponse>('http://localhost:5073/api/Doctor/GetAllDoctors').subscribe({
+    next: response => {
+      this.doctors = response.data.map((doctor: any) => {
+        return {
+          ...doctor,
+          imageUrl: doctor.imageFileKey
+            ? `http://localhost:5073/api/Upload/GetUserImage/${doctor.imageFileKey}`
+            : 'assets/default-doctor.png'   
+        };
+      });
+    },
+    error: err => {
+      alert('Doktorlar yüklenirken hata oluştu: ' + err.message);
+    }
+  });
+}
+
 
   addAppointment(): void {
     if (!this.appointment.doctorId || !this.appointment.appointmentDate) {

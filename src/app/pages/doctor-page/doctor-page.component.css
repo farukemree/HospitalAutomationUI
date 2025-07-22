@@ -1,0 +1,205 @@
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 25px 30px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50;
+}
+
+/* Başlıklar */
+h2, h4, h5 {
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 28px;
+}
+
+h4 {
+  font-size: 22px;
+}
+
+h5 {
+  font-size: 18px;
+}
+
+/* Liste stili */
+.list-group-item {
+  border-radius: 8px;
+  margin-bottom: 10px;
+  padding: 15px 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  transition: background-color 0.3s ease;
+}
+
+.list-group-item:hover {
+  background-color: #f0f8ff;
+}
+
+.btn {
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 6px 14px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-sm {
+  padding: 4px 10px;
+  font-size: 14px;
+}
+.btn-primary {
+  background-color: #3498db;
+  border-color: #3498db;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+  border-color: #2980b9;
+}
+
+.btn-secondary {
+  background-color: #95a5a6;
+  border-color: #95a5a6;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #7f8c8d;
+  border-color: #7f8c8d;
+}
+
+.btn-success {
+  background-color: #27ae60;
+  border-color: #27ae60;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #1e8449;
+  border-color: #1e8449;
+}
+
+.btn-warning {
+  background-color: #f39c12;
+  border-color: #f39c12;
+  color: white;
+}
+
+.btn-warning:hover {
+  background-color: #d68910;
+  border-color: #d68910;
+}
+
+.btn-outline-primary {
+  color: #3498db;
+  border-color: #3498db;
+}
+
+.btn-outline-primary:hover {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-outline-danger {
+  color: #e74c3c;
+  border-color: #e74c3c;
+}
+
+.btn-outline-danger:hover {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-outline-warning {
+  color: #f39c12;
+  border-color: #f39c12;
+}
+
+.btn-outline-warning:hover {
+  background-color: #f39c12;
+  color: white;
+}
+
+.btn-outline-secondary {
+  color: #7f8c8d;
+  border-color: #7f8c8d;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #7f8c8d;
+  color: white;
+}
+
+.btn-dark {
+  background-color: #2c3e50;
+  border-color: #2c3e50;
+  color: white;
+}
+
+.btn-dark:hover {
+  background-color: #1a252f;
+  border-color: #1a252f;
+}
+
+/* Form inputları */
+.form-control {
+  border-radius: 6px;
+  border: 1.5px solid #ccc;
+  padding: 8px 12px;
+  font-size: 15px;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 8px #3498dbaa;
+  outline: none;
+}
+
+/* Row ve sütunlar */
+.row {
+  margin-left: -5px;
+  margin-right: -5px;
+}
+
+.col, .col-auto {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.col-auto {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+/* Buton ve input arası boşluk */
+.me-2 {
+  margin-right: 0.5rem !important;
+}
+
+/* Kart görünümü */
+.card {
+  background-color: #f7f9fc;
+  border-radius: 10px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+  padding: 15px 20px;
+}
+
+/* Responsive düzenleme */
+@media (max-width: 768px) {
+  .row.g-2 > [class^="col"] {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .me-2 {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}

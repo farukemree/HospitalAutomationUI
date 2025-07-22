@@ -1,42 +1,103 @@
 .admin-container {
   max-width: 900px;
   margin: 30px auto;
-  padding: 20px;
-  border-radius: 10px;
-  background: #f9f9f9;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 25px 30px;
+  border-radius: 12px;
+  background: #fefefe;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 h2 {
   text-align: center;
-  margin-bottom: 20px;
-  color: #2c3e50;
+  margin-bottom: 30px;
+  color: #34495e;
+  font-weight: 700;
+  font-size: 28px;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 25px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 th, td {
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
+  padding: 14px 10px;
   text-align: center;
+  border-bottom: 1px solid #e1e4e8;
+  font-size: 15px;
+  color: #555;
 }
 
-select, button {
-  padding: 6px 12px;
+thead {
+  background-color: #3498db;
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9fbfd;
+}
+
+tbody tr:hover {
+  background-color: #dbe9fc;
+  cursor: pointer;
+}
+
+select {
+  padding: 7px 10px;
   font-size: 14px;
+  border: 1.8px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+}
+
+select:focus {
+  outline: none;
+  border-color: #2980b9;
+  box-shadow: 0 0 6px #2980b9aa;
 }
 
 button {
-  background-color: #2ecc71;
+  padding: 8px 20px;
+  font-size: 14px;
+  background-color: #27ae60;
   border: none;
-  border-radius: 5px;
+  border-radius: 7px;
   color: white;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #27ae60;
+  background-color: #1e8449;
+}
+
+.button-group {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+@media (max-width: 600px) {
+  .button-group {
+    flex-direction: column;
+  }
+  
+  th, td {
+    font-size: 13px;
+    padding: 10px 6px;
+  }
+  
+  button, select {
+    width: 100%;
+  }
 }

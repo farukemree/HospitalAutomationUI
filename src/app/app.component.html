@@ -1,2 +1,10 @@
+<nav class="custom-navbar">
+  <div class="brand">🏥 Hospital System</div>
+  <div class="navbar-right">
+    <!-- Butonlar sadece showDoctorButtons true ise gözüksün -->
+    <button *ngIf="showDoctorButtons" class="nav-btn" (click)="goToSettings()">Ayarlar</button>
+    <button *ngIf="showDoctorButtons" class="nav-btn" (click)="logout()">Çıkış Yap</button>
+  </div>
+</nav>
 
 <router-outlet></router-outlet>

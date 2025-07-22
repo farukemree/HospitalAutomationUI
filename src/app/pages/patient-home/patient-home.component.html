@@ -5,13 +5,22 @@
     <button class="btn btn-primary mb-3" (click)="getAllDoctors()">Tüm Doktorları Getir</button>
 
     <ul *ngIf="doctors.length > 0; else noDoctors" class="list-group">
-      <li *ngFor="let doctor of doctors" class="list-group-item d-flex justify-content-between align-items-center">
-        <div>
-          <strong>{{ doctor.fullName }}</strong> <br>
-          <small class="text-muted">{{ doctor.specialization }}</small>
-        </div>
-        <span class="badge badge-info badge-pill">📞 {{ doctor.phone }}</span>
-      </li>
+   <li *ngFor="let doctor of doctors" class="list-group-item d-flex justify-content-between align-items-center">
+  <div class="doctor-info d-flex align-items-center gap-3">
+    <img 
+      [src]="doctor.imageUrl" 
+      alt="Doktor Fotoğrafı" 
+      width="60" height="60" 
+      style="border-radius: 50%; object-fit: cover;"
+      onerror="this.src='assets/default-doctor.png'" />
+    <div>
+      <strong>{{ doctor.fullName }}</strong> <br>
+      <small class="text-muted">{{ doctor.specialization }}</small>
+    </div>
+  </div>
+  <span class="badge badge-info badge-pill">📞 {{ doctor.phone }}</span>
+</li>
+
     </ul>
 
     <ng-template #noDoctors>

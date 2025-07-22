@@ -23,6 +23,7 @@ export class DoctorPageComponent implements OnInit {
   doctors: any[] = [];
   appointments: Appointment[] = [];
   appointmentIdToFetch: number | null = null;
+  selectedAppointment: any = null;
 
   newAppointment: Partial<Appointment> = {
     patientId: 0,
@@ -36,22 +37,19 @@ export class DoctorPageComponent implements OnInit {
   ngOnInit(): void {
     this.loadDoctors();
   }
-  isUpdateMode: boolean = false;  // Güncelleme modunu kontrol eder
+  isUpdateMode: boolean = false;  
 
 startUpdate(appointment: Appointment): void {
-  this.newAppointment = { ...appointment }; // Seçilen randevuyu form alanına kopyala
+  this.newAppointment = { ...appointment }; 
   this.isUpdateMode = true;
 }
 
 cancelUpdate(): void {
   this.isUpdateMode = false;
-  this.resetNewAppointment(); // Formu sıfırla
+  this.resetNewAppointment(); 
 }
 
-
-
-  // Doktor listesini yükle
-  loadDoctors(): void {
+loadDoctors(): void {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token || ''}`);
 
@@ -65,13 +63,10 @@ cancelUpdate(): void {
       });
   }
   
-
-  // Doktoru düzenlemek için placeholder (İstersen genişletebilirsin)
   editDoctor(doctor: any): void {
     console.log("Düzenlenecek doktor:", doctor);
   }
 
-  // Doktoru sil
   deleteDoctor(id: number): void {
     if (!confirm("Bu doktoru silmek istediğinize emin misiniz?")) return;
 
@@ -87,43 +82,43 @@ cancelUpdate(): void {
         error: (err) => console.error("Silme hatası:", err)
       });
   }
-
-  // Tüm randevuları getir
   getAllAppointments(): void {
     this.http.get<any>('http://localhost:5073/api/Appointment/GetAllAppointments')
       .subscribe({
         next: (response) => {
           this.appointments = response.data || [];
-          console.log('Tüm randevular:', response);
         },
         error: (err) => console.error('Randevular alınamadı:', err)
       });
   }
 
-  // ID ile randevu getir
   getAppointmentById(): void {
-    if (!this.appointmentIdToFetch) {
-      alert('Lütfen bir randevu ID girin.');
-      return;
-    }
-
-    this.http.get<any>(`http://localhost:5073/api/Appointment/GetAppointmentById/${this.appointmentIdToFetch}`)
-      .subscribe({
-        next: (response) => {
-          console.log('Seçilen randevu:', response.data);
-          alert(`Randevu bilgisi konsola yazdırıldı.`);
-        },
-        error: (err) => console.error('Randevu bulunamadı:', err)
-      });
+  if (!this.appointmentIdToFetch) {
+    alert('Lütfen bir randevu ID girin.');
+    return;
   }
 
-  // Yeni randevu ekle
+  this.http.get<any>(`http://localhost:5073/api/Appointment/GetAppointmentById/${this.appointmentIdToFetch}`)
+    .subscribe({
+      next: (response) => {
+        this.selectedAppointment = response.data;  // UI'da göstermek için ata
+        this.appointmentIdToFetch = null;  // input temizle
+      },
+      error: (err) => {
+        console.error('Randevu bulunamadı:', err);
+        alert('Randevu bulunamadı.');
+      }
+    });
+}
+  closeAppointmentDetails(): void {
+  this.selectedAppointment = null;
+}
   addAppointment(): void {
     this.http.post<any>('http://localhost:5073/api/Appointment/AddAppointment', this.newAppointment)
       .subscribe({
         next: (res) => {
           alert('Randevu eklendi!');
-          this.getAllAppointments(); // Listeyi güncelle
+          this.getAllAppointments(); 
           this.resetNewAppointment();
         },
         error: (err) => console.error('Ekleme hatası:', err)

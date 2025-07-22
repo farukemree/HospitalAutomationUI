@@ -45,7 +45,7 @@
     </div>
   </div>
 
-  <!-- ✏️ Güncelleme Formu -->
+
   <div class="card p-3 mb-3" *ngIf="isUpdateMode">
     <h5>✏️ Randevuyu Güncelle</h5>
     <div class="row g-2">
@@ -70,6 +70,16 @@
       </div>
     </div>
   </div>
+ <div *ngIf="selectedAppointment" class="appointment-details mt-3 p-3 border rounded">
+  <h5>Randevu Detayları</h5>
+  <p><strong>ID:</strong> {{ selectedAppointment.id }}</p>
+  <p><strong>Hasta ID:</strong> {{ selectedAppointment.patientId }}</p>
+  <p><strong>Doktor ID:</strong> {{ selectedAppointment.doctorId }}</p>
+  <p><strong>Tarih:</strong> {{ selectedAppointment.appointmentDate | date: 'short' }}</p>
+  <p><strong>Açıklama:</strong> {{ selectedAppointment.description }}</p>
+  
+</div>
+
 
   <!-- 🔁 Randevular Listesi -->
   <h4>📑 Randevu Listesi</h4>

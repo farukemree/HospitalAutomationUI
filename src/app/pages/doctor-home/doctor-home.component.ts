@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router'; 
 import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpHeaders } from '@angular/common/http';
+
 
 interface Patient {
   id: number;
@@ -26,6 +28,7 @@ export class DoctorHomeComponent implements OnInit {
   selectedFile: File | null = null;
   departments: any[] = [];
   editMode: boolean = false;
+  imageUrl: string | null = null;
   constructor(private http: HttpClient, private router: Router, private location: Location) {}
 
   ngOnInit(): void {
@@ -43,24 +46,29 @@ export class DoctorHomeComponent implements OnInit {
     this.editMode = !this.editMode;
   }
 
- getDoctorInfo(): void {
-  const userId = Number(localStorage.getItem('userId')); 
-  this.http.get<any>(`http://localhost:5073/api/Doctor/GetDoctorById/${userId}`)
+
+
+getDoctorInfo(): void {
+  this.http.get<any>(`http://localhost:5073/api/Doctor/GetDoctorById/${this.doctorId}`)
     .subscribe({
-      next: response => {
-        if (response.isSuccess && response.data) {
-          this.doctor = response.data;
+      next: res => {
+        this.doctor = res.data;
+
+        if (this.doctor?.imageFileKey) {
+          this.imageUrl = `http://localhost:5073/api/Upload/GetUserImage/${this.doctor.imageFileKey}`;
+          console.log('imageUrl:', this.imageUrl);
         } else {
-          console.error("Doktor bulunamadı:", response.message);  
+          this.imageUrl = 'assets/default-doctor.png';
         }
       },
       error: err => {
-        console.error("Doktor bilgisi alınamadı:", err);
+        console.error('Doktor bilgisi yüklenemedi', err);
       }
     });
 }
+
+
 updateDoctor() {
-    // Burada update API çağrısını yap, örnek:
     this.http.put(`http://localhost:5073/api/Doctor/UpdateDoctorById/${this.doctor.id}`, this.doctor)
       .subscribe({
         next: () => {
@@ -118,29 +126,41 @@ updateDoctor() {
     this.selectedFile = event.target.files[0];
   }
 
- uploadImage(): void {
+uploadImage(): void {
   if (!this.selectedFile) {
     alert("Lütfen bir dosya seçin.");
     return;
   }
 
   const formData = new FormData();
-  formData.append('imageFile', this.selectedFile);
+  formData.append("ImageFile", this.selectedFile); // DTO'daki isimle aynı olmalı
 
-  this.http.post<any>('http://localhost:5073/api/Upload/UploadFile', formData, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token') || ''}`
-    }
-  }).subscribe({
-    next: (res) => {
-      alert("Resim başarıyla yüklendi.");
-    },
-    error: (err) => {
-      alert("Yükleme hatası");
-      console.error(err);
-    }
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert("Oturum doğrulaması bulunamadı.");
+    return;
+  }
+
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
   });
+
+  this.http.post<any>('http://localhost:5073/api/Upload/UploadFile', formData, { headers })
+    .subscribe({
+      next: response => {
+        alert("Resim başarıyla yüklendi.");
+        this.getDoctorInfo(); 
+      },
+      error: err => {
+        console.error("Resim yüklenemedi:", err);
+        alert("Resim yüklenemedi.");
+      }
+    });
 }
+
+
+
+
 
 
 

@@ -1,9 +1,18 @@
 <nav class="custom-navbar">
   <div class="brand">🏥 Hospital System</div>
   <div class="navbar-right">
-    <!-- Butonlar sadece showDoctorButtons true ise gözüksün -->
-    <button *ngIf="showDoctorButtons" class="nav-btn" (click)="goToSettings()">Ayarlar</button>
-    <button *ngIf="showDoctorButtons" class="nav-btn" (click)="logout()">Çıkış Yap</button>
+
+    <ng-container *ngIf="showDoctorButtons">
+      <button class="nav-btn" (click)="reloadDoctorInfo()">Bilgileri Yenile</button>
+      <button class="nav-btn" (click)="reloadPatients()">Hastaları Gör  </button>
+      <button class="nav-btn" (click)="goToAppointments()">Randevular</button>
+      <button *ngIf="showDoctorButtons" class="nav-btn" (click)="goToMedicalRecords()">Tıbbi Kayıtlar</button>
+      <button class="nav-btn" (click)="goToSettings()">Ayarlar</button>
+      <button class="nav-btn" (click)="logout()">Çıkış Yap</button>
+    </ng-container>
+
+    <button *ngIf="showOnlyBackToHomeButton || showBackToHomeButton" class="nav-btn" (click)="goToDoctorHome()">Ana Sayfaya Dön</button>
+
   </div>
 </nav>
 

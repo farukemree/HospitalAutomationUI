@@ -10,14 +10,15 @@ import { DoctorHomeComponent } from './pages/doctor-home/doctor-home.component';
 import { AdminHomeComponent } from './pages/admin-home/admin-home.component';
 import { PatientHomeComponent } from './pages/patient-home/patient-home.component';
 import { jwtInterceptor } from '../Helpers/jwt.interceptor';
-
+import { DoctorMedicalRecordComponent } from './pages/doctor-medical-record/doctor-medical-record.component';
 const routes: Route[] = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, 
   { path: 'login', component: LoginComponent },
   { path: 'doctor-home', component: DoctorHomeComponent },
   { path: 'doctor-page', component: DoctorPageComponent },
   { path: 'admin-home', component: AdminHomeComponent},
-  { path: 'patient-home', component: PatientHomeComponent}
+  { path: 'patient-home', component: PatientHomeComponent},
+  { path: 'doctor-medical-record', component: DoctorMedicalRecordComponent}
 ];
 
 export const appConfig: ApplicationConfig = {

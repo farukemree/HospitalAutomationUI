@@ -15,12 +15,6 @@
       <p><strong>Telefon:</strong> {{ doctor?.phone }}</p>
       <p><strong>Bölüm ID:</strong> {{ doctor?.departmentId }}</p>
     </div>
-
-    <div class="action-buttons">
-      <button (click)="getDoctorInfo()">🔄 Bilgileri Yeniden Yükle</button>
-      <button (click)="getAllPatients()">🧑‍🤝‍🧑 Hastaları Getir</button>
-      <button (click)="goToAppointments()">📅 Randevulara Git</button>
-    </div>
   </div>
 
   <div *ngIf="editMode" class="update-form">
@@ -65,20 +59,25 @@
 
   <hr />
 
-  <div class="patients-card">
-    <h2>🩺 Hastalarım</h2>
-    <ul *ngIf="patients.length > 0" class="patient-list">
-      <li *ngFor="let patient of patients">
-        👤 <strong>{{ patient.fullName }}</strong> |
-        🎂 {{ patient.birthDate | date: 'longDate' }} |
-        ⚧️ {{ patient.gender }}
-      </li>
-    </ul>
-    <p *ngIf="patients.length === 0" class="no-patients">
-      Henüz hasta listesi yüklenmedi.
-    </p>
-  </div>
+  <div class="patients-card" *ngIf="showPatients">
+  <h2>🩺 Hastalarım</h2>
+
+  <ul *ngIf="patients.length > 0" class="patient-list">
+    <li *ngFor="let patient of patients">
+      👤 <strong>{{ patient.fullName }}</strong> |
+      🎂 {{ patient.birthDate | date: 'longDate' }} |
+      ⚧️ {{ patient.gender }}
+    </li>
+  </ul>
+
+  <p *ngIf="patients.length === 0" class="no-patients">
+    Henüz hasta listesi yüklenmedi.
+  </p>
+
+<button class="close-btn" (click)="hidePatients()"> Kapat</button> 
 </div>
+
+
 
 <ng-template #noImage>
   <p><em>Henüz profil resmi yüklenmemiş.</em></p>

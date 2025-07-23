@@ -1,0 +1,117 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">🩺 Tıbbi Kayıt Yönetimi</h2>
+
+  <!-- Form Alanı -->
+  <div class="card shadow-lg mb-4">
+    <div class="card-header bg-primary text-white">
+      {{ isEditMode ? 'Tıbbi Kaydı Güncelle' : 'Yeni Tıbbi Kayıt Ekle' }}
+    </div>
+    <div class="card-body">
+      <form #recordForm="ngForm" (ngSubmit)="isEditMode ? updateRecord() : addRecord()">
+
+        <div class="mb-3 col-md-6">
+          <label for="patientId" class="form-label">Hasta ID</label>
+          <input
+            type="number"
+            id="patientId"
+            name="patientId"
+            class="form-control"
+            [(ngModel)]="activeRecord.patientId"
+            [readonly]="isEditMode"
+            required
+            #patientId="ngModel"
+          />
+          <div *ngIf="patientId.invalid && patientId.touched" class="text-danger">
+            Hasta ID zorunludur.
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="mb-3 col-md-6">
+            <label for="recordDate" class="form-label">Kayıt Tarihi</label>
+            <input
+              type="datetime-local"
+              id="recordDate"
+              name="recordDate"
+              class="form-control"
+              [(ngModel)]="activeRecord.recordDate"
+              required
+              #recordDate="ngModel"
+            />
+            <div *ngIf="recordDate.invalid && recordDate.touched" class="text-danger">
+              Kayıt Tarihi zorunludur.
+            </div>
+          </div>
+
+          <div class="mb-3 col-md-6">
+            <label for="description" class="form-label">Açıklama</label>
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              rows="3"
+              [(ngModel)]="activeRecord.description"
+              required
+              #description="ngModel"
+            ></textarea>
+            <div *ngIf="description.invalid && description.touched" class="text-danger">
+              Açıklama zorunludur.
+            </div>
+          </div>
+        </div>
+
+        <div class="text-end">
+          <button
+            type="submit"
+            class="btn"
+            [ngClass]="isEditMode ? 'btn-warning' : 'btn-success'"
+            [disabled]="recordForm.invalid"
+          >
+            {{ isEditMode ? '🔄 Güncelle' : '➕ Ekle' }}
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary ms-2"
+            (click)="cancelEdit()"
+            *ngIf="isEditMode"
+          >
+            İptal
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Kayıt Listesi -->
+  <div class="card shadow">
+    <div class="card-header bg-dark text-white">📋 Kayıt Listesi</div>
+    <div class="card-body p-0">
+      <table class="table table-striped mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>ID</th>
+            <th>Hasta ID</th>
+            <th>Kayıt Tarihi</th>
+            <th>Açıklama</th>
+            <th>İşlemler</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of medicalRecords">
+            <td>{{ record.id }}</td>
+            <td>{{ record.patientId }}</td>
+            <td>{{ record.recordDate | date: 'short' }}</td>
+            <td>{{ record.description }}</td>
+            <td>
+              <button class="btn btn-sm btn-primary me-1" (click)="selectRecord(record)">✏️ Düzenle</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteRecord(record.id)">🗑️ Sil</button>
+            </td>
+          </tr>
+          <tr *ngIf="medicalRecords.length === 0">
+            <td colspan="5" class="text-center py-3">Kayıt bulunamadı.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

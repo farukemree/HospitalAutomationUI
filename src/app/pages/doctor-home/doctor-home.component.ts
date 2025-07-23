@@ -29,6 +29,7 @@ export class DoctorHomeComponent implements OnInit {
   departments: any[] = [];
   editMode: boolean = false;
   imageUrl: string | null = null;
+  showPatients: boolean = false;
   constructor(private http: HttpClient, private router: Router,private toggleService: ToggleService, private location: Location) {}
 
   ngOnInit(): void {
@@ -44,7 +45,16 @@ export class DoctorHomeComponent implements OnInit {
     this.toggleService.toggleEdit$.subscribe(() => {
     this.toggleEditMode();
   });
+  this.toggleService.reloadDoctorInfo$.subscribe(() => {
+    this.getDoctorInfo();
+  });
+  this.toggleService.reloadPatients$.subscribe(() => {
+    this.getAllPatients();
+  });
   }
+
+
+
    toggleEditMode() {
     this.editMode = !this.editMode;
   }
@@ -103,12 +113,16 @@ updateDoctor() {
         next: (response) => {
           console.log("API cevabı:", response);
           this.patients = response.data; 
+          this.showPatients = true;
         },
         error: (err) => {
           console.error("Hasta listesi alınamadı:", err);
         }
       });
   }
+  hidePatients(): void {
+  this.showPatients = false;
+}
 
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];

@@ -1,0 +1,45 @@
+<div class="register-wrapper">
+  <div class="register-box">
+    <h2>📝 Yeni Hesap Oluştur</h2>
+    <p class="subtitle">Bilgilerinizi doldurun ve kayıt olun</p>
+
+    <form (ngSubmit)="register()" #registerForm="ngForm">
+      <div class="form-group">
+        <label for="username">Kullanıcı Adı</label>
+        <input type="text" id="username" name="username" [(ngModel)]="registerData.user.username" required />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Şifre</label>
+        <input type="password" id="password" name="password" [(ngModel)]="registerData.user.password" required />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" [(ngModel)]="registerData.user.email" required />
+      </div>
+
+      <div class="form-group">
+        <label for="fullName">Ad Soyad</label>
+        <input type="text" id="fullName" name="fullName" [(ngModel)]="registerData.patient.fullName" required />
+      </div>
+
+      <div class="form-group">
+        <label for="birthDate">Doğum Tarihi</label>
+        <input type="date" id="birthDate" name="birthDate" [(ngModel)]="registerData.patient.birthDate" required />
+      </div>
+
+      <div class="form-group">
+        <label for="gender">Cinsiyet</label>
+        <select id="gender" name="gender" [(ngModel)]="registerData.patient.gender" required>
+          <option value="" disabled selected>Cinsiyet seçin</option>
+          <option value="erkek">Erkek</option>
+          <option value="kız">Kız</option>
+          <option value="diğer">Diğer</option>
+        </select>
+      </div>
+
+      <button type="submit" [disabled]="!registerForm.form.valid">Kayıt Ol</button>
+    </form>
+  </div>
+</div>

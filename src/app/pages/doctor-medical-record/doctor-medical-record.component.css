@@ -144,3 +144,30 @@ textarea.form-control {
 .btn-danger:hover {
   background-color: #c82333;
 }
+.table tbody tr td button {
+  margin-right: 0.5rem; /* Butonlar arasında yatay boşluk */
+}
+
+.table tbody tr td button:last-child {
+  margin-right: 0; /* Son butonun sağ boşluğu olmasın */
+}
+.table tbody tr td {
+  padding-top: 15px;   /* Daha yüksek üst boşluk */
+  padding-bottom: 15px; /* Daha yüksek alt boşluk */
+}
+.table tbody tr td button {
+  display: block;       /* Alt alta dizilir */
+  margin-bottom: 10px;  /* Dikey boşluk */
+}
+
+.table tbody tr td button:last-child {
+  margin-bottom: 0;     /* Son butonun alt boşluğu olmasın */
+}
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem; /* Label ile input arasındaki boşluk */
+  font-weight: 600;
+  color: #34495e;
+}
+
+

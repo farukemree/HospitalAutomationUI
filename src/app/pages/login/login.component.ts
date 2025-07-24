@@ -48,7 +48,7 @@ export class LoginComponent {
           const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
           const userId = decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
 
-          // 👇 Ortak olarak userId'yi setle
+  
           localStorage.setItem('userId', userId);
 
           console.log("Token çözüldü:", decoded);
@@ -79,5 +79,8 @@ export class LoginComponent {
         alert('Giriş başarısız! Kullanıcı adı veya şifre yanlış olabilir.');
       }
     });
+}
+goToRegister() {
+  this.router.navigate(['/register']);
 }
 }

@@ -12,40 +12,52 @@
 
   <h2 class="mb-3 text-success">📅 Randevu İşlemleri</h2>
 
-  <!-- 🔍 Randevu Getirme -->
-  <div class="row mb-4">
-    <div class="col-auto">
-      <button class="btn btn-primary" (click)="getAppointments()">Tüm Randevuları Getir</button>
+ <!-- 🔍 Randevu Getirme -->
+<div class="card p-4 mb-4 shadow-sm">
+  <h5 class="text-primary mb-3">🔍 Randevu Sorgulama</h5>
+  <div class="row g-3 align-items-end">
+    <div class="col-md-6 col-lg-4">
+      <button class="btn btn-primary w-100" (click)="getAppointments()">Tüm Randevuları Getir</button>
     </div>
-    <div class="col-auto">
-      <input type="number" [(ngModel)]="appointmentIdToFetch" placeholder="Randevu ID" class="form-control">
+    <div class="col-md-6 col-lg-4">
+      <label class="form-label">Randevu ID</label>
+      <input type="number" [(ngModel)]="appointmentIdToFetch" class="form-control" placeholder="Örn: 101">
     </div>
-    <div class="col-auto">
-      <button class="btn btn-secondary" (click)="getAppointmentById()">Tekil Getir</button>
+    <div class="col-md-6 col-lg-4">
+      <button class="btn btn-secondary w-100 mt-md-0 mt-2" (click)="getAppointmentById()">Tekil Getir</button>
     </div>
   </div>
+</div>
 
-  <!-- ➕ Yeni Randevu Ekle -->
-  <div class="card p-4 mb-5 shadow">
-    <h4 class="text-success mb-3">➕ Yeni Randevu</h4>
-    <div class="row g-3">
-      <div class="col-md-4">
+
+ <!-- ➕ Yeni Randevu Ekle -->
+<div class="card p-4 mb-5 shadow">
+  <h4 class="text-success mb-4 border-bottom pb-2">➕ Yeni Randevu</h4>
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="form-group">
         <label class="form-label">Hasta ID</label>
-        <input type="number" [(ngModel)]="newAppointment.patientId" class="form-control">
+        <input type="number" [(ngModel)]="newAppointment.patientId" class="form-control" placeholder="Örn: 202">
       </div>
-      <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
         <label class="form-label">Tarih</label>
         <input type="datetime-local" [(ngModel)]="newAppointment.appointmentDate" class="form-control">
       </div>
-      <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
         <label class="form-label">Sebep</label>
-        <input type="text" [(ngModel)]="newAppointment.description" class="form-control">
-      </div>
-      <div class="col-12">
-        <button class="btn btn-success w-100 mt-3" (click)="addAppointment()">Randevu Ekle</button>
+        <input type="text" [(ngModel)]="newAppointment.description" class="form-control" placeholder="Muayene, kontrol...">
       </div>
     </div>
+    <div class="col-12">
+      <button class="btn btn-success w-100 mt-2" (click)="addAppointment()">Randevu Ekle</button>
+    </div>
   </div>
+</div>
+
 
   <!-- ✏️ Güncelleme -->
   <div *ngIf="isUpdateMode" class="card p-4 mb-5 border-warning shadow">

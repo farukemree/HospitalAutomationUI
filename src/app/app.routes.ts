@@ -5,7 +5,7 @@ import { DoctorHomeComponent } from './pages/doctor-home/doctor-home.component';
 import { AdminHomeComponent } from './pages/admin-home/admin-home.component';
 import { PatientHomeComponent } from './pages/patient-home/patient-home.component';
 import { DoctorMedicalRecordComponent } from './pages/doctor-medical-record/doctor-medical-record.component';
-
+import { RegisterComponent } from './pages/register/register.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, 
   { path: 'login', component: LoginComponent },
@@ -14,5 +14,5 @@ export const routes: Routes = [
   { path: 'admin-home', component: AdminHomeComponent},
   { path: 'patient-home', component: PatientHomeComponent},
   { path: 'doctor-medical-record', component: DoctorMedicalRecordComponent },
-  
+  { path: 'register', component: RegisterComponent}
 ];

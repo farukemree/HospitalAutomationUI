@@ -87,8 +87,8 @@ li.list-group-item {
 }
 
 .doctor-info img {
-  width: 60px;
-  height: 60px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #3498db;
@@ -142,4 +142,62 @@ form {
 /* Bölüm ayırıcı */
 hr {
   margin: 40px 0;
+}
+.medical-records {
+  margin-top: 2rem;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #0d6efd; /* Bootstrap primary renk */
+  padding-bottom: 0.3rem;
+  color: #0d6efd;
+}
+
+.record-list {
+  list-style: none;
+  padding: 0;
+}
+
+.record-item {
+  background: #f8f9fa; /* Açık gri arka plan */
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.record-item:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.record-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #495057;
+}
+
+.record-date {
+  font-style: italic;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.record-id {
+  background-color: #0d6efd;
+  color: white;
+  padding: 0.15rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+}
+
+.record-description {
+  white-space: pre-wrap; /* Satır sonlarında kırılma */
+  font-size: 1rem;
+  color: #212529;
 }

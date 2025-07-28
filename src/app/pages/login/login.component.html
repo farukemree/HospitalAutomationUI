@@ -1,26 +1,27 @@
-<div class="login-wrapper">
-  <div class="login-box">
-    <h2>🏥 Hastane Otomasyon Sistemi</h2>
-    <p class="subtitle">Giriş yapmak için bilgilerinizi giriniz</p>
+<div class="Background">
+  <div class="login-wrapper">
+    <div class="login-box">
+      <h2>🏥 Hastane Otomasyon Sistemi</h2>
+      <p class="subtitle">Giriş yapmak için bilgilerinizi giriniz</p>
 
-    <form (ngSubmit)="handleLogin()">
-      <div class="form-group">
-        <label for="username"><i class="fas fa-user"></i> Kullanıcı Adı</label>
-        <input type="text" id="username" [(ngModel)]="username" name="username" required />
+      <form (ngSubmit)="handleLogin()">
+        <div class="form-group">
+          <label for="username"><i class="fas fa-user"></i> Kullanıcı Adı</label>
+          <input type="text" id="username" [(ngModel)]="username" name="username" required />
+        </div>
+
+        <div class="form-group">
+          <label for="password"><i class="fas fa-lock"></i> Şifre</label>
+          <input type="password" id="password" [(ngModel)]="password" name="password" required />
+        </div>
+
+        <button type="submit"><i class="fas fa-sign-in-alt"></i> Giriş Yap</button>
+      </form>
+
+      <div class="text-center mt-3">
+        <span>Hesabınız yok mu?</span>
+        <button class="btn-register" (click)="goToRegister()">Kayıt olun</button>
       </div>
-
-      <div class="form-group">
-        <label for="password"><i class="fas fa-lock"></i> Şifre</label>
-        <input type="password" id="password" [(ngModel)]="password" name="password" required />
-      </div>
-
-      <button type="submit"><i class="fas fa-sign-in-alt"></i> Giriş Yap</button>
-    </form>
-
-    <!-- Burayı formun altına aldım -->
-    <div class="text-center mt-3">
-      <span>Hesabınız yok mu?</span>
-      <button class="btn-register" (click)="goToRegister()">Kayıt olun</button>
     </div>
   </div>
 </div>

@@ -16,12 +16,13 @@ import { HttpClient } from '@angular/common/http';
 export class AppComponent implements OnInit {
   title = 'hospital-frontend-angular';
    patient: any = null; 
-
+  showAdminButtons = false;
   showDoctorButtons = false;
   showOnlyBackToHomeButton = false;
   showBackToHomeButton = false;
   showPatientInfo = false;
   showRegisterButton = false;
+  showAdminDepartmentButtons = false;
 
   constructor(private router: Router, private toggleService: ToggleService, private http: HttpClient) {
     this.router.events.pipe(
@@ -30,6 +31,8 @@ export class AppComponent implements OnInit {
       const url = event.urlAfterRedirects;
       
       this.showPatientInfo = url.startsWith('/patient-home');
+      this.showAdminButtons = url.startsWith('/admin-home');
+      this.showAdminDepartmentButtons = url.startsWith('/admin-department');
       this.showDoctorButtons = url.startsWith('/doctor-home');
       this.showOnlyBackToHomeButton = url.startsWith('/doctor-page');
       this.showBackToHomeButton = url.startsWith('/doctor-medical-record');
@@ -42,6 +45,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
      this.loadPatientInfo();
+    
   }
 
    loadPatientInfo() {
@@ -59,6 +63,7 @@ export class AppComponent implements OnInit {
         }
       });
   }
+  
 
 
   logout(): void {
@@ -69,9 +74,21 @@ export class AppComponent implements OnInit {
   goToDoctorHome(): void {
     this.router.navigate(['/doctor-home']);
   }
+  goToAdminHome(): void {
+    this.router.navigate(['/admin-home']);
+  }
+  goToDepartmentPage() {
+  this.router.navigate(['/admin-department']);
+}
 
   goToAppointments(): void {
     this.router.navigate(['/doctor-page']);
+  }
+  goToMyMedicalRecords(): void {
+  this.toggleService.triggerShowMedicalRecords();
+}
+  goToMyAppointments(): void{
+    this.toggleService.triggerShowAppointments();
   }
 
   goToSettings(): void {

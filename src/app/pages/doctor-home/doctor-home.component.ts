@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpHeaders } from '@angular/common/http';
 import { ToggleService } from '../../Services/toggle.services';
-
+import Swal from 'sweetalert2';
 interface Patient {
   id: number;
   fullName: string;
@@ -40,7 +40,13 @@ export class DoctorHomeComponent implements OnInit {
       this.getDoctorInfo();
 
     } else {
-      console.warn("localStorage'da doctorId bulunamadı.");
+     Swal.fire({
+  icon: 'warning',
+  title: 'Uyarı',
+  text: "localStorage'da doctorId bulunamadı.",
+  confirmButtonText: 'Tamam'
+});
+
     }
     this.toggleService.toggleEdit$.subscribe(() => {
     this.toggleEditMode();
@@ -69,13 +75,17 @@ getDoctorInfo(): void {
 
         if (this.doctor?.imageFileKey) {
           this.imageUrl = `http://localhost:5073/api/Upload/GetUserImage/${this.doctor.imageFileKey}`;
-          console.log('imageUrl:', this.imageUrl);
         } else {
           this.imageUrl = 'assets/default-doctor.png';
         }
       },
       error: err => {
-        console.error('Doktor bilgisi yüklenemedi', err);
+       Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: 'Doktor bilgisi yüklenemedi: ' + (err.message || err),
+  confirmButtonText: 'Tamam'
+});
       }
     });
 }
@@ -85,11 +95,25 @@ updateDoctor() {
     this.http.put(`http://localhost:5073/api/Doctor/UpdateDoctorById/${this.doctor.id}`, this.doctor)
       .subscribe({
         next: () => {
-          alert('Doktor bilgileri güncellendi.');
+          Swal.fire({
+  icon: 'success',
+  title: 'Başarılı',
+  text: 'Doktor bilgileri güncellendi.',
+  confirmButtonText: 'Tamam'
+});
+
           this.editMode = false;
           this.getDoctorInfo();
         },
-        error: err => alert('Güncelleme sırasında hata oluştu: ' + err.message)
+       error: err => {
+  Swal.fire({
+    icon: 'error',
+    title: 'Hata',
+    text: 'Güncelleme sırasında hata oluştu: ' + err.message,
+    confirmButtonText: 'Tamam'
+  });
+}
+
       });
   }
 
@@ -101,9 +125,17 @@ updateDoctor() {
       .subscribe({
         next: (data) => {
           this.patients = data;
-          console.log('Doktora ait hastalar:', data);
         },
-        error: (err) => console.error('Hastalar alınamadı:', err)
+        error: (err) => {
+  console.error('Hastalar alınamadı:', err);
+  Swal.fire({
+    icon: 'error',
+    title: 'Hata',
+    text: 'Hastalar alınamadı: ' + (err.message || err),
+    confirmButtonText: 'Tamam'
+  });
+}
+
       });
   }
 
@@ -111,12 +143,16 @@ updateDoctor() {
     this.http.get<any>('http://localhost:5073/api/Patient/GetAllPatients')
       .subscribe({
         next: (response) => {
-          console.log("API cevabı:", response);
           this.patients = response.data; 
           this.showPatients = true;
         },
         error: (err) => {
-          console.error("Hasta listesi alınamadı:", err);
+          Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: 'Hasta listesi alınamadı: ' + (err.message || err),
+  confirmButtonText: 'Tamam'
+});
         }
       });
   }
@@ -130,7 +166,13 @@ updateDoctor() {
 
 uploadImage(): void {
   if (!this.selectedFile) {
-    alert("Lütfen bir dosya seçin.");
+   Swal.fire({
+  icon: 'warning',
+  title: 'Uyarı',
+  text: 'Lütfen bir dosya seçin.',
+  confirmButtonText: 'Tamam'
+});
+
     return;
   }
 
@@ -139,7 +181,13 @@ uploadImage(): void {
 
   const token = localStorage.getItem('token');
   if (!token) {
-    alert("Oturum doğrulaması bulunamadı.");
+    Swal.fire({
+  icon: 'warning',
+  title: 'Uyarı',
+  text: 'Oturum doğrulaması bulunamadı.',
+  confirmButtonText: 'Tamam'
+});
+
     return;
   }
 
@@ -150,12 +198,23 @@ uploadImage(): void {
   this.http.post<any>('http://localhost:5073/api/Upload/UploadFile', formData, { headers })
     .subscribe({
       next: response => {
-        alert("Resim başarıyla yüklendi.");
+       Swal.fire({
+  icon: 'success',
+  title: 'Başarılı',
+  text: 'Resim başarıyla yüklendi.',
+  confirmButtonText: 'Tamam'
+});
+
         this.getDoctorInfo(); 
       },
       error: err => {
-        console.error("Resim yüklenemedi:", err);
-        alert("Resim yüklenemedi.");
+        Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: 'Resim yüklenemedi.',
+  confirmButtonText: 'Tamam'
+});
+
       }
     });
 }

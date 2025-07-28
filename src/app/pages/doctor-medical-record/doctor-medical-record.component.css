@@ -171,3 +171,10 @@ textarea.form-control {
 }
 
 
+.search-section {
+  margin-bottom: 20px;
+}
+
+.search-section .form-control {
+  margin-right: 10px;
+}

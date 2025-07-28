@@ -1,57 +1,69 @@
-<nav class="custom-navbar">
-  <div class="brand">🏥 Hastane Sistemi</div>
-  <div class="navbar-right">
-    <button *ngIf="showRegisterButton" class="nav-btn" (click)="logout()">Giriş Sayfasına Dön</button>
-    <span *ngIf="showPatientInfo && patient" class="me-3 text-primary fw-bold">
-      👤 {{ patient.fullName }}
-    </span>
-    <button *ngIf="showPatientInfo" class="nav-btn" (click)="logout()">Çıkış</button>
-
-    <ng-container *ngIf="showDoctorButtons">
-      <button class="nav-btn" (click)="reloadDoctorInfo()">Bilgileri Yenile</button>
-      <button class="nav-btn" (click)="reloadPatients()">Hastaları Gör</button>
-      <button class="nav-btn" (click)="goToAppointments()">Randevular</button>
-      <button class="nav-btn" (click)="goToMedicalRecords()">Tıbbi Kayıtlar</button>
-      <button class="nav-btn" (click)="goToSettings()">Ayarlar</button>
-      <button class="nav-btn" (click)="logout()">Çıkış Yap</button>
-    </ng-container>
-
-    <button *ngIf="showOnlyBackToHomeButton || showBackToHomeButton" class="nav-btn" (click)="goToDoctorHome()">Ana Sayfaya Dön</button>
-  </div>
-</nav>
-
-<!-- Sayfa içeriği -->
-<div class="content-wrapper">
-  <router-outlet></router-outlet>
+<div class="Background">
+  <nav class="custom-navbar">
+    <div class="brand">🏥 Hastane Sistemi
+       
+    </div>
+    <div class="navbar-right">
+      <button *ngIf="showRegisterButton" class="nav-btn" (click)="logout()">Giriş Sayfasına Dön</button>
+      <span *ngIf="showPatientInfo && patient" class="me-3 text-primary fw-bold">
+        👤 {{ patient.fullName }}
+      </span>
+      <button *ngIf="showPatientInfo" class="nav-btn" (click)="goToMyAppointments()">Randevularım</button>
+      <button *ngIf="showPatientInfo" class="nav-btn" (click)="goToMyMedicalRecords()">Tıbbi Kayıtlarım</button>
+      <button *ngIf="showPatientInfo" class="nav-btn" (click)="logout()">Çıkış</button>
+      <div class="navbar-right">
+        <span *ngIf="showAdminButtons" class="admin-label"> Admin Paneli    </span>
+        <button *ngIf="showAdminButtons" class="nav-btn" (click)="goToDepartmentPage()">Departmanlar </button>
+        <button *ngIf="showAdminButtons" class="nav-btn" (click)="logout()">Çıkış </button>
 </div>
+ <div class="navbar-right">
+      <button *ngIf="showAdminDepartmentButtons" class="nav-btn" (click)="goToAdminHome()">Admin Sayfasına Dön</button>
+</div>
+      <ng-container *ngIf="showDoctorButtons">
+        <button class="nav-btn" (click)="reloadDoctorInfo()">Bilgileri Yenile</button>
+        <button class="nav-btn" (click)="reloadPatients()">Hastaları Gör</button>
+        <button class="nav-btn" (click)="goToAppointments()">Randevular</button>
+        <button class="nav-btn" (click)="goToMedicalRecords()">Tıbbi Kayıtlar</button>
+        <button class="nav-btn" (click)="goToSettings()">Ayarlar</button>
+        <button class="nav-btn" (click)="logout()">Çıkış Yap</button>
+      </ng-container>
 
-<footer class="footer">
-  <div class="footer-container">
-    <div class="footer-left">
-      <h2>🏥 Hastane Yönetim Sistemi</h2>
-      <p>Doktor, hasta ve randevu işlemlerini kolayca yönetin.</p>
-      <p>© 2025 | Tüm hakları saklıdır.</p>
+      <button *ngIf="showOnlyBackToHomeButton || showBackToHomeButton" class="nav-btn" (click)="goToDoctorHome()">Ana Sayfaya Dön</button>
     </div>
+  </nav>
 
-    <div class="footer-center">
-      <h3>Tasarlayıcı</h3>
-      <p>Faruk Emre BAKIR</p>
-    </div>
+  <!-- Sayfa içeriği -->
+  <div class="content-wrapper">
+    <router-outlet></router-outlet>
+  </div>
 
-    <div class="footer-right">
-      <h3>Bizi Takip Edin</h3>
-      <div class="social-icons">
-        <a href="https://github.com/farukemree" target="_blank" aria-label="GitHub">
-      <i class="bi bi-github"></i>
-    </a>
-    <a href="https://www.linkedin.com/in/faruk-emre-bak%C4%B1r-47aa6b315/" target="_blank" aria-label="LinkedIn">
-      <i class="bi bi-linkedin"></i>
-    </a>
-    <a href="https://instagram.com/farukbakiir" target="_blank" aria-label="Instagram">
-      <i class="bi bi-instagram"></i>
-    </a>
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <h2>🏥 Hastane Yönetim Sistemi</h2>
+        <p>Doktor, hasta ve randevu işlemlerini kolayca yönetin.</p>
+        <p>© 2025 | Tüm hakları saklıdır.</p>
+      </div>
+
+      <div class="footer-center">
+        <h3>Tasarlayıcı</h3>
+        <p>Faruk Emre BAKIR</p>
+      </div>
+
+      <div class="footer-right">
+        <h3>Bizi Takip Edin</h3>
+        <div class="social-icons">
+          <a href="https://github.com/farukemree" target="_blank" aria-label="GitHub">
+            <i class="bi bi-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/faruk-emre-bak%C4%B1r-47aa6b315/" target="_blank" aria-label="LinkedIn">
+            <i class="bi bi-linkedin"></i>
+          </a>
+          <a href="https://instagram.com/farukbakiir" target="_blank" aria-label="Instagram">
+            <i class="bi bi-instagram"></i>
+          </a>
+        </div>
       </div>
     </div>
-  </div>
-</footer>
-
+  </footer>
+</div>

@@ -32,7 +32,7 @@ h2.section-title {
   color: #fff;
 }
 .btn-primary:hover {
-  background-color: #2980b9;
+  background-color: #2980b9;  
 }
 
 .btn-success {
@@ -200,4 +200,15 @@ hr {
   white-space: pre-wrap; /* Satır sonlarında kırılma */
   font-size: 1rem;
   color: #212529;
+}
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
 }

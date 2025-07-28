@@ -26,6 +26,12 @@
       <p class="text-warning text-center mt-3">Henüz doktor listesi yüklenmedi veya boş.</p>
     </ng-template>
   </section>
+<div class="mb-3">
+  <label for="departmentId">Departman ID:</label>
+  <input id="departmentId" type="number" [(ngModel)]="selectedDepartmentId" class="form-control" />
+
+  <button class="btn btn-primary mt-2" (click)="getDoctorsByDepartmentId()">Departmana Göre Doktorları Getir</button>
+</div>
 
   <hr>
 
@@ -36,21 +42,62 @@
 
       <div class="form-group mb-3">
         <label for="doctor">Doktor Seç:</label>
-        <select class="form-select" [(ngModel)]="appointment.doctorId" name="doctorId" required>
-          <option [value]="0" disabled>Doktor seçin</option>
-          <option *ngFor="let doc of doctors" [value]="doc.id">{{ doc.fullName }}</option>
-        </select>
+       <!-- Doktor seçimi isme göre -->
+<select class="form-select" [(ngModel)]="selectedDoctorName" name="doctorName" (change)="onDoctorNameChange()" required>
+  <option value="" disabled selected>Doktor seçin</option>
+  <option *ngFor="let doc of doctors" 
+          [value]="doc.fullName"
+          [disabled]="isDoctorAlreadyBooked(doc.id)">
+    {{ doc.fullName }} 
+  </option>
+</select>
+
+
       </div>
 
-      <div class="form-group mb-3">
-        <label for="date">Randevu Tarihi:</label>
-        <input class="form-control" type="datetime-local" [(ngModel)]="appointment.appointmentDate" name="appointmentDate" required />
-      </div>
+   <!-- Tarih seçimi -->
+<div class="form-group mb-3">
+  <label for="date">Randevu Tarihi:</label>
+  <input
+    class="form-control"
+    type="date"
+    [(ngModel)]="selectedDate"
+    name="selectedDate"
+    (change)="onDateChange()"
+    required
+  />
+</div>
 
-      <div class="form-group mb-4">
-        <label for="desc">Açıklama:</label>
-        <input class="form-control" type="text" [(ngModel)]="appointment.description" name="description" placeholder="Opsiyonel açıklama" />
-      </div>
+ <!-- Saat Seçimi -->
+<div class="form-group mb-3">
+  <label for="timeSlot">Randevu Saati:</label>
+  <select
+    class="form-control"
+    [(ngModel)]="selectedTime"
+    name="selectedTime"
+    required
+  >
+    <option *ngFor="let slot of availableTimeSlots"
+            [value]="slot.time"
+            [disabled]="slot.disabled">
+      {{ slot.time }} {{ slot.disabled ? '(Dolu)' : '' }}
+    </option>
+  </select>
+</div>
+
+
+<div class="form-group mb-4">
+  <label for="description">Açıklama:</label>
+  <textarea
+    class="form-control"
+    id="description"
+    [(ngModel)]="appointment.description"
+    name="description"
+    rows="3"
+    placeholder="Şikayetinizi veya açıklamanızı girin..."
+  ></textarea>
+</div>
+
 
       <button type="submit" class="btn btn-success w-100">
         {{ editingAppointment ? 'Güncelle' : 'Oluştur' }}
@@ -63,7 +110,7 @@
   <!-- Randevularım -->
   <section class="my-appointments mb-5 card-section">
     <h2 class="section-title">Randevularım</h2>
-    <button class="btn btn-info mb-3" (click)="getMyAppointments()">Randevularım</button>
+   
 
     <ul *ngIf="appointments.length > 0; else noAppointments" class="list-group">
       <li *ngFor="let app of appointments" class="list-group-item d-flex justify-content-between align-items-center appointment-item">
@@ -88,7 +135,6 @@
 
   <<section class="medical-records card-section">
   <h2 class="section-title">Tıbbi Kayıtlarım</h2>
-  <button class="btn btn-info mb-3" (click)="getMyMedicalRecords()">Tıbbi Kayıtları Getir</button>
 
   <ul *ngIf="medicalRecords.length > 0; else noMedicalRecords" class="list-group">
     <li *ngFor="let record of medicalRecords" class="list-group-item medical-record-item">

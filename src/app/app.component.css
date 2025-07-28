@@ -174,3 +174,19 @@
   }
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.Background {
+  min-height: 100vh;
+  width: 100%;
+  background-image: url('/assets/images/BackgroundImage.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+}

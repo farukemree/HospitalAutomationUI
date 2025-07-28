@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 interface User {
   id: number;
@@ -42,7 +43,15 @@ export class AdminHomeComponent implements OnInit {
       next: response => {
         this.users = response.data; 
       },
-      error: err => alert('Kullanıcılar yüklenemedi: ' + err.message)
+      error: err => {
+  Swal.fire({
+    icon: 'error',
+    title: 'Hata',
+    text: 'Kullanıcılar yüklenemedi: ' + err.message,
+    confirmButtonText: 'Tamam'
+  });
+}
+
     });
 }
 getAllDoctors(): void {
@@ -52,11 +61,23 @@ getAllDoctors(): void {
         if (response.isSuccess) {
           this.doctors = response.data;
         } else {
-          alert("Hata: " + response.message);
+        Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: response.message,
+  confirmButtonText: 'Tamam'
+});
+
         }
       },
       error: err => {
-        alert("Doktorlar alınamadı: " + err.message);
+        Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: 'Doktorlar alınamadı: ' + err.message,
+  confirmButtonText: 'Tamam'
+});
+
       }
     });
 }
@@ -69,11 +90,23 @@ getAllPatients(): void {
         if (response.isSuccess) {
           this.patients = response.data;
         } else {
-          alert("Hata: " + response.message);
+        Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: response.message,
+  confirmButtonText: 'Tamam'
+});
+
         }
       },
       error: err => {
-        alert("Hastalar alınamadı: " + err.message);
+       Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: 'Hastalar alınamadı: ' + err.message,
+  confirmButtonText: 'Tamam'
+});
+
       }
     });
 }
@@ -86,10 +119,24 @@ getAllDepartments(): void {
         if (response.isSuccess) {
           this.departments = response.data;
         } else {
-          alert('Hata: ' + response.message);
+         Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: response.message,
+  confirmButtonText: 'Tamam'
+});
+
         }
       },
-      error: err => alert('Bölümler yüklenemedi: ' + err.message)
+     error: err => {
+  Swal.fire({
+    icon: 'error',
+    title: 'Hata',
+    text: 'Bölümler yüklenemedi: ' + err.message,
+    confirmButtonText: 'Tamam'
+  });
+}
+
     });
 }
 
@@ -97,7 +144,13 @@ getAllDepartments(): void {
 
   updateUserRole(userId: number, newRole: string): void {
   if (!newRole) {
-    alert('Lütfen bir rol seçin.');
+  Swal.fire({
+  icon: 'warning',
+  title: 'Uyarı',
+  text: 'Lütfen bir rol seçin.',
+  confirmButtonText: 'Tamam'
+});
+
     return;
   }
 
@@ -109,11 +162,23 @@ getAllDepartments(): void {
   this.http.post('http://localhost:5073/api/User/UpdateUserRole', dto)
     .subscribe({
       next: () => {
-        alert('Rol başarıyla güncellendi.');
+       Swal.fire({
+  icon: 'success',
+  title: 'Başarılı',
+  text: 'Rol başarıyla güncellendi.',
+  confirmButtonText: 'Tamam'
+});
+
         this.loadUsers();  
       },
       error: err => {
-        alert('Rol güncellenemedi: ' + err.message);
+       Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: 'Rol güncellenemedi: ' + err.message,
+  confirmButtonText: 'Tamam'
+});
+
       }
     });
 }

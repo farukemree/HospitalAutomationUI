@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import Swal from 'sweetalert2';
 interface Appointment {
   id: number;
   patientId: number;
@@ -58,7 +58,13 @@ cancelUpdate(): void {
 
 addAppointment(): void {
   if (!this.doctorId) {
-    alert('Doktor bilgisi bulunamadı, işlem yapılamıyor.');
+    Swal.fire({
+  icon: 'warning',
+  title: 'Uyarı',
+  text: 'Doktor bilgisi bulunamadı, işlem yapılamıyor.',
+  confirmButtonText: 'Tamam'
+});
+
     return;
   }
 
@@ -67,11 +73,25 @@ addAppointment(): void {
   this.http.post<any>('http://localhost:5073/api/Appointment/AddAppointment', this.newAppointment)
     .subscribe({
       next: (res) => {
-        alert('Randevu eklendi!');
+        Swal.fire({
+  icon: 'success',
+  title: 'Başarılı',
+  text: 'Randevu eklendi!',
+  confirmButtonText: 'Tamam'
+});
+
         this.getAppointments();
         this.resetNewAppointment();
       },
-      error: (err) => console.error('Ekleme hatası:', err)
+     error: (err) => {
+  Swal.fire({
+    icon: 'error',
+    title: 'Hata',
+    text: 'Ekleme hatası: ' + (err.message || err),
+    confirmButtonText: 'Tamam'
+  });
+}
+
     });
 }
 
@@ -85,10 +105,18 @@ loadDoctors(): void {
     this.http.get<any[]>('http://localhost:5073/api/Doctor/GetAllDoctors', { headers })
       .subscribe({
         next: (data) => {
-          console.log("Gelen veri:", data);
+       
           this.doctors = Array.isArray(data) ? data : [];
         },
-        error: (err) => console.error("Doktorları çekerken hata:", err)
+      error: (err) => {
+  Swal.fire({
+    icon: 'error',
+    title: 'Hata',
+    text: 'Doktorları çekerken hata oluştu: ' + (err.message || err),
+    confirmButtonText: 'Tamam'
+  });
+}
+
       });
   }
   
@@ -97,23 +125,50 @@ loadDoctors(): void {
   }
 
   deleteDoctor(id: number): void {
-    if (!confirm("Bu doktoru silmek istediğinize emin misiniz?")) return;
+  Swal.fire({
+    title: 'Emin misiniz?',
+    text: 'Bu doktoru silmek istediğinize emin misiniz?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Evet, sil',
+    cancelButtonText: 'Hayır, iptal'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const token = localStorage.getItem('token');
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token || ''}`);
 
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token || ''}`);
+      this.http.delete(`http://localhost:5073/api/Doctor/DeleteDoctor/${id}`, { headers })
+        .subscribe({
+          next: () => {
+            this.doctors = this.doctors.filter(d => d.id !== id);
+            Swal.fire({
+              icon: 'success',
+              title: 'Başarılı',
+              text: 'Doktor silindi!',
+              confirmButtonText: 'Tamam'
+            });
+          },
+          error: (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Hata',
+              text: 'Silme işlemi başarısız oldu.',
+              confirmButtonText: 'Tamam'
+            });
+          }
+        });
+    }
+  });
+}
 
-    this.http.delete(`http://localhost:5073/api/Doctor/DeleteDoctor/${id}`, { headers })
-      .subscribe({
-        next: () => {
-          this.doctors = this.doctors.filter(d => d.id !== id);
-          alert('Doktor silindi!');
-        },
-        error: (err) => console.error("Silme hatası:", err)
-      });
-  }
   getAppointments(): void {
     if (!this.doctorId) {
-    console.warn('doctorId bulunamadı, randevular getirilmedi.');
+   Swal.fire({
+  icon: 'warning',
+  title: 'Uyarı',
+  text: 'doctorId bulunamadı, randevular getirilmedi.',
+  confirmButtonText: 'Tamam'
+});
     return;
   }
   this.http.get<any>(`http://localhost:5073/api/Appointment/GetAppointmentsByDoctorId/${this.doctorId}`)
@@ -123,17 +178,36 @@ loadDoctors(): void {
         if(response.isSuccess) {
           this.appointments = response.data;
         } else {
-          console.error('Hata:', response.message);
+        Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: response.message,
+  confirmButtonText: 'Tamam'
+});
         }
       },
-      error: (err) => console.error('API çağrısı hata:', err)
+     error: (err) => {
+  Swal.fire({
+    icon: 'error',
+    title: 'Hata',
+    text: 'API çağrısı sırasında hata oluştu: ' + (err.message || err),
+    confirmButtonText: 'Tamam'
+  });
+}
+
     });
 }
 
 
   getAppointmentById(): void {
   if (!this.appointmentIdToFetch) {
-    alert('Lütfen bir randevu ID girin.');
+   Swal.fire({
+  icon: 'warning',
+  title: 'Uyarı',
+  text: 'Lütfen bir randevu ID girin.',
+  confirmButtonText: 'Tamam'
+});
+
     return;
   }
 
@@ -144,8 +218,13 @@ loadDoctors(): void {
         this.appointmentIdToFetch = null;  // input temizle
       },
       error: (err) => {
-        console.error('Randevu bulunamadı:', err);
-        alert('Randevu bulunamadı.');
+        Swal.fire({
+  icon: 'info',
+  title: 'Bilgi',
+  text: 'Randevu bulunamadı.',
+  confirmButtonText: 'Tamam'
+});
+
       }
     });
 }
@@ -156,25 +235,51 @@ loadDoctors(): void {
 
   updateAppointmentById(): void {
     if (!this.newAppointment.id) {
-      alert('Güncelleme için randevu ID girilmelidir.');
+    Swal.fire({
+  icon: 'warning',
+  title: 'Uyarı',
+  text: 'Güncelleme için randevu ID girilmelidir.',
+  confirmButtonText: 'Tamam'
+});
+
       return;
     }
 
     this.http.put<any>(`http://localhost:5073/api/Appointment/UpdateAppointmentById/${this.newAppointment.id}`, this.newAppointment)
       .subscribe({
         next: () => {
-          alert('Randevu güncellendi!');
+         Swal.fire({
+  icon: 'success',
+  title: 'Başarılı',
+  text: 'Randevu güncellendi!',
+  confirmButtonText: 'Tamam'
+});
+
           this.getAppointments();
           this.resetNewAppointment();
         },
-        error: (err) => console.error('Güncelleme hatası:', err)
+       error: (err) => {
+  Swal.fire({
+    icon: 'error',
+    title: 'Hata',
+    text: 'Güncelleme hatası: ' + (err.message || err),
+    confirmButtonText: 'Tamam'
+  });
+}
+
       });
   }
 
 
   deleteAppointmentById(id: number): void {
     if (id === undefined) {
-    console.error('Randevu ID si undefined, silme işlemi iptal edildi.');
+  
+Swal.fire({
+  icon: 'warning',
+  title: 'Uyarı',
+  text: 'Randevu ID si undefined, silme işlemi iptal edildi.',
+  confirmButtonText: 'Tamam'
+});
     return;
   }
     if (!confirm('Bu randevuyu silmek istiyor musunuz?')) return;
@@ -182,10 +287,25 @@ loadDoctors(): void {
     this.http.delete(`http://localhost:5073/api/Appointment/DeleteAppointmentById/${id}`)
       .subscribe({
         next: () => {
-          alert('Randevu silindi!');
+        Swal.fire({
+  icon: 'success',
+  title: 'Başarılı',
+  text: 'Randevu silindi!',
+  confirmButtonText: 'Tamam'
+});
+
           this.appointments = this.appointments.filter(a => a.id !== id);
         },
-        error: (err) => console.error('Silme hatası:', err)
+       error: (err) => {
+  console.error('Silme hatası:', err);
+  Swal.fire({
+    icon: 'error',
+    title: 'Hata',
+    text: 'Silme işlemi sırasında hata oluştu: ' + (err.message || err),
+    confirmButtonText: 'Tamam'
+  });
+}
+
       });
   }
 

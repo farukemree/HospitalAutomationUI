@@ -12,12 +12,15 @@ export class ToggleService {
   // Doktor bilgilerini yenileme tetikleyicisi
   private reloadDoctorInfoSource = new Subject<void>();
   reloadDoctorInfo$ = this.reloadDoctorInfoSource.asObservable();
+  private showAppointmentSource = new Subject<void>();
+ showAppointments$ = this.showAppointmentSource.asObservable();
 
   // Hasta listesini yenileme tetikleyicisi
   private reloadPatientsSource = new Subject<void>();
   reloadPatients$ = this.reloadPatientsSource.asObservable();
-
-  // Metotlar: dışarıdan tetiklenir
+  
+  private showMedicalRecordsSource = new Subject<void>();
+ showMedicalRecords$ = this.showMedicalRecordsSource.asObservable();
 
   toggleEdit(): void {
     this.toggleEditSource.next();
@@ -30,4 +33,11 @@ export class ToggleService {
   reloadPatients(): void {
     this.reloadPatientsSource.next();
   }
+  triggerShowMedicalRecords(): void {
+  this.showMedicalRecordsSource.next();
+}
+triggerShowAppointments(): void {
+ this.showAppointmentSource.next();
+}
+
 }

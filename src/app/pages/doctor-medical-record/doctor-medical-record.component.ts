@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import Swal from 'sweetalert2';
 interface MedicalRecordDto {
   id: number;
   patientId: number;
@@ -21,6 +21,7 @@ interface MedicalRecordDto {
 export class DoctorMedicalRecordComponent implements OnInit {
 
   medicalRecords: MedicalRecordDto[] = [];
+  searchKeyword: string = '';
   selectedRecord: MedicalRecordDto | null = null;
   newRecord: Partial<MedicalRecordDto> = {
     patientId: 0,
@@ -41,12 +42,23 @@ export class DoctorMedicalRecordComponent implements OnInit {
         if (res.isSuccess) {
           this.medicalRecords = res.data;
         } else {
-          alert('Kayıtlar yüklenirken hata oluştu: ' + res.message);
+        Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: 'Kayıtlar yüklenirken hata oluştu: ' + res.message,
+  confirmButtonText: 'Tamam'
+});
+
         }
       },
       error: (err) => {
-        console.error('API Hatası:', err);
-        alert('Kayıtlar yüklenemedi.');
+        Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: 'Kayıtlar yüklenemedi.',
+  confirmButtonText: 'Tamam'
+});
+
       }
     });
   }
@@ -62,7 +74,47 @@ get activeRecord() {
     return this.newRecord;
   }
 }
+searchMedicalRecords(): void {
+  if (!this.searchKeyword || this.searchKeyword.trim() === '') {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Uyarı',
+      text: 'Lütfen anahtar kelime girin.',
+      confirmButtonText: 'Tamam'
+    });
+    return;
+  }
 
+  this.http.get<any>(`http://localhost:5073/api/MedicalRecord/SearchMedicalRecords?keyword=${this.searchKeyword}`)
+    .subscribe({
+      next: (res) => {
+        if (res.isSuccess) {
+          this.medicalRecords = res.data;
+          Swal.fire({
+            icon: 'success',
+            title: 'Başarılı',
+            text: 'Arama sonuçları listelendi.',
+            confirmButtonText: 'Tamam'
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Hata',
+            text: res.message,
+            confirmButtonText: 'Tamam'
+          });
+        }
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Hata',
+          text: 'Arama sırasında hata oluştu.',
+          confirmButtonText: 'Tamam'
+        });
+      }
+    });
+}
 
 
 
@@ -82,22 +134,44 @@ get activeRecord() {
 
   addRecord(): void {
     if (!this.newRecord.patientId || !this.newRecord.recordDate) {
-      alert('Hasta ID ve Tarih zorunludur.');
+      Swal.fire({
+  icon: 'warning',
+  title: 'Uyarı',
+  text: 'Hasta ID ve Tarih zorunludur.',
+  confirmButtonText: 'Tamam'
+});
+
       return;
     }
     this.http.post<any>('http://localhost:5073/api/MedicalRecord/AddMedicalRecord', this.newRecord).subscribe({
       next: (res) => {
         if (res.isSuccess) {
-          alert('Kayıt eklendi');
+          Swal.fire({
+  icon: 'success',
+  title: 'Başarılı',
+  text: 'Kayıt eklendi',
+  confirmButtonText: 'Tamam'
+});
+
           this.loadMedicalRecords();
           this.resetNewRecord();
         } else {
-          alert('Kayıt eklenirken hata: ' + res.message);
+         Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: 'Kayıt eklenirken hata: ' + res.message,
+  confirmButtonText: 'Tamam'
+});
+
         }
       },
       error: (err) => {
-        console.error(err);
-        alert('Kayıt eklenemedi.');
+       Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: 'Kayıt eklenemedi.',
+  confirmButtonText: 'Tamam'
+});
       }
     });
   }
@@ -108,37 +182,79 @@ get activeRecord() {
     this.http.put<any>(`http://localhost:5073/api/MedicalRecord/UpdateMedicalRecordById/${this.selectedRecord.id}`, this.selectedRecord).subscribe({
       next: (res) => {
         if (res.isSuccess) {
-          alert('Kayıt güncellendi');
+          Swal.fire({
+  icon: 'success',
+  title: 'Başarılı',
+  text: 'Kayıt güncellendi',
+  confirmButtonText: 'Tamam'
+});
+
           this.loadMedicalRecords();
           this.cancelEdit();
         } else {
-          alert('Güncelleme hatası: ' + res.message);
+          Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: 'Güncelleme hatası: ' + res.message,
+  confirmButtonText: 'Tamam'
+});
+
         }
       },
       error: (err) => {
         console.error(err);
-        alert('Güncelleme başarısız.');
+      Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: 'Güncelleme başarısız.',
+  confirmButtonText: 'Tamam'
+});
+
       }
     });
   }
 
   deleteRecord(id: number): void {
-    if (!confirm('Bu kaydı silmek istediğinize emin misiniz?')) return;
-
-    this.http.delete<any>(`http://localhost:5073/api/MedicalRecord/DeleteMedicalRecordById/${id}`).subscribe({
-      next: (res) => {
-        if (res.isSuccess) {
-          alert('Kayıt silindi');
-          this.loadMedicalRecords();
-        } else {
-          alert('Silme hatası: ' + res.message);
+  Swal.fire({
+    title: 'Emin misiniz?',
+    text: 'Bu kaydı silmek istediğinize emin misiniz?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Evet, sil',
+    cancelButtonText: 'Hayır, iptal'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.http.delete<any>(`http://localhost:5073/api/MedicalRecord/DeleteMedicalRecordById/${id}`).subscribe({
+        next: (res) => {
+          if (res.isSuccess) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Başarılı',
+              text: 'Kayıt silindi',
+              confirmButtonText: 'Tamam'
+            });
+            this.loadMedicalRecords();
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Hata',
+              text: 'Silme hatası: ' + res.message,
+              confirmButtonText: 'Tamam'
+            });
+          }
+        },
+        error: (err) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Hata',
+            text: 'Silme işlemi başarısız.',
+            confirmButtonText: 'Tamam'
+          });
         }
-      },
-      error: (err) => {
-        console.error(err);
-        alert('Silme işlemi başarısız.');
-      }
-    });
-  }
+      });
+    }
+  });
+}
+
 
 }

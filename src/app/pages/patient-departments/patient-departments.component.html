@@ -1,0 +1,32 @@
+<div *ngFor="let dept of departments">
+  <div 
+    class="department-name" 
+    [class.active]="selectedDepartmentDescriptionId === dept.id"
+    (click)="toggleDescription(dept.id)">
+    {{ dept.name }}
+  </div>
+
+  <div *ngIf="selectedDepartmentDescriptionId === dept.id" class="department-description">
+    <p [innerText]="dept.description || 'Açıklama bulunmamaktadır.'"></p>
+    <button class="btn btn-outline-primary" (click)="loadDoctors(dept.id)">Doktorları Gör</button>
+  </div>
+</div>
+
+<div *ngIf="doctors.length > 0" class="mt-4">
+  <h3>Doktorlar</h3>
+  <ul class="list-group shadow-sm">
+    <li *ngFor="let doc of doctors" class="list-group-item d-flex align-items-center">
+      <img 
+        [src]="doc.imageUrl" 
+        alt="{{ doc.name }}" 
+        class="doctor-image me-2"
+        (error)="onImageError($event)"
+      />
+      <div>
+        <div class="doctor-name">{{ doc.name }}</div>
+        <div class="text-muted">{{ doc.specialization }}</div>
+        <div class="text-muted">{{ doc.phone }}</div>
+      </div>
+    </li>
+  </ul>
+</div>

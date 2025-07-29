@@ -7,6 +7,7 @@ import { PatientHomeComponent } from './pages/patient-home/patient-home.componen
 import { DoctorMedicalRecordComponent } from './pages/doctor-medical-record/doctor-medical-record.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { AdminDepartmentComponent } from './pages/admin-department/admin-department.component';
+import { PatientDepartmentsComponent } from './pages/patient-departments/patient-departments.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, 
   { path: 'login', component: LoginComponent },
@@ -16,5 +17,6 @@ export const routes: Routes = [
   { path: 'patient-home', component: PatientHomeComponent},
   { path: 'doctor-medical-record', component: DoctorMedicalRecordComponent },
   { path: 'register', component: RegisterComponent},
-  { path: 'admin-department', component: AdminDepartmentComponent}
+  { path: 'admin-department', component: AdminDepartmentComponent},
+  { path: 'patient-department', component: PatientDepartmentsComponent}
 ];

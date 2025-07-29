@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
   showOnlyBackToHomeButton = false;
   showBackToHomeButton = false;
   showPatientInfo = false;
+  showPatientDepartment = false;
   showRegisterButton = false;
   showAdminDepartmentButtons = false;
 
@@ -31,6 +32,7 @@ export class AppComponent implements OnInit {
       const url = event.urlAfterRedirects;
       
       this.showPatientInfo = url.startsWith('/patient-home');
+      this.showPatientDepartment = url.startsWith('/patient-department');
       this.showAdminButtons = url.startsWith('/admin-home');
       this.showAdminDepartmentButtons = url.startsWith('/admin-department');
       this.showDoctorButtons = url.startsWith('/doctor-home');
@@ -69,6 +71,14 @@ export class AppComponent implements OnInit {
   logout(): void {
     localStorage.clear();
     this.router.navigate(['/login']);
+  }
+  goToMyDepartmentPage(): void {
+    localStorage.clear();
+    this.router.navigate(['/patient-department']);
+  }
+  goToPatientHome(): void {
+    localStorage.clear();
+    this.router.navigate(['/patient-home']);
   }
 
   goToDoctorHome(): void {

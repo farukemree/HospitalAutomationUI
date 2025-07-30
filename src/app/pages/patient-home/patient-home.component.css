@@ -125,6 +125,39 @@ form {
   font-size: 14px;
   width: 100%;
 }
+.form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  width: 150px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0; /* dikey boşluk kaldır */
+  text-align: left; 
+  padding-right: 15px; /* label ile input arasında boşluk */
+}
+
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  width: auto; /* width: 100% yerine flex ile ayar */
+}
+
+
 
 /* Bilgilendirici metin */
 .text-muted {
@@ -203,6 +236,9 @@ hr {
 }
 .form-group {
   margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .form-control {

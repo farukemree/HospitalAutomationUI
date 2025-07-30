@@ -235,3 +235,6 @@ h5 {
   border-bottom: 2px solid #e0e0e0;
   padding-bottom: 10px;
 }
+.btn-margin-top {
+  margin-top: 1.8rem;
+}

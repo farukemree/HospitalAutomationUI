@@ -8,6 +8,8 @@ import { DoctorMedicalRecordComponent } from './pages/doctor-medical-record/doct
 import { RegisterComponent } from './pages/register/register.component';
 import { AdminDepartmentComponent } from './pages/admin-department/admin-department.component';
 import { PatientDepartmentsComponent } from './pages/patient-departments/patient-departments.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, 
   { path: 'login', component: LoginComponent },
@@ -18,5 +20,7 @@ export const routes: Routes = [
   { path: 'doctor-medical-record', component: DoctorMedicalRecordComponent },
   { path: 'register', component: RegisterComponent},
   { path: 'admin-department', component: AdminDepartmentComponent},
-  { path: 'patient-department', component: PatientDepartmentsComponent}
+  { path: 'patient-department', component: PatientDepartmentsComponent},
+  { path: 'forgot-password', component: ForgotPasswordComponent},
+  { path: 'reset-password', component: ResetPasswordComponent}
 ];

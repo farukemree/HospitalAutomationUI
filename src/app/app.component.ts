@@ -38,7 +38,8 @@ export class AppComponent implements OnInit {
       this.showDoctorButtons = url.startsWith('/doctor-home');
       this.showOnlyBackToHomeButton = url.startsWith('/doctor-page');
       this.showBackToHomeButton = url.startsWith('/doctor-medical-record');
-      this.showRegisterButton = url.startsWith('/register');
+      this.showRegisterButton = url.startsWith('/register') || url.startsWith('/forgot-password') || url.startsWith('/reset-password');
+
      if (this.showPatientInfo) {
       this.loadPatientInfo();
      }

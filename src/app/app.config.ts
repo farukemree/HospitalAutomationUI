@@ -13,6 +13,8 @@ import { jwtInterceptor } from '../Helpers/jwt.interceptor';
 import { DoctorMedicalRecordComponent } from './pages/doctor-medical-record/doctor-medical-record.component';
 import { AdminDepartmentComponent } from './pages/admin-department/admin-department.component';
 import { PatientDepartmentsComponent } from './pages/patient-departments/patient-departments.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 const routes: Route[] = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, 
   { path: 'login', component: LoginComponent },
@@ -22,7 +24,9 @@ const routes: Route[] = [
   { path: 'patient-home', component: PatientHomeComponent},
   { path: 'doctor-medical-record', component: DoctorMedicalRecordComponent},
   { path: 'admin-department', component: AdminDepartmentComponent},
-  { path: 'patient-department', component: PatientDepartmentsComponent}
+  { path: 'patient-department', component: PatientDepartmentsComponent},
+  { path: 'forgot-password', component: ForgotPasswordComponent},
+  { path: 'reset-password', component: ResetPasswordComponent}
 ];
 
 export const appConfig: ApplicationConfig = {

@@ -19,7 +19,7 @@ interface MedicalRecordDto {
   imports: [FormsModule, CommonModule]
 })
 export class DoctorMedicalRecordComponent implements OnInit {
-
+  selectedRecordId: number | null = null;
   medicalRecords: MedicalRecordDto[] = [];
   searchKeyword: string = '';
   selectedRecord: MedicalRecordDto | null = null;
@@ -63,10 +63,15 @@ export class DoctorMedicalRecordComponent implements OnInit {
     });
   }
 
-  selectRecord(record: MedicalRecordDto): void {
-    this.selectedRecord = { ...record };
-    this.isEditMode = true;
-  }
+ selectRecord(record: MedicalRecordDto): void {
+  console.log('Seçilen record id:', record.id);
+  this.selectedRecord = { ...record };
+  this.selectedRecordId = record.id;
+  this.isEditMode = true;
+}
+
+
+
 get activeRecord() {
   if (this.isEditMode) {
     return this.selectedRecord ?? { patientId: 0, doctorId: 0, recordDate: '', description: '' };
@@ -121,6 +126,7 @@ searchMedicalRecords(): void {
   cancelEdit(): void {
     this.isEditMode = false;
     this.selectedRecord = null;
+    this.selectedRecordId = null;
     this.resetNewRecord();
   }
 

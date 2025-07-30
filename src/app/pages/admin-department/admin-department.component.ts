@@ -20,6 +20,7 @@ export class AdminDepartmentComponent {
 
   constructor(private http: HttpClient) {}
   ngOnInit(): void {
+    this.getAllDepartments();
   }
 
    getAllDepartments(): void {

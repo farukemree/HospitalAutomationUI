@@ -1,4 +1,5 @@
 <div *ngFor="let dept of departments">
+  <!-- Departman Başlığı -->
   <div 
     class="department-name" 
     [class.active]="selectedDepartmentDescriptionId === dept.id"
@@ -6,27 +7,32 @@
     {{ dept.name }}
   </div>
 
+  <!-- Açıklama ve Doktorlar -->
   <div *ngIf="selectedDepartmentDescriptionId === dept.id" class="department-description">
-    <p [innerText]="dept.description || 'Açıklama bulunmamaktadır.'"></p>
-    <button class="btn btn-outline-primary" (click)="loadDoctors(dept.id)">Doktorları Gör</button>
-  </div>
-</div>
+    <h5 class="mb-2 text-primary fw-bold">📋 Bölüm Açıklaması</h5>
+    <p>{{ dept.description || 'Açıklama bulunmamaktadır.' }}</p>
+    <button class="btn btn-outline-primary mt-2 mb-3" (click)="loadDoctors(dept.id)">
+      👨‍⚕️ Doktorları Gör
+    </button>
 
-<div *ngIf="doctors.length > 0" class="mt-4">
-  <h3>Doktorlar</h3>
-  <ul class="list-group shadow-sm">
-    <li *ngFor="let doc of doctors" class="list-group-item d-flex align-items-center">
-      <img 
-        [src]="doc.imageUrl" 
-        alt="{{ doc.name }}" 
-        class="doctor-image me-2"
-        (error)="onImageError($event)"
-      />
-      <div>
-        <div class="doctor-name">{{ doc.name }}</div>
-        <div class="text-muted">{{ doc.specialization }}</div>
-        <div class="text-muted">{{ doc.phone }}</div>
-      </div>
-    </li>
-  </ul>
+    <!-- Doktor Listesi - Ortalanmış ve daraltılmış kutu -->
+    <div *ngIf="doctors.length > 0" class="doctor-list-container mt-3">
+      <h6 class="text-secondary fw-semibold mb-2"></h6>
+      <ul class="list-group shadow-sm">
+        <li *ngFor="let doc of doctors" class="list-group-item d-flex align-items-center">
+          <img 
+            [src]="doc.imageUrl" 
+            alt="{{ doc.name }}" 
+            class="doctor-image me-3"
+            (error)="onImageError($event)"
+          />
+          <div>
+            <div class="doctor-name">{{ doc.name }}</div>
+            <div class="doctor-specialization text-muted">{{ doc.specialization }}</div>
+            <div class="doctor-phone text-muted">{{ doc.phone }}</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>

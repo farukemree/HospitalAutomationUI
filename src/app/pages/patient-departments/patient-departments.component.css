@@ -1,11 +1,17 @@
 /* container */
 .container {
-  max-width: 720px;
+  max-width: 500px;
   margin: 30px auto;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #222;
   user-select: none;
 }
+.doctor-list-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
 
 /* departman adı */
 .department-name {
@@ -30,15 +36,30 @@
 
 /* açıklama */
 .department-description {
-  background-color: #f9faff;
+  background: linear-gradient(135deg, #f0f4ff, #e6ecff);
   border-left: 6px solid #3f51b5;
-  padding: 18px 22px;
-  border-radius: 0 6px 6px 6px;
-  box-shadow: 0 2px 8px rgb(63 81 181 / 0.2);
+  padding: 20px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(63, 81, 181, 0.2);
   font-size: 1rem;
   color: #2a2a2a;
   white-space: pre-line;
   margin-bottom: 20px;
+  animation: fadeIn 0.4s ease-in-out;
+}
+.department-description .btn-outline-primary {
+  border: 2px solid #3f51b5;
+  color: #3f51b5;
+  background-color: transparent;
+}   
+.department-description .btn-outline-primary:hover {
+  background-color: #3f51b5;
+  color: white;
+  box-shadow: 0 4px 12px rgba(63, 81, 181, 0.3);
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* doktor listesi */
@@ -78,8 +99,8 @@
   color: #3f51b5;
 }
 .doctor-image {
-  width: 48px;
-  height: 48px;
+  width: 153px;
+  height: 153px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #3f51b5;
@@ -88,6 +109,17 @@
 .doctor-name {
   font-weight: 600;
   font-size: 1.1rem;
+}
+.doctor-img-spacing {
+  margin-right: 55px; /* veya 20px, isteğe göre artırılabilir */
+}
+
+.list-group-item {
+  background-color: white;
+  border: none;
+  box-shadow: 0 2px 6px rgba(63, 81, 181, 0.08);
+  margin-bottom: 8px;
+  border-radius: 10px;
 }
 
 .doctor-specialization, .doctor-phone {

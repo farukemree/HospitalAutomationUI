@@ -119,7 +119,14 @@
             <td>{{ record.recordDate | date: 'short' }}</td>
             <td>{{ record.description }}</td>
             <td>
-              <button class="btn btn-sm btn-primary me-1" (click)="selectRecord(record)">✏️ Düzenle</button>
+            <button 
+  class="btn btn-sm me-1"
+  [ngClass]="selectedRecordId == record.id ? 'btn-warning' : 'btn-primary'"
+  (click)="selectRecord(record)">
+  ✏️ Düzenle
+</button>
+
+
               <button class="btn btn-sm btn-danger" (click)="deleteRecord(record.id)">🗑️ Sil</button>
             </td>
           </tr>

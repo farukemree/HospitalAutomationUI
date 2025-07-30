@@ -1,6 +1,6 @@
 <div class="register-wrapper">
   <div class="register-box">
-    <h2>📝 Yeni Hesap Oluştur</h2>
+    <h2> Yeni Hesap Oluştur</h2>
     <p class="subtitle">Bilgilerinizi doldurun ve kayıt olun</p>
 
     <form (ngSubmit)="register()" #registerForm="ngForm">
@@ -29,7 +29,7 @@
         <input type="date" id="birthDate" name="birthDate" [(ngModel)]="registerData.patient.birthDate" required />
       </div>
 
-      <div class="form-group">
+      <div class="form-group gender-group">
         <label for="gender">Cinsiyet</label>
         <select id="gender" name="gender" [(ngModel)]="registerData.patient.gender" required>
           <option value="" disabled selected>Cinsiyet seçin</option>

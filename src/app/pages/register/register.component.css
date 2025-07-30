@@ -22,6 +22,7 @@ html, body {
   justify-content: center;
   align-items: center;
   width: 100%;
+  height: 100vh;
   padding: 40px 15px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -32,14 +33,15 @@ html, body {
   border-radius: 12px;
   border: 2px solid #4caf50;
   box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
-  width: 100%;
+  width: 400px;
   max-width: 420px;
   text-align: center;
 }
 
 .register-box h2 {
+  text-align: center;
   font-size: 26px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   color: #4caf50;
   font-weight: 700;
 }
@@ -71,6 +73,15 @@ html, body {
   border-radius: 6px;
   font-size: 15px;
   transition: border-color 0.3s ease;
+   text-align: left;           
+  text-align-last: left;      
+  appearance: none;           
+  background: white;  
+  #gender {
+  width: 150%;
+  max-width: 405px;
+}
+
 }
 
 .form-group input:focus,
@@ -78,6 +89,10 @@ html, body {
   border-color: #4caf50;
   outline: none;
 }
+.gender-group select {
+  width: 106%;
+}
+
 
 button {
   width: 100%;
@@ -119,3 +134,31 @@ footer.footer a {
 footer.footer a:hover {
   color: white;
 }
+/* ... mevcut kodların altına EKLE ... */
+
+/* Form'u dikey düzen ve genişlik uyumu için ortala */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: left; /* input'ları ortalamak için */
+  width: 100%;
+}
+.button-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* Her bir form-group kutusunu da sabit genişlikte ortala */
+.form-group {
+  width: 100%;
+  max-width: 380px;
+}
+
+/* Butonu da ortala ve aynı genişliğe çek */
+button {
+  width: 120%;
+  max-width: 405px;
+}
+

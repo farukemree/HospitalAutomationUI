@@ -1,9 +1,19 @@
 <div class="container">
+  <div class="container mt-4">
+  <h2>🧠 Hastalık Tahmini</h2>
+  <div class="mb-3">
+    <label for="symptomInput" class="form-label">Semptomlarınızı girin:</label>
+    <input type="text" class="form-control" id="symptomInput" [(ngModel)]="symptomInput" placeholder="Örnek: nefes darlığı, öksürük, hırıltı" />
+  </div>
+  <button class="btn btn-primary mb-3" (click)="predictDisease()">Tahmin Et</button>
 
+  <div *ngIf="predictedDisease" class="alert alert-info">
+    ✅ Tahmin Edilen Hastalık: <strong>{{ predictedDisease }}</strong>
+  </div>
+</div>
   <!-- Doktor Listesi -->
   <section class="doctor-list mb-5 card-section">
     <h2 class="section-title">Doktor Listesi</h2>
-    <button class="btn btn-primary mb-3" (click)="getAllDoctors()">Tüm Doktorları Getir</button>
 
     <ul *ngIf="doctors.length > 0; else noDoctors" class="list-group">
       <li *ngFor="let doctor of doctors" class="list-group-item d-flex justify-content-between align-items-center doctor-item">

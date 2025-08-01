@@ -78,6 +78,8 @@ export class PatientHomeComponent implements OnInit {
   appointmentsOnSelectedDate: AppointmentDto[] = [];
   availableTimeSlots: { time: string; disabled: boolean }[] = [];
   selectedDepartmentId: number = 0;
+  predictedDisease: string | null = null;
+  symptomInput: string = '';
 
   selectedDate: string = '';
   selectedTime: string = '';
@@ -113,6 +115,24 @@ export class PatientHomeComponent implements OnInit {
     this.getMyMedicalRecords(); });
    this.toggleService.showAppointments$.subscribe(() => {
     this.getMyAppointments();});
+  }
+   predictDisease() {
+    if (!this.symptomInput.trim()) {
+      alert("Lütfen semptomları giriniz.");
+      return;
+    }
+
+    this.http.post<any>('http://localhost:5073/api/DiseasePrediction/Predict', {
+      symptoms: this.symptomInput
+    }).subscribe({
+      next: response => {
+        this.predictedDisease = response.predictedDisease;
+      },
+      error: err => {
+        console.error('Tahmin yapılırken hata:', err);
+        alert('Tahmin yapılırken hata oluştu.');
+      }
+    });
   }
 
   logout(): void {

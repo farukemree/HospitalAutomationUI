@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { CustomButtonComponent } from "../../shared/custom-button/custom-button.component";
 interface Appointment {
   id: number;
   patientId: number;

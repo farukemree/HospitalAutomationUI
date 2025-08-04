@@ -26,7 +26,11 @@
           </select>
         </td>
         <td>
-          <button (click)="updateUserRole(user.id, selectedRole[user.id])">Güncelle</button>
+          <fbutton
+            class="btn-update"
+            [label]="'Güncelle'"
+            (onClick)="updateUserRole(user.id, selectedRole[user.id])"
+          ></fbutton>
         </td>
       </tr>
     </tbody>
@@ -34,56 +38,65 @@
 
   <!-- Butonlar -->
   <div class="button-group" style="margin-top: 30px;">
-    <button (click)="getAllDoctors()">Tüm Doktorları Göster</button>
-    <button (click)="getAllPatients()">Tüm Hastaları Göster</button>
-    <button (click)="getAllDepartments()">Tüm Bölümleri Göster</button>
+    <fbutton
+      class="btn-add"
+      [label]="'Tüm Doktorları Göster'"
+      (onClick)="getAllDoctors()"
+    ></fbutton>
+    <fbutton
+      class="btn-add"
+      [label]="'Tüm Hastaları Göster'"
+      (onClick)="getAllPatients()"
+    ></fbutton>
+    <fbutton
+      class="btn-add"
+      [label]="'Tüm Bölümleri Göster'"
+      (onClick)="getAllDepartments()"
+    ></fbutton>
   </div>
 
   <!-- Doktorlar -->
   <div *ngIf="doctors.length > 0" style="margin-top: 20px;">
     <h3>Doktorlar</h3>
     <table>
-  <thead>
-    <tr>
-      <th>İsim</th>
-      <th>Uzmanlık</th>
-      <th>Telefon</th>
-      <th>Bölüm Id</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let doc of doctors">
-      <td>{{ doc.fullName }}</td>
-      <td>{{ doc.specialization }}</td>
-      <td>{{ doc.phone }}</td>
-      <td>{{ doc.departmentId }}</td>
-    </tr>
-  </tbody>
-</table>
-
+      <thead>
+        <tr>
+          <th>İsim</th>
+          <th>Uzmanlık</th>
+          <th>Telefon</th>
+          <th>Bölüm Id</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let doc of doctors">
+          <td>{{ doc.fullName }}</td>
+          <td>{{ doc.specialization }}</td>
+          <td>{{ doc.phone }}</td>
+          <td>{{ doc.departmentId }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <!-- Hastalar -->
   <div *ngIf="patients.length > 0" style="margin-top: 20px;">
-    <<h3>Hastalar</h3>
-<table>
-  <thead>
-    <tr>
-      <th>İsim</th>
-      <th>Doğum Tarihi</th>
-      <th>Cinsiyet</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let p of patients">
-      <td>{{ p.fullName }}</td>
-      <td>{{ p.birthDate | date:'dd.MM.yyyy' }}</td>
-      <td>{{ p.gender }}</td>
-    </tr>
-  </tbody>
-</table>
-
-
+    <h3>Hastalar</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>İsim</th>
+          <th>Doğum Tarihi</th>
+          <th>Cinsiyet</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of patients">
+          <td>{{ p.fullName }}</td>
+          <td>{{ p.birthDate | date:'dd.MM.yyyy' }}</td>
+          <td>{{ p.gender }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <!-- Bölümler -->

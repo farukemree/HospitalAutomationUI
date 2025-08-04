@@ -2,14 +2,28 @@
   <h2>🏥 Departman Yönetimi</h2>
 
   <div class="actions">
-    <button (click)="showAddForm = true; cancelEdit()">Yeni Departman Ekle</button>
+    <fbutton
+      [label]="'Yeni Departman Ekle'"
+      (onClick)="showAddForm = true; cancelEdit()"
+      class="btn"
+    ></fbutton>
   </div>
 
   <!-- Yeni departman ekleme formu -->
   <div *ngIf="showAddForm" class="add-form">
     <input [(ngModel)]="newDepartmentName" placeholder="Departman adı girin" />
-    <button class="btn-add" (click)="addDepartment()">Ekle</button>
-    <button (click)="showAddForm = false">İptal</button>
+
+    <fbutton
+      [label]="'Ekle'"
+      (onClick)="addDepartment()"
+      class="btn-add"
+    ></fbutton>
+
+    <fbutton
+      [label]="'İptal'"
+      (onClick)="showAddForm = false"
+      class="btn"
+    ></fbutton>
   </div>
 
   <ul>
@@ -21,10 +35,33 @@
 
       <!-- Butonlar grubu -->
       <div class="btn-group">
-        <button *ngIf="!showAddForm && editDepartmentId !== dep.id" (click)="startEdit(dep)" class="btn-update">Güncelle</button>
-        <button *ngIf="editDepartmentId === dep.id" (click)="updateDepartment(dep.id)" class="btn-save">Kaydet</button>
-        <button *ngIf="editDepartmentId === dep.id" (click)="cancelEdit()" class="btn-cancel">İptal</button>
-        <button *ngIf="!showAddForm && editDepartmentId !== dep.id" (click)="deleteDepartment(dep.id)" class="btn-delete">Sil</button>
+        <fbutton
+          *ngIf="!showAddForm && editDepartmentId !== dep.id"
+          [label]="'Güncelle'"
+          (onClick)="startEdit(dep)"
+          class="btn-update"
+        ></fbutton>
+
+        <fbutton
+          *ngIf="editDepartmentId === dep.id"
+          [label]="'Kaydet'"
+          (onClick)="updateDepartment(dep.id)"
+          class="btn-save"
+        ></fbutton>
+
+        <fbutton
+          *ngIf="editDepartmentId === dep.id"
+          [label]="'İptal'"
+          (onClick)="cancelEdit()"
+          class="btn-cancel"
+        ></fbutton>
+
+        <fbutton
+          *ngIf="!showAddForm && editDepartmentId !== dep.id"
+          [label]="'Sil'"
+          (onClick)="deleteDepartment(dep.id)"
+          class="btn-delete"
+        ></fbutton>
       </div>
     </li>
   </ul>

@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpHeaders } from '@angular/common/http';
 import { ToggleService } from '../../Services/toggle.services';
 import Swal from 'sweetalert2';
+import { CustomButtonComponent } from '../../shared/custom-button/custom-button.component';
 interface Patient {
   id: number;
   fullName: string;
@@ -17,7 +18,7 @@ interface Patient {
 @Component({
   selector: 'app-doctor-home',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CustomButtonComponent],
   templateUrl: './doctor-home.component.html',
   styleUrls: ['./doctor-home.component.css']
 })

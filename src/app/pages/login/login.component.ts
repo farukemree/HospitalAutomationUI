@@ -5,6 +5,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
+import { CustomButtonComponent } from "../../shared/custom-button/custom-button.component";
 
 @Component({
   selector: 'app-login',

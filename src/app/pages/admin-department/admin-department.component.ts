@@ -3,10 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { CustomButtonComponent } from "../../shared/custom-button/custom-button.component";
 
 @Component({
   selector: 'app-admin-department',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule, CustomButtonComponent],
   standalone: true,
   templateUrl: './admin-department.component.html',
   styleUrls: ['./admin-department.component.css']

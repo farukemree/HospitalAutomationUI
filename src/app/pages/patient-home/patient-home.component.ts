@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { ToggleService } from '../../Services/toggle.services';
+import { CustomButtonComponent } from "../../shared/custom-button/custom-button.component";
 interface Doctor {
   id: number;
   fullName: string;
@@ -63,7 +64,7 @@ interface ApiResponseWithMessage<T> {
 @Component({
   selector: 'app-patient-home',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ],
   templateUrl: './patient-home.component.html',
   styleUrls: ['./patient-home.component.css']
 })

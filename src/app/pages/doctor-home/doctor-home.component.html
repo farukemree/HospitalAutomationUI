@@ -50,35 +50,43 @@
 
       <div class="upload-section">
         <input type="file" (change)="onFileSelected($event)" accept="image/*" />
-        <button type="button" (click)="uploadImage()">Resmi Yükle</button>
+        <fbutton
+          class="btn-upload"
+          [label]="'Resmi Yükle'"
+          (onClick)="uploadImage()"
+        ></fbutton>
       </div>
 
-      <button type="submit" [disabled]="doctorForm.invalid">Kaydet</button>
+      <fbutton
+        type="submit"
+        [disabled]="doctorForm.invalid ?? false"
+        class="btn-save"
+        [label]="'Kaydet'"
+      ></fbutton>
     </form>
   </div>
 
   <hr />
 
   <div class="patients-card" *ngIf="showPatients">
-  <h2>🩺 Hastalarım</h2>
+    <h2>🩺 Hastalarım</h2>
 
-  <ul *ngIf="patients.length > 0" class="patient-list">
-    <li *ngFor="let patient of patients">
-      👤 <strong>{{ patient.fullName }}</strong> |
-      🎂 {{ patient.birthDate | date: 'longDate' }} |
-      ⚧️ {{ patient.gender }}
-    </li>
-  </ul>
+    <ul *ngIf="patients.length > 0" class="patient-list">
+      <li *ngFor="let patient of patients">
+        👤 <strong>{{ patient.fullName }}</strong> |
+        🎂 {{ patient.birthDate | date: 'longDate' }} |
+        ⚧️ {{ patient.gender }}
+      </li>
+    </ul>
 
-  <p *ngIf="patients.length === 0" class="no-patients">
-    Henüz hasta listesi yüklenmedi.
-  </p>
+    <p *ngIf="patients.length === 0" class="no-patients">
+      Henüz hasta listesi yüklenmedi.
+    </p>
 
-<button class="close-btn" (click)="hidePatients()"> Kapat</button> 
+    <fbutton class="close-btn" [label]="'Kapat'" (onClick)="hidePatients()"></fbutton>
+  </div>
+
+  <ng-template #noImage>
+    <p><em>Henüz profil resmi yüklenmemiş.</em></p>
+  </ng-template>
 </div>
-
-
-
-<ng-template #noImage>
-  <p><em>Henüz profil resmi yüklenmemiş.</em></p>
-</ng-template>

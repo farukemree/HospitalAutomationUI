@@ -1,0 +1,81 @@
+/* Global button stillerini sıfırla */
+button {
+  all: unset; /* tüm varsayılan ve global stilleri temizler */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+/* Hover ve aktif durumlar */
+button:hover:not(:disabled) {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* İkonun sağındaki boşluk için */
+.me-1 {
+  margin-right: 0.5rem;
+}
+
+/* Örnek: btn-add class'ı */
+.btn-add {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-add:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+/* Örnek: btn-delete class'ı */
+.btn-delete {
+  background-color: #e53935;
+  color: white;
+}
+
+.btn-delete:hover:not(:disabled) {
+  background-color: #b32c27;
+}
+
+/* Örnek: btn-update */
+.btn-update {
+  background-color: #ffc107;
+  color: black;
+}
+
+.btn-update:hover:not(:disabled) {
+  background-color: #e0a800;
+}
+
+/* btn-save */
+.btn-save {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.btn-save:hover:not(:disabled) {
+  background-color: #138496;
+}
+
+/* btn-cancel */
+.btn-cancel {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background-color: #5a6268;
+}

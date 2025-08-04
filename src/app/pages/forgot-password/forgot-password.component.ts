@@ -4,10 +4,11 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+import { CustomButtonComponent } from '../../shared/custom-button/custom-button.component';
 @Component({
   selector: 'app-forgot-password',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule,CustomButtonComponent],
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.css'
 })

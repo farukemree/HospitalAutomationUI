@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { CustomButtonComponent } from '../../shared/custom-button/custom-button.component';
 
 interface User {
   id: number;
@@ -19,7 +20,7 @@ interface UpdateUserRoleDto {
 @Component({
   selector: 'app-admin-home',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,CustomButtonComponent],
   templateUrl: './admin-home.component.html',
   styleUrls: ['./admin-home.component.css']
 })

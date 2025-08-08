@@ -82,7 +82,6 @@ export class PatientDepartmentsComponent implements OnInit {
               : 'assets/default-doctor.png' // varsayılan resim olabilir
           }));
           this.selectedDoctorsDepartmentId = departmentId;
-          console.log(this.doctors)
         } else {
           this.doctors = [];
           this.selectedDoctorsDepartmentId = null;

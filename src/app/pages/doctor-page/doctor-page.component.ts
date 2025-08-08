@@ -117,7 +117,7 @@ loadDoctors(): void {
     confirmButtonText: 'Tamam'
   });
 }
-
+                
       });
   }
   
@@ -298,7 +298,6 @@ Swal.fire({
           this.appointments = this.appointments.filter(a => a.id !== id);
         },
        error: (err) => {
-  console.error('Silme hatası:', err);
   Swal.fire({
     icon: 'error',
     title: 'Hata',

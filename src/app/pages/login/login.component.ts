@@ -34,7 +34,7 @@ export class LoginComponent {
         next: (response) => {
           const token = response.data;
           localStorage.setItem('token', token);
-
+                 
           try {
             const decoded: any = jwtDecode(token);
 

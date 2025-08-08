@@ -66,7 +66,6 @@ export class DoctorMedicalRecordComponent implements OnInit {
   }
 
  selectRecord(record: MedicalRecordDto): void {
-  console.log('Seçilen record id:', record.id);
   this.selectedRecord = { ...record };
   this.selectedRecordId = record.id;
   this.isEditMode = true;
@@ -210,7 +209,6 @@ searchMedicalRecords(): void {
         }
       },
       error: (err) => {
-        console.error(err);
       Swal.fire({
   icon: 'error',
   title: 'Hata',

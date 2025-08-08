@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CustomButtonComponent } from './shared/custom-button/custom-button.component';
 
+
 @NgModule({
   imports: [
     CommonModule,

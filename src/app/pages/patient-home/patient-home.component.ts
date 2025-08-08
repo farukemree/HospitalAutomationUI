@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { ToggleService } from '../../Services/toggle.services';
 import { CustomButtonComponent } from "../../shared/custom-button/custom-button.component";
+import { ChatboxComponent } from '../../shared/chatbox/chatbox.component';
 interface Doctor {
   id: number;
   fullName: string;
@@ -64,7 +65,7 @@ interface ApiResponseWithMessage<T> {
 @Component({
   selector: 'app-patient-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, ],
+  imports: [CommonModule, FormsModule, ChatboxComponent],
   templateUrl: './patient-home.component.html',
   styleUrls: ['./patient-home.component.css']
 })
@@ -130,8 +131,11 @@ export class PatientHomeComponent implements OnInit {
         this.predictedDisease = response.predictedDisease;
       },
       error: err => {
-        console.error('Tahmin yapılırken hata:', err);
-        alert('Tahmin yapılırken hata oluştu.');
+Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: 'Tahmin yapılırken hata oluştu.'
+});
       }
     });
   }
@@ -155,10 +159,10 @@ this.http.get<ApiResponse>(`http://localhost:5073/api/Doctor/GetDoctorsByDepartm
   .subscribe({
     next: response => {
       if (response.data && response.data.length > 0) {
-        console.log("Gelen doktorlar:", response.data);  // 🔍 tüm doktor verisini yazdır
+       
 
         this.doctors = response.data.map((doctor: any) => {
-          console.log("Her doktorun fileKey'i:", doctor.fileKey); // 🔍 özellikle fileKey'e bak
+        
 
           return {
             ...doctor,
@@ -203,7 +207,6 @@ onDoctorNameChange(): void {
   const selectedDoctor = this.doctors.find(doc => doc.fullName === this.selectedDoctorName);
   if (selectedDoctor) {
     this.appointment.doctorId = selectedDoctor.id;
-    console.log('Seçilen doktor ID:', selectedDoctor.id);
     this.selectedTime = ''; 
     this.appointment.description = ''; 
     this.selectedDate = ''; 
@@ -259,13 +262,12 @@ isDoctorAlreadyBooked(doctorId: number): boolean {
 }
 
 onDateChange(): void {
-  // Saatleri sıfırla
   this.availableTimeSlots = this.timeSlots.map(time => ({
     time,
     disabled: false
   }));
 
-  this.selectedTime = ''; // Saat alanını temizle
+  this.selectedTime = ''; 
 
   const selectedDateISO = this.selectedDate;
   const selectedDoctorId = this.appointment.doctorId;

@@ -5,11 +5,13 @@ import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ToggleService } from './Services/toggle.services';
 import { HttpClient } from '@angular/common/http';
-
+import { ChatboxComponent } from './shared/chatbox/chatbox.component';
+import { SharedModule } from './shared/shared.module';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule],
+  imports: [RouterOutlet, CommonModule, SharedModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
@@ -59,10 +61,13 @@ export class AppComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.patient = res.data;
-          console.log(res.data)
         },
         error: (err) => {
-          console.error('Hasta bilgisi alınamadı:', err);
+          Swal.fire({
+  icon: 'error',
+  title: 'Hata',
+  text: 'Tahmin yapılırken hata oluştu.'
+});
         }
       });
   }

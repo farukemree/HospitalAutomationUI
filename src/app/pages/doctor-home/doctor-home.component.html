@@ -1,92 +1,99 @@
-<div class="doctor-container">
-  <div class="header-section">
-    <img
-      *ngIf="imageUrl; else noImage"
-      [src]="imageUrl"
-      alt="Doktor Fotoğrafı"
-      class="profile-img"
-    />
-    <h2 class="doctor-name">Hoş geldiniz, Dr. {{ doctor?.fullName }}</h2>
-  </div>
+<div class="doctor-container" style="display: flex; flex-direction: column; gap: 2rem; align-items: stretch;">
 
-  <div class="info-and-actions">
-    <div class="info-card">
-      <p><strong>Uzmanlık:</strong> {{ doctor?.specialization }}</p>
-      <p><strong>Telefon:</strong> {{ doctor?.phone }}</p>
-      <p><strong>Bölüm ID:</strong> {{ doctor?.departmentId }}</p>
+  <div>
+    <div class="header-section">
+      <img
+        *ngIf="imageUrl; else noImage"
+        [src]="imageUrl"
+        alt="Doktor Fotoğrafı"
+        class="profile-img"
+      />
+      <h2 class="doctor-name">Hoş geldiniz, Dr. {{ doctor?.fullName }}</h2>
     </div>
-  </div>
 
-  <div *ngIf="editMode" class="update-form">
-    <form (ngSubmit)="updateDoctor()" #doctorForm="ngForm">
-      <label>
-        Uzmanlık:
-        <input
-          type="text"
-          [(ngModel)]="doctor.specialization"
-          name="specialization"
-          required
-        />
-      </label>
-
-      <label>
-        Telefon:
-        <input
-          type="text"
-          [(ngModel)]="doctor.phone"
-          name="phone"
-          required
-        />
-      </label>
-
-      <label>
-        Bölüm ID:
-        <input
-          type="number"
-          [(ngModel)]="doctor.departmentId"
-          name="departmentId"
-        />
-      </label>
-
-      <div class="upload-section">
-        <input type="file" (change)="onFileSelected($event)" accept="image/*" />
-        <fbutton
-          class="btn-upload"
-          [label]="'Resmi Yükle'"
-          (onClick)="uploadImage()"
-        ></fbutton>
+    <div class="info-and-actions">
+      <div class="info-card">
+        <p><strong>Uzmanlık:</strong> {{ doctor?.specialization }}</p>
+        <p><strong>Telefon:</strong> {{ doctor?.phone }}</p>
+        <p><strong>Bölüm ID:</strong> {{ doctor?.departmentId }}</p>
       </div>
+    </div>
 
-      <fbutton
-        type="submit"
-        [disabled]="doctorForm.invalid ?? false"
-        class="btn-save"
-        [label]="'Kaydet'"
-      ></fbutton>
-    </form>
+    <div *ngIf="editMode" class="update-form">
+      <form (ngSubmit)="updateDoctor()" #doctorForm="ngForm">
+        <label>
+          Uzmanlık:
+          <input
+            type="text"
+            [(ngModel)]="doctor.specialization"
+            name="specialization"
+            required
+          />
+        </label>
+
+        <label>
+          Telefon:
+          <input
+            type="text"
+            [(ngModel)]="doctor.phone"
+            name="phone"
+            required
+          />
+        </label>
+
+        <label>
+          Bölüm ID:
+          <input
+            type="number"
+            [(ngModel)]="doctor.departmentId"
+            name="departmentId"
+          />
+        </label>
+
+        <div class="upload-section">
+          <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+          <fbutton
+            class="btn-upload"
+            [label]="'Resmi Yükle'"
+            (onClick)="uploadImage()"
+          ></fbutton>
+        </div>
+
+        <fbutton
+          type="submit"
+          [disabled]="doctorForm.invalid ?? false"
+          class="btn-save"
+          [label]="'Kaydet'"
+        ></fbutton>
+      </form>
+    </div>
+
+    <hr />
+
+    <div class="patients-card" *ngIf="showPatients">
+      <h2>🩺 Hastalarım</h2>
+
+      <ul *ngIf="patients.length > 0" class="patient-list">
+        <li *ngFor="let patient of patients">
+          👤 <strong>{{ patient.fullName }}</strong> |
+          🎂 {{ patient.birthDate | date: 'longDate' }} |
+          ⚧️ {{ patient.gender }}
+        </li>
+      </ul>
+
+      <p *ngIf="patients.length === 0" class="no-patients">
+        Henüz hasta listesi yüklenmedi.
+      </p>
+
+      <fbutton class="close-btn" [label]="'Kapat'" (onClick)="hidePatients()"></fbutton>
+    </div>
+
+    <ng-template #noImage>
+      <p><em>Henüz profil resmi yüklenmemiş.</em></p>
+    </ng-template>
   </div>
 
-  <hr />
-
-  <div class="patients-card" *ngIf="showPatients">
-    <h2>🩺 Hastalarım</h2>
-
-    <ul *ngIf="patients.length > 0" class="patient-list">
-      <li *ngFor="let patient of patients">
-        👤 <strong>{{ patient.fullName }}</strong> |
-        🎂 {{ patient.birthDate | date: 'longDate' }} |
-        ⚧️ {{ patient.gender }}
-      </li>
-    </ul>
-
-    <p *ngIf="patients.length === 0" class="no-patients">
-      Henüz hasta listesi yüklenmedi.
-    </p>
-
-    <fbutton class="close-btn" [label]="'Kapat'" (onClick)="hidePatients()"></fbutton>
+  <div style="width: 100%; max-height: 400px; overflow-y: auto;">
+    <app-chatbox></app-chatbox>
   </div>
-
-  <ng-template #noImage>
-    <p><em>Henüz profil resmi yüklenmemiş.</em></p>
-  </ng-template>
 </div>

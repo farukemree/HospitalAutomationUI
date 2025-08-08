@@ -1,0 +1,17 @@
+<!-- src/app/components/chatbox/chatbox.component.html -->
+<div class="chatbox-container">
+  <h3>💬 Hazır TinyLlama ChatBot</h3>
+
+  <div class="chat-window">
+    <div *ngFor="let msg of messages" class="message" [ngClass]="msg.sender">
+      <strong>{{ msg.sender === 'user' ? '👤 Sen' : '🤖 Bot' }}:</strong> {{ msg.text }}
+    </div>
+  </div>
+
+  <div class="input-area">
+    <input [(ngModel)]="inputText" (keydown.enter)="sendMessage()" placeholder="Bir şeyler yaz..." />
+    <button (click)="sendMessage()">Gönder</button>
+  </div>
+
+  <p *ngIf="loading">⏳ Cevap bekleniyor...</p>
+</div>

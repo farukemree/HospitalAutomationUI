@@ -8,6 +8,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { ToggleService } from '../../Services/toggle.services';
 import Swal from 'sweetalert2';
 import { CustomButtonComponent } from '../../shared/custom-button/custom-button.component';
+import { ChatboxComponent } from '../../shared/chatbox/chatbox.component';
 interface Patient {
   id: number;
   fullName: string;
@@ -18,7 +19,7 @@ interface Patient {
 @Component({
   selector: 'app-doctor-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, CustomButtonComponent],
+  imports: [CommonModule, FormsModule, CustomButtonComponent, ChatboxComponent],
   templateUrl: './doctor-home.component.html',
   styleUrls: ['./doctor-home.component.css']
 })
@@ -128,7 +129,6 @@ updateDoctor() {
           this.patients = data;
         },
         error: (err) => {
-  console.error('Hastalar alınamadı:', err);
   Swal.fire({
     icon: 'error',
     title: 'Hata',

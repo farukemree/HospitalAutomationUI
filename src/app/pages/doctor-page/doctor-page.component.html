@@ -10,21 +10,21 @@
     </li>
   </ul>
 
-  <h2 class="mb-3 text-success">📅 Randevu İşlemleri</h2>
+  <h2 class="mb-3 text-success" style="text-align: center;">📅 Randevu İşlemleri</h2>
 
  <!-- 🔍 Randevu Getirme -->
 <div class="card p-4 mb-4 shadow-sm">
-  <h5 class="text-primary mb-3">🔍 Randevu Sorgulama</h5>
+  <h5 class="text-success mb-4 border-bottom pb-2">🔍 Randevu Sorgulama</h5>
   <div class="row g-3 align-items-end">
     <div class="col-md-6 col-lg-4">
-      <button class="btn btn-primary w-100" (click)="getAppointments()">Tüm Randevuları Getir</button>
+      <button class="btn btn-primary w-100" (click)="getAppointments()">Tüm Randevular</button>
     </div>
     <div class="col-md-6 col-lg-4">
       <label class="form-label">Randevu ID</label>
       <input type="number" [(ngModel)]="appointmentIdToFetch" class="form-control" placeholder="Örn: 101">
     </div>
     <div class="col-md-6 col-lg-4">
-      <button class="btn btn-secondary w-100 mt-md-0 mt-2" (click)="getAppointmentById()">Tekil Getir</button>
+      <button class="btn btn-secondary w-100 mt-md-0 mt-2" (click)="getAppointmentById()">Ara</button>
     </div>
   </div>
 </div>

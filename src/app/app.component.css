@@ -183,10 +183,10 @@ html, body {
 .Background {
   min-height: 100vh;
   width: 100%;
-  background-image: url('/assets/images/BackgroundImage.jpeg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
+  background-color: #f0f8ff; /* Açık mavi ton */
 }

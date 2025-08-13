@@ -1,10 +1,10 @@
 <div class="container mt-4">
-  <h2 class="text-center mb-4">🩺 Tıbbi Kayıt Yönetimi</h2>
+  <h2 class="text-center mb-4">🩺 Tıbbi Kayıt İşlemleri</h2>
 
   <!-- Form Alanı -->
   <div class="card shadow-lg mb-4">
     <div class="card-header bg-primary text-white">
-      {{ isEditMode ? 'Tıbbi Kaydı Güncelle' : 'Yeni Tıbbi Kayıt Ekle' }}
+      {{ isEditMode ? '🔄 Tıbbi Kaydı Güncelle' : '➕ Yeni Tıbbi Kayıt ' }}
     </div>
     <div class="card-body">
       <form #recordForm="ngForm" (ngSubmit)="isEditMode ? updateRecord() : addRecord()">
@@ -67,7 +67,7 @@
             [ngClass]="isEditMode ? 'btn-warning' : 'btn-success'"
             [disabled]="recordForm.invalid"
           >
-            {{ isEditMode ? '🔄 Güncelle' : '➕ Ekle' }}
+            {{ isEditMode ? ' Güncelle' : ' Ekle' }}
           </button>
           <button
             type="button"
@@ -81,22 +81,32 @@
       </form>
     </div>
   </div>
-<div class="search-section mb-3 d-flex align-items-center gap-3">
-  <input
-    type="text"
-    class="form-control"
-    placeholder="Anahtar kelime ile arayın..."
-    [(ngModel)]="searchKeyword"
-    (keyup.enter)="searchMedicalRecords()"
-    style="max-width: 300px;"
-  />
-  <button class="btn btn-primary" (click)="searchMedicalRecords()">Ara</button>
-<div class="text-end mb-3">
-  <button class="btn btn-secondary ms-2" (click)="loadMedicalRecords()">Tüm Kayıtları Göster</button>
+
+<!-- Arama Alanı -->
+<div class="card shadow-lg mb-4">
+  <div class="card-header bg-info text-white">
+    🩺 Tıbbi Kayıt Ara
+  </div>
+<div class="search-section" style="max-width: 320px;">
+  <div class="d-flex align-items-center gap-3" style="margin-bottom: 1.5rem;">
+    <input
+      type="text"
+      class="form-control faruk"
+      placeholder="Anahtar kelime ile arayın..."
+      [(ngModel)]="searchKeyword"
+      (keyup.enter)="searchMedicalRecords()"
+      style="flex: 1;"
+    />
+    <button class="btn btn-primary " (click)="searchMedicalRecords()">Ara</button>
+  </div>
+
+  <button class="btn btn-secondary w-100 faruk2" (click)="loadMedicalRecords()">Tüm Kayıtlar</button>
 </div>
 
 
 </div>
+
+
 
   <!-- Kayıt Listesi -->
   <div class="card shadow">
@@ -122,12 +132,11 @@
             <button 
   class="btn btn-sm me-1"
   [ngClass]="selectedRecordId == record.id ? 'btn-warning' : 'btn-primary'"
-  (click)="selectRecord(record)">
-  ✏️ Düzenle
+  (click)="selectRecord(record)">Düzenle
 </button>
 
 
-              <button class="btn btn-sm btn-danger" (click)="deleteRecord(record.id)">🗑️ Sil</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteRecord(record.id)">Sil</button>
             </td>
           </tr>
           <tr *ngIf="medicalRecords.length === 0">

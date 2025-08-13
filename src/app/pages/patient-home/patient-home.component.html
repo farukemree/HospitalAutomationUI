@@ -8,7 +8,8 @@
   <button class="btn btn-primary mb-3" (click)="predictDisease()">Tahmin Et</button>
 
   <div *ngIf="predictedDisease" class="alert alert-info">
-    ✅ Tahmin Edilen Hastalık: <strong>{{ predictedDisease }}</strong>
+     <p><strong>Tahmin Edilen Hastalık:</strong> {{ predictedDisease }}</p>
+     <p ><strong>Önerilen Bölüm:</strong> {{ department }}</p>
   </div>
     <div class="mt-4 mb-4">
     <h4>💬 Yapay Zeka Destekli Sağlık Asistanı</h4>

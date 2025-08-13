@@ -82,6 +82,7 @@ export class PatientHomeComponent implements OnInit {
   selectedDepartmentId: number = 0;
   predictedDisease: string | null = null;
   symptomInput: string = '';
+  department: string = '';
 
   selectedDate: string = '';
   selectedTime: string = '';
@@ -129,6 +130,7 @@ export class PatientHomeComponent implements OnInit {
     }).subscribe({
       next: response => {
         this.predictedDisease = response.predictedDisease;
+        this.department = response.department;
       },
       error: err => {
 Swal.fire({

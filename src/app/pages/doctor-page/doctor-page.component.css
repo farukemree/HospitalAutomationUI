@@ -210,11 +210,6 @@ h5 {
   margin-bottom: 10px;
 }
 
-/* Butonları aynı hizada ve boşluklu göster */
-.row .btn {
-  display: block;
-  width: 100%;
-}
 
 /* Randevu sorgulama kartı için ufak farklılık */
 .shadow-sm {
@@ -230,6 +225,11 @@ h5 {
   display: flex;
   flex-direction: column;
 }
+.form-label {
+  display: block;       /* alt alta zorlar */
+  font-weight: bold;    /* yazıyı kalın yapar */
+}
+
 
 .card h4 {
   border-bottom: 2px solid #e0e0e0;

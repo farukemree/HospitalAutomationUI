@@ -9,6 +9,8 @@ import { ToggleService } from '../../Services/toggle.services';
 import Swal from 'sweetalert2';
 import { CustomButtonComponent } from '../../shared/custom-button/custom-button.component';
 import { ChatboxComponent } from '../../shared/chatbox/chatbox.component';
+import { SignalRService } from '../../Services/signalr.service';
+
 interface Patient {
   id: number;
   fullName: string;
@@ -32,7 +34,7 @@ export class DoctorHomeComponent implements OnInit {
   editMode: boolean = false;
   imageUrl: string | null = null;
   showPatients: boolean = false;
-  constructor(private http: HttpClient, private router: Router,private toggleService: ToggleService, private location: Location) {}
+  constructor(private http: HttpClient, private router: Router,private toggleService: ToggleService, private location: Location,private signalRService: SignalRService) {}
 
   ngOnInit(): void {
     const idFromStorage = localStorage.getItem('doctorId');
@@ -58,6 +60,16 @@ export class DoctorHomeComponent implements OnInit {
   });
   this.toggleService.reloadPatients$.subscribe(() => {
     this.getAllPatients();
+  });
+     this.signalRService.startConnection().then(() => {
+    // Mesaj dinleyici ekle
+    this.signalRService.addReceiveMessageListener();
+
+    // Doktor grubuna katıl
+    const doctorId = localStorage.getItem("doctorId");
+    if (doctorId) {
+      this.signalRService.joinDoctorGroup(doctorId);
+    }
   });
   }
 

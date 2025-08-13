@@ -30,6 +30,10 @@
         <button class="nav-btn" (click)="logout()">Çıkış Yap</button>
       </ng-container>
 
+
+          <button *ngIf="showBackToHomeButton" class="nav-btn" (click)="goToAppointments()">Randevular</button>
+      <button *ngIf=" showOnlyBackToHomeButton" class="nav-btn" (click)="goToMedicalRecords()">Tıbbi Kayıtlar</button>
+
       <button *ngIf="showOnlyBackToHomeButton || showBackToHomeButton" class="nav-btn" (click)="goToDoctorHome()">Ana Sayfaya Dön</button>
     </div>
   </nav>

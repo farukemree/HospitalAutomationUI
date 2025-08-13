@@ -45,6 +45,13 @@ h2 {
   font-size: 1rem;
   transition: border-color 0.3s;
 }
+.faruk{
+    padding-top: 12px;
+
+}
+.faruk2{
+  padding-left: 2px;
+}
 
 .form-control:focus {
   border-color: #007bff;

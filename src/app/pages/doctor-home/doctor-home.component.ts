@@ -67,9 +67,7 @@ export class DoctorHomeComponent implements OnInit {
 
     // Doktor grubuna katıl
     const doctorId = localStorage.getItem("doctorId");
-    if (doctorId) {
-      this.signalRService.joinDoctorGroup(doctorId);
-    }
+    
   });
   }
 

@@ -10,6 +10,8 @@ import { AdminDepartmentComponent } from './pages/admin-department/admin-departm
 import { PatientDepartmentsComponent } from './pages/patient-departments/patient-departments.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { PatientChatComponent } from './pages/patient-page/patient-page.component';
+import { DoctorChatComponent } from './pages/doctor-chat/doctor-chat.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, 
   { path: 'login', component: LoginComponent },
@@ -22,5 +24,7 @@ export const routes: Routes = [
   { path: 'admin-department', component: AdminDepartmentComponent},
   { path: 'patient-department', component: PatientDepartmentsComponent},
   { path: 'forgot-password', component: ForgotPasswordComponent},
-  { path: 'reset-password', component: ResetPasswordComponent}
+  { path: 'reset-password', component: ResetPasswordComponent},
+  { path: 'patient-page', component: PatientChatComponent},
+  { path: 'doctor-chat', component: DoctorChatComponent}
 ];

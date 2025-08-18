@@ -1,0 +1,45 @@
+<div class="chat-layout">
+  <!-- Sol Panel: Hasta listesi -->
+  <div class="chat-sidebar">
+    <h3>📨 Gelen Mesajlar</h3>
+    <div 
+      *ngFor="let patient of patientsWithLastMessage" 
+      class="chat-list-item" 
+      [class.active]="replyingToId === patient.id"
+      (click)="openConversation(patient)">
+      <div class="chat-list-name">{{ patient.fullName }}</div>
+      <div class="chat-list-last">
+        {{ patient.lastMessage || 'Henüz mesaj yok' }}
+      </div>
+      <div class="chat-list-time">
+        {{ patient.lastMessageTime | date:'shortTime' }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Sağ Panel: Sohbet -->
+  <div class="chat-main" *ngIf="replyingToId">
+    <div class="chat-header">
+      💬 {{ replyingToName }}
+    </div>
+
+    <div class="chat-messages" #chatMessages>
+      <div *ngFor="let msg of conversation" 
+           [ngClass]="{'my-message': msg.senderId === currentUserId, 'other-message': msg.senderId !== currentUserId}">
+        <strong>{{ msg.senderId === currentUserId ? 'Siz' : replyingToName }}:</strong>
+        {{ msg.message }}
+        <small>{{ msg.sentAt | date:'shortTime' }}</small>
+      </div>
+    </div>
+
+    <div class="chat-input">
+      <input type="text" [(ngModel)]="newMessage" placeholder="Mesajınızı yazın..." (keyup.enter)="sendMessage()" />
+      <button (click)="sendMessage()">Gönder</button>
+    </div>
+  </div>
+
+  <!-- Sağ Panel Boş Ekran -->
+  <div class="chat-main empty" *ngIf="!replyingToId">
+    <p>📩 Soldan bir hasta seçerek konuşmaya başlayabilirsiniz.</p>
+  </div>
+</div>

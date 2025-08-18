@@ -1,0 +1,118 @@
+.chat-layout {
+  display: flex;
+  height: 500px;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+
+.chat-sidebar {
+  width: 30%;
+  border-right: 1px solid #ccc;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+}
+
+.chat-sidebar h3 {
+  padding: 10px;
+  margin: 0;
+  border-bottom: 1px solid #ccc;
+  background-color: #e9ecef;
+}
+
+.chat-list-item {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+  transition: background 0.2s;
+}
+
+.chat-list-item:hover {
+  background-color: #e6f7ff;
+}
+
+.chat-list-item.active {
+  background-color: #b3e5fc;
+}
+
+.chat-list-name {
+  font-weight: bold;
+}
+
+.chat-list-last {
+  font-size: 0.85em;
+  color: #666;
+}
+
+.chat-list-time {
+  font-size: 0.75em;
+  color: #999;
+}
+
+.chat-main {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-main.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #777;
+}
+
+.chat-header {
+  padding: 10px;
+  font-weight: bold;
+  background-color: #e9ecef;
+  border-bottom: 1px solid #ccc;
+}
+
+
+
+.my-message {
+  text-align: right;
+  background-color: #d1ffd1;
+  padding: 5px;
+  margin: 3px;
+  border-radius: 5px;
+}
+
+.other-message {
+  text-align: left;
+  background-color: #f1f1f1;
+  padding: 5px;
+  margin: 3px;
+  border-radius: 5px;
+}
+
+.chat-input {
+  display: flex;
+  border-top: 1px solid #ccc;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 8px;
+  border: none;
+}
+
+.chat-input button {
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
+.chat-messages {
+  height: 400px; /* sabit yükseklik */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column; /* mesajlar alta doğru dizilir */
+  padding: 10px;
+  gap: 5px;
+}
+
+/* Scroll başlangıçta en alta kaydırmak için TS'de scrollToBottom() kullan */
+
+
+

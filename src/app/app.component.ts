@@ -26,6 +26,8 @@ export class AppComponent implements OnInit {
   showPatientDepartment = false;
   showRegisterButton = false;
   showAdminDepartmentButtons = false;
+  showPatientPageButtons = false;
+  showDoctorChat = false;
 
   constructor(private router: Router, private toggleService: ToggleService, private http: HttpClient) {
     this.router.events.pipe(
@@ -34,12 +36,14 @@ export class AppComponent implements OnInit {
       const url = event.urlAfterRedirects;
       
       this.showPatientInfo = url.startsWith('/patient-home');
+      this.showDoctorChat = url.startsWith('/doctor-chat');
       this.showPatientDepartment = url.startsWith('/patient-department');
       this.showAdminButtons = url.startsWith('/admin-home');
       this.showAdminDepartmentButtons = url.startsWith('/admin-department');
       this.showDoctorButtons = url.startsWith('/doctor-home');
       this.showOnlyBackToHomeButton = url.startsWith('/doctor-page');
       this.showBackToHomeButton = url.startsWith('/doctor-medical-record');
+      this.showPatientPageButtons = url.startsWith('/patient-page');
       this.showRegisterButton = url.startsWith('/register') || url.startsWith('/forgot-password') || url.startsWith('/reset-password');
 
      if (this.showPatientInfo) {
@@ -79,12 +83,17 @@ export class AppComponent implements OnInit {
     this.router.navigate(['/login']);
   }
   goToMyDepartmentPage(): void {
-    localStorage.clear();
     this.router.navigate(['/patient-department']);
   }
+   goToDoctorChatPage(): void {
+    this.router.navigate(['/doctor-chat']);
+  }
   goToPatientHome(): void {
-    localStorage.clear();
+
     this.router.navigate(['/patient-home']);
+  }
+  goToPatientPage(): void{
+    this.router.navigate(['/patient-page']);
   }
 
   goToDoctorHome(): void {

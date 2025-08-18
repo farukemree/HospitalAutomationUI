@@ -8,6 +8,8 @@
       <span *ngIf="showPatientInfo && patient" class="me-3 text-primary fw-bold">
         👤 {{ patient.fullName }}
       </span>
+      <button *ngIf="showPatientInfo" class="nav-btn" (click)="goToPatientPage()">Mesajlar</button>
+      <button *ngIf="showPatientPageButtons" class="nav-btn" (click)="goToPatientHome()">Ana Sayfaya Dön</button>
       <button *ngIf="showPatientInfo" class="nav-btn" (click)="goToMyDepartmentPage()">Departmanlar</button>
       <button *ngIf="showPatientInfo" class="nav-btn" (click)="goToMyAppointments()">Randevularım</button>
       <button *ngIf="showPatientInfo" class="nav-btn" (click)="goToMyMedicalRecords()">Tıbbi Kayıtlarım</button>
@@ -22,6 +24,7 @@
       <button *ngIf="showAdminDepartmentButtons" class="nav-btn" (click)="goToAdminHome()">Admin Sayfasına Dön</button>
 </div>
       <ng-container *ngIf="showDoctorButtons">
+        <button class="nav-btn" (click)="goToDoctorChatPage()">Bildirimler</button>
         <button class="nav-btn" (click)="reloadDoctorInfo()">Bilgileri Yenile</button>
         <button class="nav-btn" (click)="reloadPatients()">Hastaları Gör</button>
         <button class="nav-btn" (click)="goToAppointments()">Randevular</button>
@@ -31,10 +34,10 @@
       </ng-container>
 
 
-          <button *ngIf="showBackToHomeButton" class="nav-btn" (click)="goToAppointments()">Randevular</button>
-      <button *ngIf=" showOnlyBackToHomeButton" class="nav-btn" (click)="goToMedicalRecords()">Tıbbi Kayıtlar</button>
-
-      <button *ngIf="showOnlyBackToHomeButton || showBackToHomeButton" class="nav-btn" (click)="goToDoctorHome()">Ana Sayfaya Dön</button>
+          <button *ngIf="showBackToHomeButton || showDoctorChat" class="nav-btn" (click)="goToAppointments()">Randevular</button>
+      <button *ngIf=" showOnlyBackToHomeButton || showDoctorChat" class="nav-btn" (click)="goToMedicalRecords()">Tıbbi Kayıtlar</button>
+      <button *ngIf=" showOnlyBackToHomeButton || showBackToHomeButton" class="nav-btn" (click)="goToDoctorChatPage()">Bildirimler</button>
+      <button *ngIf="showOnlyBackToHomeButton || showBackToHomeButton || showDoctorChat" class="nav-btn" (click)="goToDoctorHome()">Ana Sayfaya Dön</button>
     </div>
   </nav>
 

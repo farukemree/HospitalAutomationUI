@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
   showAdminDepartmentButtons = false;
   showPatientPageButtons = false;
   showDoctorChat = false;
+  showPatientOther = false;
 
   constructor(private router: Router, private toggleService: ToggleService, private http: HttpClient) {
     this.router.events.pipe(
@@ -44,6 +45,7 @@ export class AppComponent implements OnInit {
       this.showOnlyBackToHomeButton = url.startsWith('/doctor-page');
       this.showBackToHomeButton = url.startsWith('/doctor-medical-record');
       this.showPatientPageButtons = url.startsWith('/patient-page');
+      this.showPatientOther = url.startsWith('/patient-other');
       this.showRegisterButton = url.startsWith('/register') || url.startsWith('/forgot-password') || url.startsWith('/reset-password');
 
      if (this.showPatientInfo) {
@@ -88,6 +90,9 @@ export class AppComponent implements OnInit {
    goToDoctorChatPage(): void {
     this.router.navigate(['/doctor-chat']);
   }
+  goToPatientOther(): void{
+    this.router.navigate(['/patient-other']);
+  }
   goToPatientHome(): void {
 
     this.router.navigate(['/patient-home']);
@@ -115,6 +120,19 @@ export class AppComponent implements OnInit {
   goToMyAppointments(): void{
     this.toggleService.triggerShowAppointments();
   }
+  goToDynamicHome(): void {
+  const url = this.router.url; // mevcut URL
+
+  if (url.startsWith('/patient-')) {
+    this.router.navigate(['/patient-home']);
+  } else if (url.startsWith('/doctor-')) {
+    this.router.navigate(['/doctor-home']);
+  } else if (url.startsWith('/admin-')) {
+    this.router.navigate(['/admin-home']);
+  } else {
+    this.router.navigate(['/login']); // tanınmayan sayfa
+  }
+}
 
   goToSettings(): void {
     this.toggleService.toggleEdit();

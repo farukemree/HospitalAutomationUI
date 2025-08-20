@@ -1,149 +1,198 @@
-<div class="container mt-4">
-  <h2 class="text-center mb-4">🩺 Tıbbi Kayıt İşlemleri</h2>
+<div class="main-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1 class="page-title">
+      <i class="fas fa-notes-medical"></i>
+      Tıbbi Kayıt İşlemleri
+    </h1>
+    <p class="page-subtitle">Hasta kayıtlarını yönetin ve takip edin</p>
+  </div>
 
-  <!-- Form Alanı -->
-  <div class="card shadow-lg mb-4">
-    <div class="card-header bg-primary text-white">
-      {{ isEditMode ? '🔄 Tıbbi Kaydı Güncelle' : '➕ Yeni Tıbbi Kayıt ' }}
-    </div>
-    <div class="card-body">
-      <form #recordForm="ngForm" (ngSubmit)="isEditMode ? updateRecord() : addRecord()">
-
-        <div class="mb-3 col-md-6">
-          <label for="patientId" class="form-label">Hasta ID</label>
-          <input
-            type="number"
-            id="patientId"
-            name="patientId"
-            class="form-control"
-            [(ngModel)]="activeRecord.patientId"
-            [readonly]="isEditMode"
-            required
-            #patientId="ngModel"
-          />
-          <div *ngIf="patientId.invalid && patientId.touched" class="text-danger">
-            Hasta ID zorunludur.
-          </div>
+  <!-- Content -->
+  <div class="content-wrapper">
+    <!-- Left Panel -->
+    <div class="left-panel">
+      <!-- Form Card -->
+      <div class="form-card">
+        <div class="form-header" [ngClass]="{'edit-mode': isEditMode}">
+          <i class="fas" [ngClass]="isEditMode ? 'fa-edit' : 'fa-plus-circle'"></i>
+          {{ isEditMode ? 'Tıbbi Kaydı Güncelle' : 'Yeni Tıbbi Kayıt Ekle' }}
         </div>
+        <div class="form-body">
+          <form #recordForm="ngForm" (ngSubmit)="isEditMode ? updateRecord() : addRecord()">
+            <div class="form-group">
+              <label for="patientId" class="form-label">
+                <i class="fas fa-id-card"></i> Hasta TC Kimlik
+              </label>
+              <input
+                type="number"
+                id="patientId"
+                name="patientId"
+                class="form-control"
+                [(ngModel)]="activeRecord.patientId"
+                [readonly]="isEditMode"
+                required
+                #patientId="ngModel"
+                placeholder="TC Kimlik numarasını giriniz"
+              />
+              <div *ngIf="patientId.invalid && patientId.touched" class="error-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                Hasta TC kimlik numarası zorunludur
+              </div>
+            </div>
 
-        <div class="row">
-          <div class="mb-3 col-md-6">
-            <label for="recordDate" class="form-label">Kayıt Tarihi</label>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="recordDate" class="form-label">
+                  <i class="fas fa-calendar-alt"></i> Kayıt Tarihi
+                </label>
+                <input
+                  type="datetime-local"
+                  id="recordDate"
+                  name="recordDate"
+                  class="form-control"
+                  [(ngModel)]="activeRecord.recordDate"
+                  required
+                  #recordDate="ngModel"
+                />
+                <div *ngIf="recordDate.invalid && recordDate.touched" class="error-message">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Tarih zorunludur
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="description" class="form-label">
+                  <i class="fas fa-notes-medical"></i> Tıbbi Açıklama
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  class="form-control"
+                  rows="4"
+                  [(ngModel)]="activeRecord.description"
+                  required
+                  #description="ngModel"
+                  placeholder="Tıbbi açıklamayı detaylı olarak yazınız..."
+                ></textarea>
+                <div *ngIf="description.invalid && description.touched" class="error-message">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Açıklama zorunludur
+                </div>
+              </div>
+            </div>
+
+            <div class="btn-group">
+              <button
+                type="submit"
+                class="btn"
+                [ngClass]="isEditMode ? 'btn-warning' : 'btn-success'"
+                [disabled]="recordForm.invalid"
+              >
+                <i class="fas" [ngClass]="isEditMode ? 'fa-save' : 'fa-plus'"></i>
+                {{ isEditMode ? 'Güncelle' : 'Kaydet' }}
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="cancelEdit()"
+                *ngIf="isEditMode"
+              >
+                <i class="fas fa-times"></i>
+                İptal
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Search Card -->
+      <div class="search-card">
+        <div class="search-header">
+          <i class="fas fa-search"></i>
+          Kayıt Arama
+        </div>
+        <div class="search-body">
+          <div class="search-group">
             <input
-              type="datetime-local"
-              id="recordDate"
-              name="recordDate"
-              class="form-control"
-              [(ngModel)]="activeRecord.recordDate"
-              required
-              #recordDate="ngModel"
+              type="text"
+              class="search-input"
+              placeholder="Hasta TC, açıklama veya tarih ile arayın..."
+              [(ngModel)]="searchKeyword"
+              (keyup.enter)="searchMedicalRecords()"
             />
-            <div *ngIf="recordDate.invalid && recordDate.touched" class="text-danger">
-              Kayıt Tarihi zorunludur.
-            </div>
+            <button class="btn-search" (click)="searchMedicalRecords()">
+              <i class="fas fa-search"></i>
+              Ara
+            </button>
           </div>
-
-          <div class="mb-3 col-md-6">
-            <label for="description" class="form-label">Açıklama</label>
-            <textarea
-              id="description"
-              name="description"
-              class="form-control"
-              rows="3"
-              [(ngModel)]="activeRecord.description"
-              required
-              #description="ngModel"
-            ></textarea>
-            <div *ngIf="description.invalid && description.touched" class="text-danger">
-              Açıklama zorunludur.
-            </div>
-          </div>
-        </div>
-
-        <div class="text-start">
-          <button
-            type="submit"
-            class="btn"
-            [ngClass]="isEditMode ? 'btn-warning' : 'btn-success'"
-            [disabled]="recordForm.invalid"
-          >
-            {{ isEditMode ? ' Güncelle' : ' Ekle' }}
-          </button>
-          <button
-            type="button"
-            class="btn btn-secondary ms-2"
-            (click)="cancelEdit()"
-            *ngIf="isEditMode"
-          >
-            İptal
+          <button class="btn-show-all" (click)="loadMedicalRecords()">
+            <i class="fas fa-list"></i>
+            Tüm Kayıtları Göster
           </button>
         </div>
-      </form>
+      </div>
     </div>
-  </div>
 
-<!-- Arama Alanı -->
-<div class="card shadow-lg mb-4">
-  <div class="card-header bg-info text-white">
-    🩺 Tıbbi Kayıt Ara
-  </div>
-<div class="search-section" style="max-width: 320px;">
-  <div class="d-flex align-items-center gap-3" style="margin-bottom: 1.5rem;">
-    <input
-      type="text"
-      class="form-control faruk"
-      placeholder="Anahtar kelime ile arayın..."
-      [(ngModel)]="searchKeyword"
-      (keyup.enter)="searchMedicalRecords()"
-      style="flex: 1;"
-    />
-    <button class="btn btn-primary " (click)="searchMedicalRecords()">Ara</button>
-  </div>
-
-  <button class="btn btn-secondary w-100 faruk2" (click)="loadMedicalRecords()">Tüm Kayıtlar</button>
-</div>
-
-
-</div>
-
-
-
-  <!-- Kayıt Listesi -->
-  <div class="card shadow">
-    <div class="card-header bg-dark text-white">📋 Kayıt Listesi</div>
-    <div class="card-body p-0">
-      <table class="table table-striped mb-0">
-        <thead class="table-light">
-          <tr>
-            <th>ID</th>
-            <th>Hasta ID</th>
-            <th>Kayıt Tarihi</th>
-            <th>Açıklama</th>
-            <th>İşlemler</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let record of medicalRecords">
-            <td>{{ record.id }}</td>
-            <td>{{ record.patientId }}</td>
-            <td>{{ record.recordDate | date: 'short' }}</td>
-            <td>{{ record.description }}</td>
-            <td>
-            <button 
-  class="btn btn-sm me-1"
-  [ngClass]="selectedRecordId == record.id ? 'btn-warning' : 'btn-primary'"
-  (click)="selectRecord(record)">Düzenle
-</button>
-
-
-              <button class="btn btn-sm btn-danger" (click)="deleteRecord(record.id)">Sil</button>
-            </td>
-          </tr>
-          <tr *ngIf="medicalRecords.length === 0">
-            <td colspan="5" class="text-center py-3">Kayıt bulunamadı.</td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- Right Panel - Records Table -->
+    <div class="right-panel">
+      <div class="records-header">
+        <i class="fas fa-clipboard-list"></i>
+        Tıbbi Kayıt Listesi
+        <span style="float: right; font-size: 0.9rem; opacity: 0.8;">
+          {{ medicalRecords.length }} kayıt
+        </span>
+      </div>
+      <div class="table-container">
+        <table class="records-table">
+          <thead>
+            <tr>
+              <th><i class="fas fa-hashtag"></i> ID</th>
+              <th><i class="fas fa-user"></i> Hasta TC</th>
+              <th><i class="fas fa-calendar"></i> Tarih</th>
+              <th><i class="fas fa-notes-medical"></i> Açıklama</th>
+              <th><i class="fas fa-cogs"></i> İşlemler</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let record of medicalRecords" 
+                [ngClass]="{'selected': selectedRecordId == record.id}">
+              <td><strong>{{ record.id }}</strong></td>
+              <td>{{ record.patientId }}</td>
+              <td>{{ record.recordDate | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td class="description-cell" [title]="record.description">
+                {{ record.description }}
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <button 
+                    class="btn-edit"
+                    [ngClass]="{'active': selectedRecordId == record.id}"
+                    (click)="selectRecord(record)"
+                    [title]="selectedRecordId == record.id ? 'Düzenleniyor' : 'Düzenle'"
+                  >
+                    <i class="fas fa-edit"></i>
+                    {{ selectedRecordId == record.id ? 'Düzenleniyor' : 'Düzenle' }}
+                  </button>
+                  <button 
+                    class="btn-delete" 
+                    (click)="deleteRecord(record.id)"
+                    title="Sil"
+                  >
+                    <i class="fas fa-trash"></i>
+                    Sil
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="medicalRecords.length === 0" class="no-records">
+          <i class="fas fa-folder-open"></i>
+          <h3>Henüz kayıt bulunmuyor</h3>
+          <p>Yeni bir tıbbi kayıt ekleyerek başlayın</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>

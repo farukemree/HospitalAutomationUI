@@ -315,7 +315,7 @@ Swal.fire({
   }
 
   // Yeni randevu formunu sıfırla
-  private resetNewAppointment(): void {
+resetNewAppointment(): void {
     this.newAppointment = {
       patientId: 0,
       doctorId: this.doctorId || 0,

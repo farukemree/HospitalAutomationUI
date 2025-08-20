@@ -1,25 +1,30 @@
 <div class="Background">
   <nav class="custom-navbar">
-    <div class="brand">🏥 Hastane Sistemi
-       
-    </div>
+   <div class="brand" style="cursor:pointer;" (click)="goToDynamicHome()">
+  🏥 Hastane Sistemi
+</div>
+
     <div class="navbar-right">
       <button *ngIf="showRegisterButton" class="nav-btn" (click)="logout()">Giriş Sayfasına Dön</button>
       <span *ngIf="showPatientInfo && patient" class="me-3 text-primary fw-bold">
         👤 {{ patient.fullName }}
       </span>
       <button *ngIf="showPatientInfo" class="nav-btn" (click)="goToPatientPage()">Mesajlar</button>
-      <button *ngIf="showPatientPageButtons" class="nav-btn" (click)="goToPatientHome()">Ana Sayfaya Dön</button>
       <button *ngIf="showPatientInfo" class="nav-btn" (click)="goToMyDepartmentPage()">Departmanlar</button>
-      <button *ngIf="showPatientInfo" class="nav-btn" (click)="goToMyAppointments()">Randevularım</button>
-      <button *ngIf="showPatientInfo" class="nav-btn" (click)="goToMyMedicalRecords()">Tıbbi Kayıtlarım</button>
+      <button *ngIf="showPatientInfo" class="nav-btn" (click)="goToPatientOther()">İşlemlerim</button>
       <button *ngIf="showPatientInfo" class="nav-btn" (click)="logout()">Çıkış</button>
-      <button *ngIf="showPatientDepartment" class="nav-btn" (click)="goToPatientHome()">Ana Sayfaya Dön</button>
+      <button *ngIf="showPatientOther || showPatientPageButtons" class="nav-btn" (click)="goToMyDepartmentPage()">Departmanlar</button>
+      <button *ngIf="showPatientOther || showPatientDepartment" class="nav-btn" (click)="goToPatientPage()">Mesajlar</button>
+      <button *ngIf="showPatientPageButtons" class="nav-btn" (click)="goToPatientOther()">İşlemlerim</button>
+      <button *ngIf="showPatientDepartment" class="nav-btn" (click)="goToPatientOther()">İşlemlerim</button>
+      <button *ngIf="showPatientDepartment || showPatientOther" class="nav-btn" (click)="goToPatientHome()">Ana Sayfaya Dön</button>
+      <button *ngIf="showPatientPageButtons" class="nav-btn" (click)="goToPatientHome()">Ana Sayfaya Dön</button>
+
       <div class="navbar-right">
-        <span *ngIf="showAdminButtons" class="admin-label"> Admin Paneli    </span>
+        
         <button *ngIf="showAdminButtons" class="nav-btn" (click)="goToDepartmentPage()">Departmanlar </button>
         <button *ngIf="showAdminButtons" class="nav-btn" (click)="logout()">Çıkış </button>
-</div>
+       </div>
  <div class="navbar-right">
       <button *ngIf="showAdminDepartmentButtons" class="nav-btn" (click)="goToAdminHome()">Admin Sayfasına Dön</button>
 </div>

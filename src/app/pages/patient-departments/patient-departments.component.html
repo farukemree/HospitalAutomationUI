@@ -1,38 +1,273 @@
-<div *ngFor="let dept of departments">
-  <!-- Departman Başlığı -->
-  <div 
-    class="department-name" 
-    [class.active]="selectedDepartmentDescriptionId === dept.id"
-    (click)="toggleDescription(dept.id)">
-    {{ dept.name }}
-  </div>
-
-  <!-- Açıklama ve Doktorlar -->
-  <div *ngIf="selectedDepartmentDescriptionId === dept.id" class="department-description">
-    <h5 class="mb-2 text-primary fw-bold">📋 Bölüm Açıklaması</h5>
-    <p>{{ dept.description || 'Açıklama bulunmamaktadır.' }}</p>
-    <button class="btn btn-outline-primary mt-2 mb-3" (click)="loadDoctors(dept.id)">
-      👨‍⚕️ Doktorları Gör
-    </button>
-
-    <!-- Doktor Listesi - Ortalanmış ve daraltılmış kutu -->
-    <div *ngIf="doctors.length > 0" class="doctor-list-container mt-3">
-      <h6 class="text-secondary fw-semibold mb-2"></h6>
-      <ul class="list-group shadow-sm">
-        <li *ngFor="let doc of doctors" class="list-group-item d-flex align-items-center">
-          <img 
-            [src]="doc.imageUrl" 
-            alt="{{ doc.name }}" 
-            class="doctor-image me-3"
-            (error)="onImageError($event)"
-          />
-          <div>
-            <div class="doctor-name">{{ doc.name }}</div>
-            <div class="doctor-specialization text-muted">{{ doc.specialization }}</div>
-            <div class="doctor-phone text-muted">{{ doc.phone }}</div>
-          </div>
-        </li>
-      </ul>
+<div class="departments-container">
+  <!-- Header Section -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-icon">
+        <i class="fas fa-hospital"></i>
+      </div>
+      <div class="header-text">
+        <h1>🏥 Hastane Departmanları</h1>
+        <p class="subtitle">Uzman doktorlarımız ve departmanlarımız hakkında bilgi alın</p>
+      </div>
+      <button class="btn-refresh" (click)="loadDepartments()" [disabled]="isLoadingDepartments">
+        <i class="fas fa-sync-alt" [class.fa-spin]="isLoadingDepartments"></i>
+        {{ isLoadingDepartments ? 'Yükleniyor...' : 'Yenile' }}
+      </button>
     </div>
   </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    
+    <!-- Loading State for Departments -->
+    <div *ngIf="isLoadingDepartments" class="loading-container">
+      <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
+      </div>
+      <p>Departmanlar yükleniyor...</p>
+    </div>
+    
+    <!-- Departments Grid -->
+    <div class="departments-section" *ngIf="!isLoadingDepartments">
+      <div *ngIf="departments.length > 0; else noDepartments" class="departments-grid">
+        
+        <div *ngFor="let dept of departments; trackBy: trackByDepartmentId" 
+             class="department-card" 
+             [class.expanded]="isDepartmentExpanded(dept.id)">
+          
+          <!-- Department Header -->
+          <div class="department-header" (click)="toggleDescription(dept.id)">
+            <div class="department-icon">
+              <i class="fas fa-stethoscope"></i>
+            </div>
+            <div class="department-info">
+              <h3 class="department-name">{{ dept.name }}</h3>
+              <span class="department-indicator">Detaylara bakmak için tıklayın</span>
+            </div>
+            <div class="toggle-icon">
+              <i class="fas fa-chevron-down" 
+                 [class.rotated]="isDepartmentExpanded(dept.id)"></i>
+            </div>
+          </div>
+
+          <!-- Department Description -->
+          <div class="department-content" 
+               [class.show]="isDepartmentExpanded(dept.id)">
+            
+            <!-- Description -->
+            <div class="description-section">
+              <div class="description-header">
+                <i class="fas fa-info-circle"></i>
+                <h4>Departman Açıklaması</h4>
+              </div>
+              <p class="description-text">
+                {{ dept.description || 'Bu departman için henüz açıklama eklenmemiştir.' }}
+              </p>
+            </div>
+
+            <!-- Load Doctors Button -->
+            <div class="actions-section">
+              <button class="btn-load-doctors" 
+                      (click)="loadDoctors(dept.id)"
+                      [class.active]="isDoctorsLoaded(dept.id)"
+                      [disabled]="isLoadingDoctors">
+                <i class="fas fa-user-md" [class.fa-spin]="isLoadingDoctors && selectedDoctorsDepartmentId === dept.id"></i>
+                <span>
+                  {{ isLoadingDoctors && selectedDoctorsDepartmentId === dept.id ? 'Yükleniyor...' : 
+                     (isDoctorsLoaded(dept.id) ? 'Doktorlar Yüklendi' : 'Doktorları Görüntüle') }}
+                </span>
+                <div class="btn-ripple"></div>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- No Departments Template -->
+      <ng-template #noDepartments>
+        <div class="no-data-container">
+          <div class="no-data-icon">
+            <i class="fas fa-hospital-symbol"></i>
+          </div>
+          <h3>Henüz Departman Bulunmuyor</h3>
+          <p>Departman bilgileri yüklenmedi veya henüz kayıtlı departman bulunmamaktadır.</p>
+          <button class="btn-reload" (click)="loadDepartments()">
+            <i class="fas fa-reload"></i>
+            Departmanları Yükle
+          </button>
+        </div>
+      </ng-template>
+
+    </div>
+
+    <!-- Doctors Section -->
+    <div class="doctors-section" *ngIf="selectedDoctorsDepartmentId && !isLoadingDoctors">
+      
+      <!-- Doctors Header -->
+      <div class="section-header" *ngIf="hasDoctors() || doctors.length === 0">
+        <div class="section-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="section-title">
+          <h2>Departman Doktorları</h2>
+          <p>{{ getDepartmentNameById(selectedDoctorsDepartmentId) }} departmanındaki uzman doktorlarımız</p>
+        </div>
+        <div class="doctors-count" *ngIf="hasDoctors()">
+          <span class="count-badge">{{ doctors.length }} Doktor</span>
+        </div>
+      </div>
+
+      <!-- Loading State for Doctors -->
+      <div *ngIf="isLoadingDoctors" class="loading-container">
+        <div class="loading-spinner">
+          <i class="fas fa-spinner fa-spin"></i>
+        </div>
+        <p>Doktorlar yükleniyor...</p>
+      </div>
+
+      <!-- Doctors Grid -->
+      <div *ngIf="hasDoctors()" class="doctors-grid">
+        <div *ngFor="let doctor of doctors; let i = index; trackBy: trackByDoctorId" 
+             class="doctor-card"
+             [style.animation-delay.ms]="i * 100">
+          
+          <!-- Doctor Image -->
+          <div class="doctor-image-container">
+            <img 
+              [src]="doctor.imageUrl" 
+              [alt]="'Dr. ' + doctor.name"
+              class="doctor-image"
+              (error)="onImageError($event)"
+            />
+            <div class="doctor-badge">
+              <i class="fas fa-certificate"></i>
+            </div>
+            <div class="image-overlay">
+              <i class="fas fa-eye"></i>
+            </div>
+          </div>
+
+          <!-- Doctor Information -->
+          <div class="doctor-details">
+            <div class="doctor-main-info">
+              <h3 class="doctor-name">Dr. {{ doctor.name }}</h3>
+              <p class="doctor-specialization" *ngIf="doctor.specialization">
+                <i class="fas fa-stethoscope"></i>
+                {{ doctor.specialization }}
+              </p>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="doctor-contact" *ngIf="doctor.phone">
+              <div class="contact-item">
+                <div class="contact-icon">
+                  <i class="fas fa-phone"></i>
+                </div>
+                <span class="contact-info">{{ doctor.phone }}</span>
+              </div>
+            </div>
+
+            <!-- Doctor Stats -->
+            <div class="doctor-stats">
+              <div class="stat-item">
+                <div class="stat-icon">
+                  <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-value">4.8</span>
+                  <span class="stat-label">Puan</span>
+                </div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-icon">
+                  <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-value">156</span>
+                  <span class="stat-label">Hasta</span>
+                </div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-icon">
+                  <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-value">8+</span>
+                  <span class="stat-label">Yıl</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+         
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty Doctors State -->
+      <div class="empty-doctors" *ngIf="!hasDoctors() && selectedDoctorsDepartmentId && !isLoadingDoctors">
+        <div class="empty-icon">
+          <i class="fas fa-user-md-slash"></i>
+        </div>
+        <h3>Bu Departmanda Doktor Bulunmuyor</h3>
+        <p>{{ getDepartmentNameById(selectedDoctorsDepartmentId) }} departmanında henüz kayıtlı doktor bulunmamaktadır.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Floating Help Button -->
+  <div class="floating-help">
+    <button class="help-btn" title="Yardım">
+      <i class="fas fa-question"></i>
+    </button>
+  </div>
+
+  <!-- Statistics Footer -->
+  <div class="stats-footer">
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-hospital"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-number">{{ departments.length }}</span>
+          <span class="stat-text">Departman</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-user-md"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-number">{{ doctors.length }}</span>
+          <span class="stat-text">Uzman Doktor</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-number">7/24</span>
+          <span class="stat-text">Hizmet</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-heart"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-number">15K+</span>
+          <span class="stat-text">Mutlu Hasta</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

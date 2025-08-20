@@ -1,164 +1,216 @@
-<div class="container">
-  <div class="container mt-4">
-  <h2>🧠 Hastalık Tahmini</h2>
-  <div class="mb-3">
-    <label for="symptomInput" class="form-label">Semptomlarınızı girin:</label>
-    <input type="text" class="form-control" id="symptomInput" [(ngModel)]="symptomInput" placeholder="Örnek: nefes darlığı, öksürük, hırıltı" />
+<div class="patient-home-container">
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">🏥 Sağlık Asistanınız</h1>
+      <p class="hero-subtitle">Sağlığınız bizim önceliğimiz. Semptomlarınızı analiz edin ve uygun doktoru bulun.</p>
+    </div>
   </div>
-  <button class="btn btn-primary mb-3" (click)="predictDisease()">Tahmin Et</button>
 
-  <div *ngIf="predictedDisease" class="alert alert-info">
-     <p><strong>Tahmin Edilen Hastalık:</strong> {{ predictedDisease }}</p>
-     <p ><strong>Önerilen Bölüm:</strong> {{ department }}</p>
-  </div>
-    <div class="mt-4 mb-4">
-    <h4>💬 Yapay Zeka Destekli Sağlık Asistanı</h4>
-    <app-chatbox></app-chatbox>
-  </div>
-</div>
-  <!-- Doktor Listesi -->
-  <section class="doctor-list mb-5 card-section">
-    <h2 class="section-title">Doktor Listesi</h2>
-
-    <ul *ngIf="doctors.length > 0; else noDoctors" class="list-group">
-      <li *ngFor="let doctor of doctors" class="list-group-item d-flex justify-content-between align-items-center doctor-item">
-        <div class="doctor-info d-flex align-items-center gap-3">
-          <img 
-            [src]="doctor.imageUrl" 
-            alt="Doktor Fotoğrafı" 
-            class="doctor-img"
-            onerror="this.src='assets/default-doctor.png'" />
-          <div>
-            <strong>{{ doctor.fullName }}</strong> <br>
-            <small class="text-muted">{{ doctor.specialization }}</small>
+  <!-- Main Content -->
+  <div class="main-content">
+    
+    <!-- Disease Prediction Section -->
+    <div class="prediction-section">
+      <div class="section-card">
+        <div class="card-header">
+          <div class="header-icon">
+            <i class="fas fa-brain"></i>
+          </div>
+          <div class="header-text">
+            <h2>Hastalık Tahmini</h2>
+            <p>Semptomlarınızı girerek olası hastalığı öğrenin</p>
           </div>
         </div>
-        <span class="badge badge-info badge-pill">📞 {{ doctor.phone }}</span>
-      </li>
-    </ul>
-
-    <ng-template #noDoctors>
-      <p class="text-warning text-center mt-3">Henüz doktor listesi yüklenmedi veya boş.</p>
-    </ng-template>
-  </section>
-
-  <hr>
-
-  <!-- Randevu Oluştur / Güncelle -->
-  <section class="appointment-create mb-5 card-section">
-    <h2 class="section-title">{{ editingAppointment ? 'Randevuyu Güncelle' : 'Randevu Oluştur' }}</h2>
-    <form (ngSubmit)="onSubmit()" #appointmentForm="ngForm" class="form">
-
-      <div class="form-group mb-3">
-        <label for="doctor">Doktor Seç:</label>
-       <!-- Doktor seçimi isme göre -->
-<select class="form-select" [(ngModel)]="selectedDoctorName" name="doctorName" (change)="onDoctorNameChange()" required>
-  <option value="" disabled selected>Doktor seçin</option>
-  <option *ngFor="let doc of doctors" 
-          [value]="doc.fullName"
-          [disabled]="isDoctorAlreadyBooked(doc.id)">
-    {{ doc.fullName }} 
-  </option>
-</select>
-
-
+        
+        <div class="card-body">
+          <div class="input-group-modern">
+            <label for="symptomInput" class="modern-label">
+              <i class="fas fa-stethoscope"></i>
+              Semptomlarınızı Girin
+            </label>
+            <div class="input-wrapper">
+              <input 
+                type="text" 
+                class="modern-input" 
+                id="symptomInput" 
+                [(ngModel)]="symptomInput" 
+                placeholder="Örnek: nefes darlığı, öksürük, hırıltı, ateş, baş ağrısı" 
+              />
+              <div class="input-icon">
+                <i class="fas fa-notes-medical"></i>
+              </div>
+            </div>
+          </div>
+          
+          <button class="btn-predict" (click)="predictDisease()">
+            <i class="fas fa-search"></i>
+            <span>Hastalık Tahmini Yap</span>
+            <div class="btn-glow"></div>
+          </button>
+          
+          <!-- Prediction Result -->
+          <div *ngIf="predictedDisease" class="prediction-result">
+            <div class="result-header">
+              <i class="fas fa-check-circle"></i>
+              <h3>Tahmin Sonucu</h3>
+            </div>
+            <div class="result-content">
+              <div class="result-item disease-result">
+                <div class="result-icon">
+                  <i class="fas fa-diagnoses"></i>
+                </div>
+                <div class="result-info">
+                  <strong>Tahmin Edilen Hastalık:</strong>
+                  <span class="disease-name">{{ predictedDisease }}</span>
+                </div>
+              </div>
+              
+              <div class="result-item department-result">
+                <div class="result-icon">
+                  <i class="fas fa-hospital-user"></i>
+                </div>
+                <div class="result-info">
+                  <strong>Önerilen Bölüm:</strong>
+                  <span class="department-name">{{ department }}</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="result-disclaimer">
+              <i class="fas fa-exclamation-triangle"></i>
+              <p>Bu tahmin sadece bilgilendirme amaçlıdır. Kesin teşhis için mutlaka bir doktora başvurun.</p>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
 
-   <!-- Tarih seçimi -->
-<div class="form-group mb-3">
-  <label for="date">Randevu Tarihi:</label>
-  <input
-    class="form-control"
-    type="date"
-    [(ngModel)]="selectedDate"
-    name="selectedDate"
-    (change)="onDateChange()"
-    required
-  />
-</div>
+    <!-- AI Health Assistant Section -->
+    <div class="chatbot-section">
+      <div class="section-card">
+        <div class="card-header">
+          <div class="header-icon chatbot-icon">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div class="header-text">
+            <h2>Yapay Zeka Sağlık Asistanı</h2>
+            <p>7/24 sağlık sorularınızı yanıtlıyoruz</p>
+          </div>
+        </div>
+        
+        <div class="card-body">
+          <div class="chatbot-wrapper">
+            <app-chatbox></app-chatbox>
+          </div>
+        </div>
+      </div>
+    </div>
 
- <!-- Saat Seçimi -->
-<div class="form-group mb-3">
-  <label for="timeSlot">Randevu Saati:</label>
-  <select
-    class="form-control"
-    [(ngModel)]="selectedTime"
-    name="selectedTime"
-    required
-  >
-    <option *ngFor="let slot of availableTimeSlots"
-            [value]="slot.time"
-            [disabled]="slot.disabled">
-      {{ slot.time }} {{ slot.disabled ? '(Dolu)' : '' }}
-    </option>
-  </select>
-</div>
+    <!-- Doctors List Section -->
+    <div class="doctors-section">
+      <div class="section-card">
+        <div class="card-header">
+          <div class="header-icon doctors-icon">
+            <i class="fas fa-user-md"></i>
+          </div>
+          <div class="header-text">
+            <h2>Uzman Doktorlarımız</h2>
+            <p>Alanında uzman doktorlarımızla tanışın</p>
+          </div>
+          <button class="btn-refresh" (click)="getAllDoctors()">
+            <i class="fas fa-sync-alt"></i>
+            Yenile
+          </button>
+        </div>
+        
+        <div class="card-body">
+          <!-- Doctors Grid -->
+          <div *ngIf="doctors.length > 0; else noDoctors" class="doctors-grid">
+            <div *ngFor="let doctor of doctors" class="doctor-card">
+              <div class="doctor-image-container">
+                <img 
+                  [src]="doctor.imageUrl || 'assets/default-doctor.png'" 
+                  alt="Dr. {{ doctor.fullName }}"
+                  class="doctor-image"
+                 
+                />
+                <div class="doctor-status online">
+                  <i class="fas fa-circle"></i>
+                </div>
+              </div>
+              
+              <div class="doctor-info">
+                <h3 class="doctor-name">Dr. {{ doctor.fullName }}</h3>
+                <p class="doctor-specialization">
+                  <i class="fas fa-stethoscope"></i>
+                  {{ doctor.specialization }}
+                </p>
+                
+                <div class="doctor-contact">
+                  <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>{{ doctor.phone }}</span>
+                  </div>
+                  <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    
+                  </div>
+                </div>
+                
+                <div class="doctor-rating">
+                  <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                  </div>
+                  <span class="rating-text">4.8 (127 değerlendirme)</span>
+                </div>
+                
+                <div class="doctor-actions">
+                 
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- No Doctors Template -->
+          <ng-template #noDoctors>
+            <div class="no-doctors">
+              <div class="no-data-icon">
+                <i class="fas fa-user-md-slash"></i>
+              </div>
+              <h3>Henüz Doktor Bulunmuyor</h3>
+              <p>Doktor listesi yüklenmedi veya henüz kayıtlı doktor bulunmamaktadır.</p>
+              <button class="btn-load-doctors" (click)="getAllDoctors()">
+                <i class="fas fa-reload"></i>
+                Doktorları Yükle
+              </button>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
 
+  </div>
 
-<div class="form-group mb-4">
-  <label for="description">Açıklama:</label>
-  <textarea
-    class="form-control"
-    id="description"
-    [(ngModel)]="appointment.description"
-    name="description"
-    rows="3"
-    placeholder="Şikayetinizi veya açıklamanızı girin..."
-  ></textarea>
-</div>
-
-
-      <button type="submit" class="btn btn-success w-100">
-        {{ editingAppointment ? 'Güncelle' : 'Oluştur' }}
+  <!-- Floating Action Button -->
+  <div class="floating-actions">
+    <button class="fab-main" title="Hızlı İşlemler">
+      <i class="fas fa-plus"></i>
+    </button>
+    <div class="fab-menu">
+      <button class="fab-item" title="Acil Durum">
+        <i class="fas fa-ambulance"></i>
       </button>
-    </form>
-  </section>
-
-  <hr>
-
-  <!-- Randevularım -->
-  <section class="my-appointments mb-5 card-section">
-    <h2 class="section-title">Randevularım</h2>
-   
-
-    <ul *ngIf="appointments.length > 0; else noAppointments" class="list-group">
-      <li *ngFor="let app of appointments" class="list-group-item d-flex justify-content-between align-items-center appointment-item">
-        <div>
-          <strong>📅 Tarih:</strong> {{ app.appointmentDate | date:'short' }} <br>
-          <strong>👨‍⚕️ Doktor:</strong> {{ app.doctorName }} <br>
-          <strong>📝 Açıklama:</strong> {{ app.description || '-' }}
-        </div>
-        <div class="btn-group">
-          <button class="btn btn-sm btn-warning me-2" (click)="startEditAppointment(app)">Düzenle</button>
-          <button class="btn btn-sm btn-danger" (click)="deleteAppointment(app.id!)">Sil</button>
-        </div>
-      </li>
-    </ul>
-
-    <ng-template #noAppointments>
-      <p class="text-muted text-center mt-3">Henüz randevunuz yok veya henüz yüklenmedi .</p>
-    </ng-template>
-  </section>
-
-  <hr>
-
-  <<section class="medical-records card-section">
-  <h2 class="section-title">Tıbbi Kayıtlarım</h2>
-
-  <ul *ngIf="medicalRecords.length > 0; else noMedicalRecords" class="list-group">
-    <li *ngFor="let record of medicalRecords" class="list-group-item medical-record-item">
-      <div>
-        <strong>📅 Tarih:</strong> {{ record.recordDate | date:'short' }} <br>
-        <strong>📝 Tanı:</strong> {{ getDiagnosis(record.description) }}
-      </div>
-    </li>
-  </ul>
-
-  <ng-template #noMedicalRecords>
-    <p class="text-muted text-center mt-3">Henüz tıbbi kayıt bulunmamaktadır.</p>
-  </ng-template>
-</section>
-
-
-
+      <button class="fab-item" title="Hızlı Randevu">
+        <i class="fas fa-calendar-plus"></i>
+      </button>
+      <button class="fab-item" title="İlaç Hatırlatması">
+        <i class="fas fa-pills"></i>
+      </button>
+    </div>
+  </div>
 </div>

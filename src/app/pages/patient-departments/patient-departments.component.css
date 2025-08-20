@@ -1,127 +1,572 @@
-/* container */
-.container {
-  max-width: 500px;
-  margin: 30px auto;
+/* Container and Layout */
+.departments-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #222;
-  user-select: none;
-}
-.doctor-list-container {
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 0 16px;
 }
 
-
-/* departman adı */
-.department-name {
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 1.25rem;
-  padding: 12px 15px;
-  background-color: #f5f5f5;
-  border-radius: 6px;
-  margin-bottom: 8px;
-  transition: background-color 0.3s ease;
-}
-
-.department-name:hover {
-  background-color: #e0e0e0;
-}
-
-.department-name.active {
-  background-color: #3f51b5;
-  color: white;
-}
-
-/* açıklama */
-.department-description {
-  background: linear-gradient(135deg, #f0f4ff, #e6ecff);
-  border-left: 6px solid #3f51b5;
-  padding: 20px 24px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(63, 81, 181, 0.2);
-  font-size: 1rem;
-  color: #2a2a2a;
-  white-space: pre-line;
-  margin-bottom: 20px;
-  animation: fadeIn 0.4s ease-in-out;
-}
-.department-description .btn-outline-primary {
-  border: 2px solid #3f51b5;
-  color: #3f51b5;
-  background-color: transparent;
-}   
-.department-description .btn-outline-primary:hover {
-  background-color: #3f51b5;
-  color: white;
-  box-shadow: 0 4px 12px rgba(63, 81, 181, 0.3);
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* doktor listesi */
-.list-group {
-  padding-left: 0;
-  margin-top: 16px;
-  border-radius: 12px;
+/* Header Section */
+.page-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
   overflow: hidden;
-  box-shadow: 0 8px 28px rgb(45 61 151 / 0.15);
-  background: #f7f9ff;
 }
 
-.list-group-item {
-  list-style: none;
-  padding: 14px 20px;
-  font-weight: 600;
-  font-size: 1.05rem;
-  border-bottom: 1px solid #dbe2ff;
-  color: #334155;
+.header-content {
   display: flex;
   align-items: center;
-  transition: background-color 0.3s ease;
-  user-select: none;
+  padding: 30px;
+  gap: 20px;
 }
 
-.list-group-item:last-child {
-  border-bottom: none;
+.header-icon {
+  font-size: 3rem;
+  color: #667eea;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.list-group-item:hover {
-  background-color: #e3e9ff;
+.header-text {
+  flex: 1;
 }
 
-.list-group-item i.bi-person-circle {
-  margin-right: 14px;
+.header-text h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent; /* Fallback */
+  font-weight: bold;
+}
+
+.subtitle {
+  margin: 10px 0 0 0;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.btn-refresh {
+  padding: 12px 25px;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-refresh:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.btn-refresh:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Main Content */
+.main-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Loading States */
+.loading-container {
+  text-align: center;
+  padding: 60px 20px;
+  color: white;
+}
+
+.loading-spinner {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.loading-spinner i {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Departments Grid */
+.departments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.department-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.department-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.department-card.expanded {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.2);
+}
+
+/* Department Header */
+.department-header {
+  display: flex;
+  align-items: center;
+  padding: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.department-header:hover {
+  background: rgba(102, 126, 234, 0.05);
+}
+
+.department-icon {
+  font-size: 2.5rem;
+  color: #667eea;
+  margin-right: 20px;
+}
+
+.department-info {
+  flex: 1;
+}
+
+.department-name {
+  margin: 0 0 8px 0;
   font-size: 1.4rem;
-  color: #3f51b5;
+  color: #333;
+  font-weight: 600;
 }
+
+.department-indicator {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.toggle-icon {
+  font-size: 1.2rem;
+  color: #667eea;
+  transition: transform 0.3s ease;
+}
+
+.toggle-icon .rotated {
+  transform: rotate(180deg);
+}
+
+/* Department Content */
+.department-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  background: rgba(102, 126, 234, 0.02);
+}
+
+.department-content.show {
+  max-height: 400px;
+  padding: 0 25px 25px 25px;
+}
+
+.description-section {
+  margin-bottom: 20px;
+}
+
+.description-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  color: #667eea;
+}
+
+.description-header h4 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.description-text {
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.actions-section {
+  text-align: center;
+}
+
+.btn-load-doctors {
+  padding: 12px 30px;
+  background: linear-gradient(45deg, #28a745, #20c997);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-load-doctors:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+.btn-load-doctors:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-load-doctors.active {
+  background: linear-gradient(45deg, #6c757d, #5a6268);
+}
+
+/* Doctors Section */
+.doctors-section {
+  margin-top: 40px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 25px 30px;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.section-icon {
+  font-size: 2.5rem;
+  color: #28a745;
+  margin-right: 20px;
+}
+
+.section-title {
+  flex: 1;
+}
+
+.section-title h2 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 1.8rem;
+}
+
+.section-title p {
+  margin: 0;
+  color: #666;
+  font-size: 1rem;
+}
+
+.doctors-count {
+  background: linear-gradient(45deg, #28a745, #20c997);
+  border-radius: 20px;
+  padding: 8px 16px;
+}
+
+.count-badge {
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Doctors Grid */
+.doctors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 25px;
+}
+
+.doctor-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.doctor-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Doctor Image */
+.doctor-image-container {
+  position: relative;
+  height: 250px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 3px solid #667eea;
+}
+
 .doctor-image {
-  width: 153px;
-  height: 153px;
-  border-radius: 50%;
+  width: 180px;
+  height: 180px;
   object-fit: cover;
-  border: 2px solid #3f51b5;
+  border-radius: 50%;
+  border: 5px solid white;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.doctor-card:hover .doctor-image {
+  transform: scale(1.1);
+  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.3);
+  border-color: #667eea;
+}
+
+.doctor-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffd700;
+  font-size: 1.4rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 2px solid white;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(102, 126, 234, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #667eea;
+  font-size: 1.5rem;
+  opacity: 0;
+  transition: all 0.3s ease;
+  border-radius: 20px 20px 0 0;
+}
+
+.doctor-card:hover .image-overlay {
+  opacity: 1;
+  background: rgba(102, 126, 234, 0.15);
+}
+
+/* Doctor Details */
+.doctor-details {
+  padding: 25px;
+}
+
+.doctor-main-info {
+  margin-bottom: 20px;
 }
 
 .doctor-name {
+  margin: 0 0 8px 0;
+  font-size: 1.4rem;
+  color: #333;
   font-weight: 600;
+}
+
+.doctor-specialization {
+  margin: 0;
+  color: #667eea;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Contact Information */
+.doctor-contact {
+  margin-bottom: 20px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #666;
+}
+
+.contact-icon {
+  color: #28a745;
+}
+
+/* Doctor Stats */
+.doctor-stats {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: rgba(102, 126, 234, 0.05);
+  border-radius: 12px;
+}
+
+.stat-item {
+  flex: 1;
+  text-align: center;
+}
+
+.stat-icon {
+  font-size: 1.2rem;
+  color: #667eea;
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  display: block;
+  font-weight: 600;
+  color: #333;
   font-size: 1.1rem;
 }
-.doctor-img-spacing {
-  margin-right: 55px; /* veya 20px, isteğe göre artırılabilir */
+
+.stat-label {
+  font-size: 0.8rem;
+  color: #666;
 }
 
-.list-group-item {
-  background-color: white;
+.btn-appointment {
+  padding: 10px 20px;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
   border: none;
-  box-shadow: 0 2px 6px rgba(63, 81, 181, 0.08);
-  margin-bottom: 8px;
-  border-radius: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  flex: 1;
+  justify-content: center;
 }
 
-.doctor-specialization, .doctor-phone {
-  font-size: 0.85rem;
+.btn-profile {
+  padding: 10px 20px;
+  background: linear-gradient(45deg, #28a745, #20c997);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  flex: 1;
+  justify-content: center;
+}
+
+.btn-message {
+  padding: 10px 15px;
+  background: linear-gradient(45deg, #ffc107, #ffb300);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  min-width: 50px;
+}
+
+.btn-appointment:hover,
+.btn-profile:hover,
+.btn-message:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .departments-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .doctors-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .header-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  
+  .doctor-image {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .doctor-image-container {
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .departments-container {
+    padding: 10px;
+  }
+  
+  .doctor-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .doctor-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
 }

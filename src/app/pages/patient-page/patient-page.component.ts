@@ -4,11 +4,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { firstValueFrom } from 'rxjs';
 
 interface Doctor {
   id: string;
   fullName: string;
   specialization?: string;
+  messages?: ChatMessage[];
   lastMessage?: string;
   lastMessageTime?: Date;
 }
@@ -24,7 +26,6 @@ interface Doctor {
 export class PatientChatComponent implements OnInit, AfterViewChecked {
   @ViewChild('chatContainer') private chatContainer!: ElementRef;
 
-  doctors: Doctor[] = [];
   doctorsWithLastMessage: Doctor[] = [];
   conversation: ChatMessage[] = [];
 
@@ -34,7 +35,7 @@ export class PatientChatComponent implements OnInit, AfterViewChecked {
   replyingToName!: string;
   newMessage: string = '';
   currentConversationId: string = '';
-  currentUserId: string = ''; // ← Gönderici ID’si
+  currentUserId: string = ''; 
 
   constructor(
     private signalRService: SignalRService,
@@ -52,13 +53,12 @@ export class PatientChatComponent implements OnInit, AfterViewChecked {
     this.currentUserId = this.patientId;
 
     this.getPatientName();
-    this.loadDoctors();
+    this.loadDoctorsWithMessages();
 
     this.signalRService.startConnection()
       .then(() => {
         console.log('SignalR bağlandı ✅');
 
-        // Anlık mesajları dinle
         this.signalRService.addReceiveMessageListener((msg: ChatMessage) => {
           if (msg.conversationId === this.currentConversationId) {
             if (msg.senderId === this.patientId) msg.senderName = 'Siz';
@@ -85,17 +85,34 @@ export class PatientChatComponent implements OnInit, AfterViewChecked {
       });
   }
 
-  loadDoctors(): void {
-    this.http.get<any>('http://localhost:5073/api/Doctor/GetAllDoctors')
-      .subscribe({
-        next: res => {
-          this.doctors = res.data.map((d: any) => ({ id: d.id, fullName: d.fullName }));
-          this.doctorsWithLastMessage = [...this.doctors];
+  async loadDoctorsWithMessages(): Promise<void> {
+    try {
+      const res: any = await firstValueFrom(this.http.get('http://localhost:5073/api/Doctor/GetAllDoctors'));
+      const doctors: Doctor[] = res.data.map((d: any) => ({ id: d.id, fullName: d.fullName }));
 
-          if (this.doctors.length > 0) this.openConversation(this.doctors[0]);
-        },
-        error: err => console.error('Doktorlar yüklenemedi', err)
+      const promises = doctors.map(async d => {
+        const messages: ChatMessage[] = await firstValueFrom(this.signalRService.getOldMessages(this.patientId, d.id));
+        const mappedMessages = (messages || []).map(m => ({ ...m, sentAt: new Date(m.sentAt) }));
+        return {
+          ...d,
+          messages: mappedMessages,
+          lastMessage: mappedMessages.length ? mappedMessages[mappedMessages.length - 1].message : '',
+          lastMessageTime: mappedMessages.length ? mappedMessages[mappedMessages.length - 1].sentAt : undefined
+        };
       });
+
+      this.doctorsWithLastMessage = await Promise.all(promises);
+
+      this.doctorsWithLastMessage.sort(
+        (a, b) => (b.lastMessageTime?.getTime() || 0) - (a.lastMessageTime?.getTime() || 0)
+      );
+
+      if (this.doctorsWithLastMessage.length > 0) {
+        this.openConversation(this.doctorsWithLastMessage[0]);
+      }
+    } catch (err) {
+      console.error('Doktorlar yüklenemedi', err);
+    }
   }
 
   private generateConversationId(userId1: string, userId2: string): string {
@@ -107,30 +124,19 @@ export class PatientChatComponent implements OnInit, AfterViewChecked {
     this.replyingToName = doctor.fullName;
     this.currentConversationId = this.generateConversationId(this.patientId, doctor.id);
 
-    // SignalR grubuna katıl
+    // messages undefined ise boş array kullan
+    this.conversation = doctor.messages ?? [];
+
+    this.conversation.forEach(msg => {
+      if (msg.senderId === this.patientId) msg.senderName = 'Siz';
+    });
+
+    this.scrollToBottom();
+
     if (this.signalRService.hubConnection?.state === 'Connected') {
       this.signalRService.hubConnection.invoke('JoinConversation', this.currentConversationId)
         .catch(err => console.error('JoinConversation hatası:', err));
     }
-
-    this.signalRService.getOldMessages(this.patientId, doctor.id).subscribe({
-      next: res => {
-        this.conversation = res.map(m => ({ ...m, sentAt: new Date(m.sentAt) }))
-                               .sort((a, b) => a.sentAt.getTime() - b.sentAt.getTime());
-
-        this.conversation.forEach(msg => {
-          if (msg.senderId === this.patientId) msg.senderName = 'Siz';
-        });
-
-        this.scrollToBottom();
-
-        if (this.conversation.length > 0) {
-          const last = this.conversation[this.conversation.length - 1];
-          this.updateDoctorLastMessage(doctor.id, last.message, last.sentAt);
-        }
-      },
-      error: err => console.error('Mesajlar alınamadı', err)
-    });
   }
 
   sendMessage(): void {
@@ -146,7 +152,6 @@ export class PatientChatComponent implements OnInit, AfterViewChecked {
       conversationId: this.currentConversationId
     };
 
-    // ✨ Gönderici mesajını push etmiyoruz, listener ekleyecek
     if (this.signalRService.hubConnection?.state === 'Connected') {
       this.signalRService.hubConnection.invoke(
         'SendMessage',

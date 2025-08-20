@@ -1,68 +1,166 @@
-<div class="admin-department-page">
-  <h2>🏥 Departman Yönetimi</h2>
-
-  <div class="actions">
-    <fbutton
-      [label]="'Yeni Departman Ekle'"
-      (onClick)="showAddForm = true; cancelEdit()"
-      class="btn"
-    ></fbutton>
-  </div>
-
-  <!-- Yeni departman ekleme formu -->
-  <div *ngIf="showAddForm" class="add-form">
-    <input [(ngModel)]="newDepartmentName" placeholder="Departman adı girin" />
-
-    <fbutton
-      [label]="'Ekle'"
-      (onClick)="addDepartment()"
-      class="btn-add"
-    ></fbutton>
-
-    <fbutton
-      [label]="'İptal'"
-      (onClick)="showAddForm = false"
-      class="btn"
-    ></fbutton>
-  </div>
-
-  <ul>
-    <li *ngFor="let dep of departments" class="department-item">
-
-      <!-- Departman adı -->
-      <span *ngIf="editDepartmentId !== dep.id">{{ dep.name }}</span>
-      <input *ngIf="editDepartmentId === dep.id" [(ngModel)]="editDepartmentName" />
-
-      <!-- Butonlar grubu -->
-      <div class="btn-group">
-        <fbutton
-          *ngIf="!showAddForm && editDepartmentId !== dep.id"
-          [label]="'Güncelle'"
-          (onClick)="startEdit(dep)"
-          class="btn-update"
-        ></fbutton>
-
-        <fbutton
-          *ngIf="editDepartmentId === dep.id"
-          [label]="'Kaydet'"
-          (onClick)="updateDepartment(dep.id)"
-          class="btn-save"
-        ></fbutton>
-
-        <fbutton
-          *ngIf="editDepartmentId === dep.id"
-          [label]="'İptal'"
-          (onClick)="cancelEdit()"
-          class="btn-cancel"
-        ></fbutton>
-
-        <fbutton
-          *ngIf="!showAddForm && editDepartmentId !== dep.id"
-          [label]="'Sil'"
-          (onClick)="deleteDepartment(dep.id)"
-          class="btn-delete"
-        ></fbutton>
+<div class="department-container">
+  <!-- Header Section -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-icon">
+        <i class="fas fa-hospital"></i>
       </div>
-    </li>
-  </ul>
+      <div class="header-text">
+        <h1>🏥 Departman Yönetimi</h1>
+        <p class="subtitle">Hastane departmanlarını yönetin</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn-add" (click)="showAddForm = !showAddForm">
+          <i class="fas fa-plus"></i>
+          Departman Ekle
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Department Form -->
+  <div class="add-form-container" [class.show]="showAddForm">
+    <div class="add-form">
+      <div class="form-header">
+        <h3>
+          <i class="fas fa-plus-circle"></i>
+          Yeni Departman Ekle
+        </h3>
+        <button class="btn-close" (click)="showAddForm = false">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="form-content">
+        <div class="input-group">
+          <label for="departmentName">Departman Adı</label>
+          <input 
+            type="text" 
+            id="departmentName"
+            [(ngModel)]="newDepartmentName" 
+            placeholder="Departman adını giriniz"
+            class="form-input">
+        </div>
+        
+        <div class="form-actions">
+          <button 
+            class="btn-save" 
+            (click)="addDepartment()"
+            [disabled]="!newDepartmentName.trim()">
+            <i class="fas fa-save"></i>
+            Kaydet
+          </button>
+          <button 
+            class="btn-cancel" 
+            (click)="showAddForm = false; newDepartmentName = ''">
+            <i class="fas fa-times"></i>
+            İptal
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Card -->
+  <div class="stats-section">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-building"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ departments.length }}</h3>
+        <p>Toplam Departman</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Departments Grid -->
+  <div class="departments-section">
+    <div class="section-header">
+      <h2>
+        <i class="fas fa-list"></i>
+        Departman Listesi
+      </h2>
+    </div>
+
+    <div class="departments-grid" *ngIf="departments.length > 0; else noDepartments">
+      <div *ngFor="let department of departments; trackBy: trackByDepartmentId" class="department-card">
+        <!-- Normal View -->
+        <div *ngIf="editDepartmentId !== department.id" class="department-view">
+          <div class="department-info">
+            <div class="department-icon">
+              <i class="fas fa-hospital-alt"></i>
+            </div>
+            <div class="department-details">
+              <h4>{{ department.name }}</h4>
+              <p>
+                <i class="fas fa-hashtag"></i>
+                ID: {{ department.id }}
+              </p>
+            </div>
+          </div>
+          
+          <div class="department-actions">
+            <button 
+              class="btn-edit" 
+              (click)="startEdit(department)"
+              title="Düzenle">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button 
+              class="btn-delete" 
+              (click)="deleteDepartment(department.id)"
+              title="Sil">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Edit View -->
+        <div *ngIf="editDepartmentId === department.id" class="department-edit">
+          <div class="edit-form">
+            <div class="input-group">
+              <label>Departman Adı</label>
+              <input 
+                type="text" 
+                [(ngModel)]="editDepartmentName" 
+                class="form-input"
+                placeholder="Departman adını düzenleyin">
+            </div>
+            
+            <div class="edit-actions">
+              <button 
+                class="btn-save-edit" 
+                (click)="updateDepartment(department.id)"
+                [disabled]="!editDepartmentName.trim()">
+                <i class="fas fa-check"></i>
+                Kaydet
+              </button>
+              <button 
+                class="btn-cancel-edit" 
+                (click)="cancelEdit()">
+                <i class="fas fa-times"></i>
+                İptal
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <ng-template #noDepartments>
+      <div class="empty-state">
+        <div class="empty-icon">
+          <i class="fas fa-hospital-symbol"></i>
+        </div>
+        <h3>Departman Bulunamadı</h3>
+        <p>Henüz hiç departman eklenmemiş. İlk departmanı eklemek için yukarıdaki "Departman Ekle" butonuna tıklayın.</p>
+        <button class="btn-add-empty" (click)="showAddForm = true">
+          <i class="fas fa-plus"></i>
+          İlk Departmanı Ekle
+        </button>
+      </div>
+    </ng-template>
+  </div>
 </div>

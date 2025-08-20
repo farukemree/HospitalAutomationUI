@@ -1,18 +1,17 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { CustomButtonComponent } from "../../shared/custom-button/custom-button.component";
 
 @Component({
   selector: 'app-admin-department',
-  imports: [CommonModule, FormsModule, CustomButtonComponent],
+  imports: [CommonModule, FormsModule, ],
   standalone: true,
   templateUrl: './admin-department.component.html',
   styleUrls: ['./admin-department.component.css']
 })
-export class AdminDepartmentComponent {
+export class AdminDepartmentComponent implements OnInit{
   departments: any[] = [];
   newDepartmentName: string = '';
   showAddForm = false;
@@ -97,6 +96,9 @@ cancelEdit() {
   this.editDepartmentId = null;
   this.editDepartmentName = '';
 }
+  trackByDepartmentId(index: number, department: any): number {
+    return department.id;
+  }
 
 updateDepartment(id: number) {
   const updatedDep = { name: this.editDepartmentName };  

@@ -1,0 +1,206 @@
+/* Genel container */
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Başlıklar */
+h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+h5 {
+  text-align: center;
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 0;
+}
+
+/* Kartlar */
+.card {
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 1.5rem;
+}
+
+.card-header {
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Liste kartları */
+ul.list-group {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+li.list-group-item {
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin-bottom: 12px;
+  font-size: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Düzenle/Sil buton grubu */
+li.list-group-item .btn-group {
+  display: flex;
+  gap: 8px; /* Butonlar arası boşluk */
+}
+
+/* Form alanları */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mb-3 label,
+.form-label {
+  font-weight: 600;
+  color: #34495e;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.form-control,
+.form-select,
+textarea.form-control {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  width: 100%;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus,
+textarea.form-control:focus {
+  border-color: #2ecc71;
+  outline: none;
+}
+
+/* Butonlar */
+.btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.btn-success {
+  background-color: #2ecc71;
+  color: #fff;
+}
+.btn-success:hover {
+  background-color: #27ae60;
+}
+
+.btn-warning {
+  background-color: #f1c40f;
+  color: #fff;
+}
+.btn-warning:hover {
+  background-color: #d4ac0d;
+}
+
+.btn-danger {
+  background-color: #e74c3c;
+  color: #fff;
+}
+.btn-danger:hover {
+  background-color: #c0392b;
+}
+
+/* Saat butonları */
+.btn-outline-secondary {
+  border: 1px solid #6c757d;
+  color: #6c757d;
+  background-color: transparent;
+}
+.btn-outline-secondary:hover {
+  background-color: #e2e6ea;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.btn-outline-danger {
+  border: 1px solid #e74c3c;
+  color: #e74c3c;
+  background-color: transparent;
+}
+
+/* Saat butonlarının seçili hali */
+.btn-secondary.selected {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+/* Bilgilendirici metin */
+.text-muted {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+}
+
+/* Bölüm ayırıcı */
+hr {
+  margin: 40px 0;
+}
+
+/* Responsive ayarları */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+
+  li.list-group-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .btn-group {
+    justify-content: flex-start;
+    gap: 6px;
+  }
+}
+li.list-group-item .btn-warning {
+  margin-right: 13px;
+}
+/* Form içindeki tüm alanları hizala */
+form .mb-3 {
+  margin-left: 0;    /* sol boşluğu kaldır */
+  margin-right: 0;   /* sağ boşluğu kaldır */
+}
+
+form .form-control,
+form .form-select,
+form textarea {
+  width: 100%;       /* tam genişlik */
+  box-sizing: border-box; /* padding dahil genişliği korur */
+}
+
+

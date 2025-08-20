@@ -1,118 +1,297 @@
-<div class="admin-container">
-  <h2>Kullanıcı Rolleri Yönetimi</h2>
-
-  <!-- Kullanıcı Rol Güncelleme Tablosu -->
-  <table>
-    <thead>
-      <tr>
-        <th>Kullanıcı Adı</th>
-        <th>Email</th>
-        <th>Mevcut Rol</th>
-        <th>Yeni Rol</th>
-        <th>Güncelle</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let user of users">
-        <td>{{ user.username }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.role }}</td>
-        <td>
-          <select [(ngModel)]="selectedRole[user.id]">
-            <option value="" disabled selected>Rol seçin</option>
-            <option value="Admin">Admin</option>
-            <option value="Doctor">Doctor</option>
-            <option value="Patient">Patient</option>
-          </select>
-        </td>
-        <td>
-          <fbutton
-            class="btn-update"
-            [label]="'Güncelle'"
-            (onClick)="updateUserRole(user.id, selectedRole[user.id])"
-          ></fbutton>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- Butonlar -->
-  <div class="button-group" style="margin-top: 30px;">
-    <fbutton
-      class="btn-add"
-      [label]="'Tüm Doktorları Göster'"
-      (onClick)="getAllDoctors()"
-    ></fbutton>
-    <fbutton
-      class="btn-add"
-      [label]="'Tüm Hastaları Göster'"
-      (onClick)="getAllPatients()"
-    ></fbutton>
-    <fbutton
-      class="btn-add"
-      [label]="'Tüm Bölümleri Göster'"
-      (onClick)="getAllDepartments()"
-    ></fbutton>
+<div class="admin-dashboard">
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <div class="header-icon">
+        <i class="fas fa-user-shield"></i>
+      </div>
+      <div class="header-text">
+        <h1>🎛️ Admin Dashboard</h1>
+        <p class="subtitle">Sistem yönetimi ve kullanıcı kontrolü</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn-refresh" (click)="loadUsers()">
+          <i class="fas fa-sync-alt"></i>
+          Yenile
+        </button>
+      </div>
+    </div>
   </div>
 
-  <!-- Doktorlar -->
-  <div *ngIf="doctors.length > 0" style="margin-top: 20px;">
-    <h3>Doktorlar</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>İsim</th>
-          <th>Uzmanlık</th>
-          <th>Telefon</th>
-          <th>Bölüm Id</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let doc of doctors">
-          <td>{{ doc.fullName }}</td>
-          <td>{{ doc.specialization }}</td>
-          <td>{{ doc.phone }}</td>
-          <td>{{ doc.departmentId }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card users-card">
+      <div class="stat-icon">
+        <i class="fas fa-users"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ users.length }}</h3>
+        <p>Toplam Kullanıcı</p>
+      </div>
+    </div>
+
+    <div class="stat-card doctors-card">
+      <div class="stat-icon">
+        <i class="fas fa-user-md"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ doctors.length }}</h3>
+        <p>Doktor</p>
+        <button class="stat-btn" (click)="getAllDoctors()">
+          <i class="fas fa-eye"></i>
+          Görüntüle
+        </button>
+      </div>
+    </div>
+
+    <div class="stat-card patients-card">
+      <div class="stat-icon">
+        <i class="fas fa-user-injured"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ patients.length }}</h3>
+        <p>Hasta</p>
+        <button class="stat-btn" (click)="getAllPatients()">
+          <i class="fas fa-eye"></i>
+          Görüntüle
+        </button>
+      </div>
+    </div>
+
+    <div class="stat-card departments-card">
+      <div class="stat-icon">
+        <i class="fas fa-hospital"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ departments.length }}</h3>
+        <p>Departman</p>
+        <button class="stat-btn" (click)="getAllDepartments()">
+          <i class="fas fa-eye"></i>
+          Görüntüle
+        </button>
+      </div>
+    </div>
   </div>
 
-  <!-- Hastalar -->
-  <div *ngIf="patients.length > 0" style="margin-top: 20px;">
-    <h3>Hastalar</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>İsim</th>
-          <th>Doğum Tarihi</th>
-          <th>Cinsiyet</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let p of patients">
-          <td>{{ p.fullName }}</td>
-          <td>{{ p.birthDate | date:'dd.MM.yyyy' }}</td>
-          <td>{{ p.gender }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <!-- Main Content Tabs -->
+  <div class="content-tabs">
+    <div class="tab-headers">
+      <button 
+        class="tab-header" 
+        [class.active]="activeTab === 'users'"
+        data-tab="users"
+        (click)="switchTab('users')">
+        <i class="fas fa-users"></i>
+        Kullanıcı Yönetimi
+      </button>
+      <button 
+        class="tab-header" 
+        [class.active]="activeTab === 'doctors'"
+        data-tab="doctors"
+        (click)="switchTab('doctors')">
+        <i class="fas fa-user-md"></i>
+        Doktorlar ({{ doctors.length }})
+      </button>
+      <button 
+        class="tab-header" 
+        [class.active]="activeTab === 'patients'"
+        data-tab="patients"
+        (click)="switchTab('patients')">
+        <i class="fas fa-user-injured"></i>
+        Hastalar ({{ patients.length }})
+      </button>
+      <button 
+        class="tab-header" 
+        [class.active]="activeTab === 'departments'"
+        data-tab="departments"
+        (click)="switchTab('departments')">
+        <i class="fas fa-hospital"></i>
+        Departmanlar ({{ departments.length }})
+      </button>
+    </div>
 
-  <!-- Bölümler -->
-  <div *ngIf="departments.length > 0" style="margin-top: 20px;">
-    <h3>Bölümler</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Bölüm Adı</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let dept of departments">
-          <td>{{ dept.name }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- Users Tab -->
+    <div class="tab-content" [hidden]="activeTab !== 'users'" id="users-tab">
+      <div class="section-header">
+        <h2>
+          <i class="fas fa-users-cog"></i>
+          Kullanıcı Yönetimi
+        </h2>
+        <p>Kullanıcı rollerini düzenleyebilir ve sistem erişimini kontrol edebilirsiniz</p>
+      </div>
+
+      <div class="users-grid" *ngIf="users.length > 0; else noUsers">
+        <div *ngFor="let user of users; trackBy: trackByUserId" class="user-card">
+          <div class="user-avatar">
+            <i class="fas fa-user-circle"></i>
+            <div class="role-badge" [class]="'role-' + user.role.toLowerCase()">
+              {{ user.role }}
+            </div>
+          </div>
+          
+          <div class="user-info">
+            <h3 class="user-name">{{ user.username }}</h3>
+            <p class="user-email">
+              <i class="fas fa-envelope"></i>
+              {{ user.email }}
+            </p>
+            <p class="user-id">
+              <i class="fas fa-hashtag"></i>
+              ID: {{ user.id }}
+            </p>
+          </div>
+
+          <div class="user-actions">
+            <div class="role-selector">
+              <label>Rol Değiştir:</label>
+              <select [(ngModel)]="selectedRole[user.id]" class="role-select">
+                <option value="">Rol Seçin</option>
+                <option value="Admin">Admin</option>
+                <option value="Doctor">Doctor</option>
+                <option value="Patient">Patient</option>
+              </select>
+            </div>
+            
+            <button 
+              class="btn-update-role" 
+              (click)="updateUserRole(user.id, selectedRole[user.id])"
+              [disabled]="!selectedRole[user.id]">
+              <i class="fas fa-save"></i>
+              Güncelle
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noUsers>
+        <div class="empty-state">
+          <i class="fas fa-users-slash"></i>
+          <h3>Kullanıcı Bulunamadı</h3>
+          <p>Henüz sistemde kayıtlı kullanıcı bulunmamaktadır.</p>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Doctors Tab -->
+    <div class="tab-content" [hidden]="activeTab !== 'doctors'" id="doctors-tab">
+      <div class="section-header">
+        <h2>
+          <i class="fas fa-user-md"></i>
+          Doktor Listesi
+        </h2>
+        <p>Sistemdeki tüm doktorları görüntüleyebilirsiniz</p>
+      </div>
+
+      <div class="doctors-grid" *ngIf="doctors.length > 0; else noDoctors">
+        <div *ngFor="let doctor of doctors; trackBy: trackByDoctorId" class="doctor-item">
+          <div class="doctor-avatar">
+            <i class="fas fa-stethoscope"></i>
+          </div>
+          <div class="doctor-details">
+            <h4>{{ doctor.fullName }}</h4>
+            <p *ngIf="doctor.specialization">
+              <i class="fas fa-user-md"></i> 
+              {{ doctor.specialization }}
+            </p>
+            <p *ngIf="doctor.departmentId">
+              <i class="fas fa-hospital"></i> 
+              {{ getDepartmentName(doctor.departmentId) }}
+            </p>
+            <p *ngIf="doctor.phone">
+              <i class="fas fa-phone"></i> 
+              {{ doctor.phone }}
+            </p>
+            <p>
+              <i class="fas fa-hashtag"></i> 
+              ID: {{ doctor.id }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noDoctors>
+        <div class="empty-state">
+          <i class="fas fa-user-md-times"></i>
+          <h3>Doktor Bulunamadı</h3>
+          <p>Doktor listesini görüntülemek için yukarıdaki "Görüntüle" butonuna tıklayın.</p>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Patients Tab -->
+    <div class="tab-content" [hidden]="activeTab !== 'patients'" id="patients-tab">
+      <div class="section-header">
+        <h2>
+          <i class="fas fa-user-injured"></i>
+          Hasta Listesi
+        </h2>
+        <p>Sistemdeki tüm hastaları görüntüleyebilirsiniz</p>
+      </div>
+
+      <div class="patients-grid" *ngIf="patients.length > 0; else noPatients">
+        <div *ngFor="let patient of patients; trackBy: trackByPatientId" class="patient-item">
+          <div class="patient-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="patient-details">
+            <h4>{{ patient.fullName }}</h4>
+            <p *ngIf="patient.birthDate">
+              <i class="fas fa-calendar"></i> 
+              Doğum Tarihi: {{ formatDate(patient.birthDate) }}
+            </p>
+            <p *ngIf="patient.gender">
+              <i class="fas fa-venus-mars"></i> 
+              Cinsiyet: {{ formatGender(patient.gender) }}
+            </p>
+            <p>
+              <i class="fas fa-hashtag"></i> 
+              ID: {{ patient.id }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noPatients>
+        <div class="empty-state">
+          <i class="fas fa-user-times"></i>
+          <h3>Hasta Bulunamadı</h3>
+          <p>Hasta listesini görüntülemek için yukarıdaki "Görüntüle" butonuna tıklayın.</p>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Departments Tab -->
+    <div class="tab-content" [hidden]="activeTab !== 'departments'" id="departments-tab">
+      <div class="section-header">
+        <h2>
+          <i class="fas fa-hospital"></i>
+          Departman Listesi
+        </h2>
+        <p>Sistemdeki tüm departmanları görüntüleyebilirsiniz</p>
+      </div>
+
+      <div class="departments-grid" *ngIf="departments.length > 0; else noDepartments">
+        <div *ngFor="let department of departments; trackBy: trackByDepartmentId" class="department-item">
+          <div class="department-icon">
+            <i class="fas fa-building"></i>
+          </div>
+          <div class="department-details">
+            <h4>{{ department.name }}</h4>
+            <p>
+              <i class="fas fa-hashtag"></i> 
+              ID: {{ department.id }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noDepartments>
+        <div class="empty-state">
+          <i class="fas fa-hospital-symbol"></i>
+          <h3>Departman Bulunamadı</h3>
+          <p>Departman listesini görüntülemek için yukarıdaki "Görüntüle" butonuna tıklayın.</p>
+        </div>
+      </ng-template>
+    </div>
   </div>
 </div>

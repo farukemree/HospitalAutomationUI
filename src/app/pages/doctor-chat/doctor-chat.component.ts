@@ -51,8 +51,16 @@ export class DoctorChatComponent implements OnInit, AfterViewChecked {
     this.currentUserId = this.doctorId;
 
     this.getDoctorName();
-    this.loadPatients();
+    this.initializeChat();
+  }
 
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
+  }
+
+  // 🔥 YENİ: Chat başlatma metodu
+  private initializeChat(): void {
+    // Önce SignalR bağlantısını başlat
     this.signalRService.startConnection()
       .then(() => {
         console.log('SignalR bağlandı ✅');
@@ -68,12 +76,11 @@ export class DoctorChatComponent implements OnInit, AfterViewChecked {
           const otherId = msg.senderId === this.doctorId ? msg.receiverId : msg.senderId;
           this.updatePatientLastMessage(otherId, msg.message, msg.sentAt);
         });
+
+        // SignalR bağlandıktan sonra hastaları yükle
+        this.loadPatients();
       })
       .catch(err => console.error('SignalR başlatma hatası:', err));
-  }
-
-  ngAfterViewChecked(): void {
-    this.scrollToBottom();
   }
 
   getDoctorName(): void {
@@ -84,6 +91,7 @@ export class DoctorChatComponent implements OnInit, AfterViewChecked {
       });
   }
 
+  // 🔥 GÜNCELLENENE: Hastaları yükle ve ilk hastanın mesajlarını otomatik aç
   loadPatients(): void {
     this.http.get<any>('http://localhost:5073/api/Patient/GetAllPatients')
       .subscribe({
@@ -91,10 +99,29 @@ export class DoctorChatComponent implements OnInit, AfterViewChecked {
           this.patients = res.data.map((p: any) => ({ id: p.id, fullName: p.fullName }));
           this.patientsWithLastMessage = [...this.patients];
 
-          if (this.patients.length > 0) this.openConversation(this.patients[0]);
+          // 🔥 İLK HASTANIN MESAJLARINI OTOMATIK YÜK
+          if (this.patients.length > 0) {
+            this.loadAllPatientsLastMessages(); // Tüm hastaların son mesajlarını yükle
+            this.openConversation(this.patients[0]); // İlk hastayı otomatik seç
+          }
         },
         error: err => console.error('Hastalar yüklenemedi', err)
       });
+  }
+
+  // 🔥 YENİ: Tüm hastaların son mesajlarını yükle
+  private loadAllPatientsLastMessages(): void {
+    this.patients.forEach(patient => {
+      this.signalRService.getOldMessages(this.doctorId, patient.id).subscribe({
+        next: messages => {
+          if (messages.length > 0) {
+            const lastMessage = messages[messages.length - 1];
+            this.updatePatientLastMessage(patient.id, lastMessage.message, new Date(lastMessage.sentAt));
+          }
+        },
+        error: err => console.error(`${patient.fullName} için mesajlar alınamadı:`, err)
+      });
+    });
   }
 
   private generateConversationId(userId1: string, userId2: string): string {
@@ -112,6 +139,12 @@ export class DoctorChatComponent implements OnInit, AfterViewChecked {
         .catch(err => console.error('JoinConversation hatası:', err));
     }
 
+    // 🔥 GÜNCELLENENE: Mesajları yükle
+    this.loadConversationMessages(patient);
+  }
+
+  // 🔥 YENİ: Sohbet mesajlarını yükle
+  private loadConversationMessages(patient: Patient): void {
     this.signalRService.getOldMessages(this.doctorId, patient.id).subscribe({
       next: res => {
         this.conversation = res.map(m => ({ ...m, sentAt: new Date(m.sentAt) }))
@@ -123,6 +156,7 @@ export class DoctorChatComponent implements OnInit, AfterViewChecked {
 
         this.scrollToBottom();
 
+        // Son mesajı güncelle
         if (this.conversation.length > 0) {
           const last = this.conversation[this.conversation.length - 1];
           this.updatePatientLastMessage(patient.id, last.message, last.sentAt);
@@ -145,7 +179,6 @@ export class DoctorChatComponent implements OnInit, AfterViewChecked {
       conversationId: this.currentConversationId
     };
 
-    // ✨ Gönderici mesajını push etmiyoruz, listener ekleyecek
     if (this.signalRService.hubConnection?.state === 'Connected') {
       this.signalRService.hubConnection.invoke(
         'SendMessage',
@@ -180,4 +213,4 @@ export class DoctorChatComponent implements OnInit, AfterViewChecked {
       }
     } catch (err) { console.error('Scroll hatası:', err); }
   }
-}
+} 

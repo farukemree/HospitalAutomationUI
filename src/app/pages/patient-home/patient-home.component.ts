@@ -120,27 +120,28 @@ export class PatientHomeComponent implements OnInit {
     this.getMyAppointments();});
   }
    predictDisease() {
-    if (!this.symptomInput.trim()) {
-      alert("Lütfen semptomları giriniz.");
-      return;
-    }
-
-    this.http.post<any>('http://localhost:5073/api/DiseasePrediction/Predict', {
-      symptoms: this.symptomInput
-    }).subscribe({
-      next: response => {
-        this.predictedDisease = response.predictedDisease;
-        this.department = response.department;
-      },
-      error: err => {
-Swal.fire({
-  icon: 'error',
-  title: 'Hata',
-  text: 'Tahmin yapılırken hata oluştu.'
-});
-      }
-    });
+  if (!this.symptomInput.trim()) {
+    alert("Lütfen semptomları giriniz.");
+    return;
   }
+
+  this.http.post<any>('http://localhost:5073/api/DiseasePrediction/Predict', {
+    symptoms: this.symptomInput
+  }).subscribe({
+    next: response => {
+      this.predictedDisease = response.predictedDisease;
+      this.department = response.department;
+    },
+    error: err => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Hata',
+        text: 'Tahmin yapılırken hata oluştu.'
+      });
+    }
+  });
+}
+
 
   logout(): void {
     localStorage.clear();
@@ -205,6 +206,9 @@ private formatTime(hour: number, minute: number): string {
   const m = minute.toString().padStart(2, '0');
   return `${h}:${m}`;
 }
+ goToPatientOther(): void{
+    this.router.navigate(['/patient-other']);
+  }
 onDoctorNameChange(): void {
   const selectedDoctor = this.doctors.find(doc => doc.fullName === this.selectedDoctorName);
   if (selectedDoctor) {

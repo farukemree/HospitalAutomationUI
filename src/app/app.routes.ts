@@ -12,6 +12,7 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { PatientChatComponent } from './pages/patient-page/patient-page.component';
 import { DoctorChatComponent } from './pages/doctor-chat/doctor-chat.component';
+import { PatientOtherComponent } from './pages/patient-other/patient-other.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, 
   { path: 'login', component: LoginComponent },
@@ -26,5 +27,6 @@ export const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent},
   { path: 'reset-password', component: ResetPasswordComponent},
   { path: 'patient-page', component: PatientChatComponent},
-  { path: 'doctor-chat', component: DoctorChatComponent}
+  { path: 'doctor-chat', component: DoctorChatComponent},
+  { path: 'patient-other', component: PatientOtherComponent}
 ];

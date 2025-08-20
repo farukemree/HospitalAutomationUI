@@ -7,9 +7,14 @@
       class="chat-list-item"
       [class.active]="replyingToId === doctor.id"
       (click)="openConversation(doctor)">
+      
       <div class="chat-list-name">{{ doctor.fullName }}</div>
       <div class="chat-list-last">{{ doctor.lastMessage || 'Henüz mesaj yok' }}</div>
-      <div class="chat-list-time">{{ doctor.lastMessageTime | date:'shortTime' }}</div>
+      
+      <!-- Tarih ve saat burada -->
+      <div class="chat-list-time">
+        {{ doctor.lastMessageTime | date:'dd.MM.y HH:mm' }}
+      </div>
     </div>
   </div>
 
@@ -22,7 +27,7 @@
            [ngClass]="{'my-message': msg.senderId === patientId, 'other-message': msg.senderId !== patientId}">
         <strong>{{ msg.senderId === patientId ? 'Siz' : replyingToName }}:</strong>
         {{ msg.message }}
-        <small>{{ msg.sentAt | date:'shortTime' }}</small>
+        <small>{{ msg.sentAt | date:'dd.MM.y HH:mm' }}</small>
       </div>
     </div>
 

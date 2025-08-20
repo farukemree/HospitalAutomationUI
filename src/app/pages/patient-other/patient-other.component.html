@@ -1,0 +1,107 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">👤 Hasta - Diğer İşlemler</h2>
+
+  <div class="row">
+    <!-- Sol Panel: Tıbbi Kayıtlar -->
+    <div class="col-md-6">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">📑 Tıbbi Kayıtlarım</h5>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li *ngFor="let record of medicalRecords" class="list-group-item">
+              <strong>{{ record.recordDate | date:'short' }}</strong><br>
+              {{ getDiagnosis(record.description) }}
+            </li>
+          </ul>
+          <div *ngIf="medicalRecords.length === 0" class="text-muted mt-3">
+            Henüz bir tıbbi kaydınız bulunmamaktadır.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sağ Panel: Randevu İşlemleri -->
+    <div class="col-md-6">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-success text-white">
+          <h5 class="mb-0">📅 Randevu İşlemleri</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()">
+            <!-- Doktor Seçimi -->
+            <!-- Doktor Seçimi -->
+<div class="mb-3">
+  <label class="form-label">Doktor</label>
+  <select class="form-select" [(ngModel)]="selectedDoctorName" name="doctorName" (change)="onDoctorNameChange(); onDateChange()">
+    <option value="">Seçiniz</option>
+    <option *ngFor="let doctor of doctors" [value]="doctor.fullName" [disabled]="isDoctorAlreadyBooked(doctor.id)">
+      {{ doctor.fullName }}
+    </option>
+  </select>
+</div>
+
+
+            <!-- Tarih Seçimi -->
+            <div class="mb-3">
+              <label class="form-label">Tarih</label>
+              <input type="date" class="form-control" [(ngModel)]="selectedDate" name="date" (change)="onDateChange()" />
+            </div>
+
+            <!-- Saat Seçimi -->
+            <div class="mb-3">
+              <label class="form-label">Saat</label>
+              <div class="d-flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  class="btn"
+                  *ngFor="let slot of availableTimeSlots"
+                  [ngClass]="{
+                    'btn-secondary': selectedTime === slot.time,
+                    'btn-outline-secondary': selectedTime !== slot.time && !slot.disabled,
+                    'btn-outline-danger': slot.disabled
+                  }"
+                  [disabled]="slot.disabled"
+                  (click)="selectedTime = slot.time"
+                >
+                  {{ slot.time }}
+                </button>
+              </div>
+            </div>
+
+            <!-- Açıklama -->
+            <div class="mb-3">
+              <label class="form-label">Açıklama</label>
+              <textarea class="form-control" [(ngModel)]="appointment.description" name="description"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">
+              {{ editingAppointment ? 'Randevuyu Güncelle' : 'Yeni Randevu Oluştur' }}
+            </button>
+          </form>
+
+          <hr />
+
+          <!-- Mevcut Randevular -->
+          <h6 class="mt-3">📋 Randevularım</h6>
+          <ul class="list-group">
+            <li *ngFor="let app of appointments" class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <strong>{{ app.appointmentDate | date:'short' }}</strong><br>
+                {{ app.doctorName }} - {{ app.description || '-' }}
+              </div>
+              <div>
+                <button class="btn btn-sm btn-warning me-2" (click)="startEditAppointment(app)">Düzenle</button>
+                <button class="btn btn-sm btn-danger" (click)="deleteAppointment(app.id!)">Sil</button>
+              </div>
+            </li>
+          </ul>
+          <div *ngIf="appointments.length === 0" class="text-muted mt-3">
+            Henüz bir randevunuz bulunmamaktadır.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

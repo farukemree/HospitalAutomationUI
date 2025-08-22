@@ -31,55 +31,59 @@
     <div class="departments-section" *ngIf="!isLoadingDepartments">
       <div *ngIf="departments.length > 0; else noDepartments" class="departments-grid">
         
+        <!-- Her departman için ayrı div container -->
         <div *ngFor="let dept of departments; trackBy: trackByDepartmentId" 
-             class="department-card" 
-             [class.expanded]="isDepartmentExpanded(dept.id)">
+             class="department-container">
           
-          <!-- Department Header -->
-          <div class="department-header" (click)="toggleDescription(dept.id)">
-            <div class="department-icon">
-              <i class="fas fa-stethoscope"></i>
-            </div>
-            <div class="department-info">
-              <h3 class="department-name">{{ dept.name }}</h3>
-              <span class="department-indicator">Detaylara bakmak için tıklayın</span>
-            </div>
-            <div class="toggle-icon">
-              <i class="fas fa-chevron-down" 
-                 [class.rotated]="isDepartmentExpanded(dept.id)"></i>
-            </div>
-          </div>
-
-          <!-- Department Description -->
-          <div class="department-content" 
-               [class.show]="isDepartmentExpanded(dept.id)">
+          <div class="department-card" 
+               [class.expanded]="isDepartmentExpanded(dept.id)">
             
-            <!-- Description -->
-            <div class="description-section">
-              <div class="description-header">
-                <i class="fas fa-info-circle"></i>
-                <h4>Departman Açıklaması</h4>
+            <!-- Department Header -->
+            <div class="department-header" (click)="toggleDescription(dept.id)">
+              <div class="department-icon">
+                <i class="fas fa-stethoscope"></i>
               </div>
-              <p class="description-text">
-                {{ dept.description || 'Bu departman için henüz açıklama eklenmemiştir.' }}
-              </p>
+              <div class="department-info">
+                <h3 class="department-name">{{ dept.name }}</h3>
+                <span class="department-indicator">Detaylara bakmak için tıklayın</span>
+              </div>
+              <div class="toggle-icon">
+                <i class="fas fa-chevron-down" 
+                   [class.rotated]="isDepartmentExpanded(dept.id)"></i>
+              </div>
             </div>
 
-            <!-- Load Doctors Button -->
-            <div class="actions-section">
-              <button class="btn-load-doctors" 
-                      (click)="loadDoctors(dept.id)"
-                      [class.active]="isDoctorsLoaded(dept.id)"
-                      [disabled]="isLoadingDoctors">
-                <i class="fas fa-user-md" [class.fa-spin]="isLoadingDoctors && selectedDoctorsDepartmentId === dept.id"></i>
-                <span>
-                  {{ isLoadingDoctors && selectedDoctorsDepartmentId === dept.id ? 'Yükleniyor...' : 
-                     (isDoctorsLoaded(dept.id) ? 'Doktorlar Yüklendi' : 'Doktorları Görüntüle') }}
-                </span>
-                <div class="btn-ripple"></div>
-              </button>
-            </div>
+            <!-- Department Description -->
+            <div class="department-content" 
+                 [class.show]="isDepartmentExpanded(dept.id)">
+              
+              <!-- Description -->
+              <div class="description-section">
+                <div class="description-header">
+                  <i class="fas fa-info-circle"></i>
+                  <h4>Departman Açıklaması</h4>
+                </div>
+                <p class="description-text">
+                  {{ dept.description || 'Bu departman için henüz açıklama eklenmemiştir.' }}
+                </p>
+              </div>
 
+              <!-- Load Doctors Button -->
+              <div class="actions-section">
+                <button class="btn-load-doctors" 
+                        (click)="loadDoctors(dept.id)"
+                        [class.active]="isDoctorsLoaded(dept.id)"
+                        [disabled]="isLoadingDoctors">
+                  <i class="fas fa-user-md" [class.fa-spin]="isLoadingDoctors && selectedDoctorsDepartmentId === dept.id"></i>
+                  <span>
+                    {{ isLoadingDoctors && selectedDoctorsDepartmentId === dept.id ? 'Yükleniyor...' : 
+                       (isDoctorsLoaded(dept.id) ? 'Doktorlar Yüklendi' : 'Doktorları Görüntüle') }}
+                  </span>
+                  <div class="btn-ripple"></div>
+                </button>
+              </div>
+
+            </div>
           </div>
         </div>
 
